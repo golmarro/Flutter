@@ -111,19 +111,12 @@ classdef WingVis < handle
         end
         
         function init(this)
-            %this.fig = figure;
             this.ax  = axes('XLim',[-1 1],'YLim',[-1 1],...
                 'DrawMode','fast');
-            grid on; %axis equal;
+            grid on; 
+            axis equal;
             hold on;
-            
-%             xdata = this.airfoil(:,1) - this.Xsp;
-%             this.pict(1) = line('Xdata',[xdata; xdata],...
-%                 'Ydata',[this.airfoil(:,2); -this.airfoil(:,2)],...
-%                 'color','k');
-%             this.pict(2) = line('Xdata',[0 1] - this.Xsp,...
-%                 'Ydata',[0 0],...
-%                 'color','k');
+
             xdata = this.airfoil(:,1);
             this.pict(1) = line('Xdata',[xdata; xdata],...
                 'Ydata',[this.airfoil(:,2); -this.airfoil(:,2)],...
@@ -149,7 +142,6 @@ classdef WingVis < handle
         end
         
         function update(this, h, theta)
-            %figure(this.fig)
             h = h*this.scale;
             theta = theta*this.scale;
             Rz = makehgtform('zrotate',-theta);
@@ -159,8 +151,8 @@ classdef WingVis < handle
         end
         
         function simulate(this,t,x)
-            
-            %for i=1:length(t)
+            fprintf('Simulation\n\tTime scale: %f\n\tMovement scale: %f',...
+                this.timeScale, this.scale);
             time = 0;
             timesUpdated = 0;
             i = 1;

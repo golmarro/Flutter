@@ -1,4 +1,5 @@
-path(path, 'c:\ROBUST\Flutter\Bact\');
+path(path, 'Bact');
+path(path, 'WingFlutter');
 
 lbf_N = 4.44822162;
 ft_m = 0.3048;

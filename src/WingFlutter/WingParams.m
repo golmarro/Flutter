@@ -100,6 +100,10 @@ classdef WingParams < handle
         Xcg, Xac, Ycg, Yac
     end
     
+    properties(Dependent)   % Defined for Simulink model
+        Inertia
+    end
+    
     methods
         function this = WingParams(string, plane)
             if exist('plane','var')
