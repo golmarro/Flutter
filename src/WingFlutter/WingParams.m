@@ -20,13 +20,11 @@ classdef WingParams < handle
     % Yac_p      - with reference to wing mount (percent of L)
     
     properties(GetAccess = 'public', SetAccess = 'public')
-        CLinverted
         Xsp_p = 0.33         % [-] Shear center point position
         Xcg_p = 0.01    % [-] Relatively to Xsp
         Xac_p = 0.125       % [-] TODO 0.25 should be calculated from xac = - CMalpha / CLalpha
         Ycg_p = 0.35        % [-]
         Yac_p = 0.7         % [-]
-        CLSign = 1
         
         plane               % reference to plane configuration class (PlaneParams)
     end
@@ -46,7 +44,7 @@ classdef WingParams < handle
         mass =             165;           % kg {reduced to AC: F = m*h_dotdot)
         % Inertia approximation: m*C1^2/12
         %Itheta =        7.56;            % kg*m2
-        Itheta =        11.34;            % kg*m2
+        Itheta_0 =        11.34;            % kg*m2
         % Kphi =          870000;                  % [Nm/rad]
         Kh =            700000;                  % [Nm/rad]
         Ktheta =        40000;           % [Nm/rad]
@@ -93,6 +91,7 @@ classdef WingParams < handle
         CMalpha, CMalphadot, CMq, CMdelta
         Kphi
         shtheta
+        Itheta
         omegah, omegatheta
         dampphi, damptheta
         m           % kg {reduced to AC: F = m*h_dotdot)
@@ -107,41 +106,24 @@ classdef WingParams < handle
     end
     
     methods
-        function this = WingParams(string, plane)
+        function this = WingParams(plane)
             if exist('plane','var')
                 this.plane = plane;
-            end
-            if exist('string','var')
-                string = lower(string);
-
-%                 if ~isempty(strfind(string,'metric'))
-%                     this.convertToMetric();
-%                 end
-                
-                if ~isempty(strfind(string,'clinverse'))
-                    % Inverted lift - alpha relation used in [1]
-                    this.CLinverted = 'yes';
-                    this.CLSign = -1;
-                    this.inverseCL();
-                else
-                    this.CLinverted = 'no';
-                    this.CLSign = 1;
-                end
             end
         end
         
         % --------------------------------------- [getters]
         function val = get.CMalpha(this)
-            val = this.CMalpha_50 + (this.Xsp_p - 0.5)*this.CLalpha * this.CLSign;
+            val = this.CMalpha_50 + (this.Xsp_p - 0.5)*this.CLalpha;
         end
         function val = get.CMdelta(this)
-            val = this.CMdelta_50 + (this.Xsp_p - 0.5)*this.CLdelta * this.CLSign;
+            val = this.CMdelta_50 + (this.Xsp_p - 0.5)*this.CLdelta;
         end
         function val = get.CMalphadot(this)
-            val = this.CMalphadot_50 + (this.Xsp_p - 0.5)*this.CLalphadot * this.CLSign;
+            val = this.CMalphadot_50 + (this.Xsp_p - 0.5)*this.CLalphadot;
         end
         function val = get.CMq(this)
-            val = this.CMq_50 + (this.Xsp_p - 0.5)*this.CLq * this.CLSign;
+            val = this.CMq_50 + (this.Xsp_p - 0.5)*this.CLq;
         end
         function val = get.omegah(this)
             val = sqrt(this.Kh / this.m);
@@ -153,12 +135,13 @@ classdef WingParams < handle
             val = 2 * this.mass * this.zetah * this.omegah * this.Yac^2;
         end
         function val = get.damptheta(this)
-            %val = 2 * this.zetatheta *sqrt(this.Ktheta * this.Itheta);
-            val = 2 * this.Itheta * this.zetatheta * this.omegatheta;
+            val = 2 * this.Itheta_0 * this.zetatheta * this.omegatheta;
         end
         function val = get.shtheta(this)
             val = this.mass * this.Xcg;
-            %val = this.Itheta / this.Xcg^2;
+        end
+        function val = get.Itheta(this)
+            val = this.Itheta_0 + this.mass * this.Xcg^2;
         end
         function val = getS(this)
             val = (this.C1 + this.C2)/2*this.L;  %[m2]
@@ -168,12 +151,9 @@ classdef WingParams < handle
         end
         function val = get.Kphi(this)
             val = this.Kh * this.Yac^2;
-            %val = this.Kh;
         end
         function val = get.m(this)
-            % val = this.Itheta / this.Xac^2 + (this.Xcg/this.Xac)^2 * this.mass;
             val = this.Iphi / this.Yac^2 + (this.Ycg/this.Yac)^2 * this.mass;
-            % val = this.mass;
         end
         function val = get.Iphi(this)
             val = this.mass*this.L^2/12;
@@ -182,7 +162,7 @@ classdef WingParams < handle
             val = this.mass*this.L^2/12;
 		end
 		function val = get.Inertia(this)
-			val = [this.Itheta 0 0; 0 this.Iphi 0; 0 0 this.Ipsi];
+			val = [this.Itheta_0 0 0; 0 this.Iphi 0; 0 0 this.Ipsi];
 		end
         function val = get.Xcg(this)
             val = this.Xcg_p * this.c;
@@ -230,37 +210,6 @@ classdef WingParams < handle
                 end
             end
         end
-    end
-    
-    methods %TODO private
-        function inverseCL(this)
-            this.CLalpha =      -this.CLalpha;
-            this.CLalphadot =   -this.CLalphadot;
-            this.CLq =          -this.CLq;
-            this.CLdelta =      -this.CLdelta;
-            this.CLdeltadot =   -this.CLdeltadot;
-        end
-        
-%         function convertToMetric(this)
-%             slug_kg = this.slug_kg;
-%             ft_m = this.ft_m;
-%             lbf_N = this.lbf_N;
-%             
-%             this.g = this.g             * ft_m;              % ft/s2 -> m/s2
-%             
-%             this.m = this.m             * slug_kg;           % slug -> kg
-%             this.Itheta = this.Itheta   * slug_kg * ft_m^2;  % slug*ft2 -> kg*m2
-%             this.Kh = this.Kh           * lbf_N / ft_m;      % lb/ft -> N/m
-%             this.Ktheta = this.Ktheta   * lbf_N * ft_m;      % ft-lb -> N*m
-%             %this.shtheta = this.shtheta * slug_kg * ft_m;    % slug-ft -> kg*m
-%             %this.shdelta = this.shdelta * slug_kg * ft_m;    % slug-ft -> kg*m
-%             %this.sthetadelta = this.sthetadelta * slug_kg * ft_m^2;   % slug-ft2 -> kg*m2
-% 
-%             this.S = this.S            * ft_m^2;            % ft2 -> m2
-%             this.c = this.c            * ft_m;              % ft  -> m
-%             %this.l = this.l            * ft_m;              % ft  -> m
-%         end
-    end
-    
+    end    
 end
 

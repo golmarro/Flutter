@@ -19,7 +19,7 @@ Model {
       Name		      "theta [rad]"
     }
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.334"
+    ComputedModelVersion    "1.336"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -34,7 +34,7 @@ Model {
   MaxMDLFileLineLength	  120
   UserBdParams		  "PhysicalModelingChecksum;PhysicalModelingParameterChecksum;PhysicalModelingProducts"
   PhysicalModelingChecksum "2387196721"
-  PhysicalModelingParameterChecksum "2376621866"
+  PhysicalModelingParameterChecksum "282331670"
   PhysicalModelingProducts "SimMechanics"
   Created		  "Thu Aug 21 23:20:50 20011"
   Creator		  "Rafal"
@@ -42,31 +42,32 @@ Model {
   ModifiedByFormat	  "Rafal"
   LastModifiedBy	  "Rafal"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Mon Feb 04 19:51:08 2013"
-  RTWModifiedTimeStamp	  281908269
-  ModifiedComment	  "Rafal -- Mon Feb 04 19:51:08 2013 -- Version 1.334\n"
-  ModifiedHistory	  "Rafal -- Mon Feb 04 19:51:08 2013 -- Version 1.334\n\n\nRafal -- Mon Feb 04 19:14:36 2013 -- Vers"
-  "ion 1.333\n\n\nRafal -- Mon Feb 04 19:09:34 2013 -- Version 1.332\n\n\nRafal -- Mon Feb 04 19:01:45 2013 -- Version "
-  "1.331\n\n\nRafal -- Mon Feb 04 18:55:54 2013 -- Version 1.330\n\n\nRafal -- Mon Feb 04 18:24:17 2013 -- Version 1.32"
-  "9\n\n\nRafal -- Mon Feb 04 18:17:49 2013 -- Version 1.328\n\n\nRafal -- Mon Feb 04 02:04:22 2013 -- Version 1.327\n\n"
-  "\nRafal -- Mon Feb 04 02:00:31 2013 -- Version 1.326\n\n\nRafal -- Mon Feb 04 01:01:05 2013 -- Version 1.325\n\n\nRa"
-  "fal -- Mon Feb 04 00:56:31 2013 -- Version 1.324\n\n\nRafal -- Mon Feb 04 00:48:55 2013 -- Version 1.323\nSimRunner\n"
-  "\nRafal -- Sun Feb 03 22:29:11 2013 -- Version 1.322\n\n\nRafal -- Sun Feb 03 22:11:10 2013 -- Version 1.321\n\n\nRa"
-  "fal -- Sun Feb 03 22:09:23 2013 -- Version 1.320\nNo initFcn\n\nRafal -- Fri Feb 01 00:20:34 2013 -- Version 1.319\n"
-  "\n\nRafal -- Thu Jan 31 23:56:09 2013 -- Version 1.318\n\n\nRafal -- Thu Jan 31 23:45:26 2013 -- Version 1.317\n\n\n"
-  "Rafal -- Thu Jan 31 23:37:18 2013 -- Version 1.316\n\n\nRafal -- Thu Jan 31 23:32:50 2013 -- Version 1.315\n\n\nRafa"
-  "l -- Thu Jan 31 23:31:24 2013 -- Version 1.314\n\n\nRafal -- Sun Jan 20 23:13:45 2013 -- Version 1.313\nKorzystamy z"
-  " zewnetrznych parametrow bactParams, dumpBact\nDla danych z BACT wyniki pokrywaja sie idealnie z modelem analityczny"
-  "m i modelem z Matlab files exchange\n\nRafal -- Sun Jan 20 20:08:58 2013 -- Version 1.312\n\n\nRafal -- Sun Jan 20 2"
-  "0:07:59 2013 -- Version 1.311\n\n\nRafal -- Sun Jan 20 20:04:53 2013 -- Version 1.310\n\n\nRafal -- Sun Jan 20 19:07"
-  ":50 2013 -- Version 1.309\n\n\nRafal -- Sun Jan 20 18:53:01 2013 -- Version 1.308\n\n\nRafal -- Fri Jan 18 13:35:31 "
-  "2013 -- Version 1.307\n\n\nRafal -- Thu Jan 17 00:20:40 2013 -- Version 1.306\n\n\nRafal -- Wed Jan 16 23:53:54 2013"
-  " -- Version 1.305\n\n\nRafal -- Wed Jan 16 23:42:52 2013 -- Version 1.304\nDodana konfiguracjaL CriticalSpeed do osz"
-  "acowania predkosci krytycznej.\n\nRafal -- Wed Jan 16 19:50:35 2013 -- Version 1.303\nFix na linearyzacje. \nWczesni"
-  "ej Alpha_dot =  Alpha -> du/dt\nTeraz:\nWywalony bloczek 'du/dt'.\nAlpha_dot = Theta_dot - H_dot_dot/U0\nPochodna h_"
-  "dot_dot wzieta bezposrednio z bloczku Wing Body\n\nRafal -- Wed Jan 16 15:02:06 2013 -- Version 1.302\n\n\nRafal -- "
-  "Wed Jan 16 11:27:09 2013 -- Version 1.301\nTurbulence addedd\n\n"
-  ModelVersionFormat	  "1.%<AutoIncrement:334>"
+  LastModifiedDate	  "Tue Feb 05 00:13:44 2013"
+  RTWModifiedTimeStamp	  281924026
+  ModifiedComment	  "Rafal -- Tue Feb 05 00:13:44 2013 -- Version 1.336\n"
+  ModifiedHistory	  "Rafal -- Tue Feb 05 00:13:44 2013 -- Version 1.336\n\n\nRafal -- Tue Feb 05 00:12:22 2013 -- Vers"
+  "ion 1.335\n\n\nRafal -- Mon Feb 04 19:51:08 2013 -- Version 1.334\n\n\nRafal -- Mon Feb 04 19:14:36 2013 -- Version "
+  "1.333\n\n\nRafal -- Mon Feb 04 19:09:34 2013 -- Version 1.332\n\n\nRafal -- Mon Feb 04 19:01:45 2013 -- Version 1.33"
+  "1\n\n\nRafal -- Mon Feb 04 18:55:54 2013 -- Version 1.330\n\n\nRafal -- Mon Feb 04 18:24:17 2013 -- Version 1.329\n\n"
+  "\nRafal -- Mon Feb 04 18:17:49 2013 -- Version 1.328\n\n\nRafal -- Mon Feb 04 02:04:22 2013 -- Version 1.327\n\n\nRa"
+  "fal -- Mon Feb 04 02:00:31 2013 -- Version 1.326\n\n\nRafal -- Mon Feb 04 01:01:05 2013 -- Version 1.325\n\n\nRafal "
+  "-- Mon Feb 04 00:56:31 2013 -- Version 1.324\n\n\nRafal -- Mon Feb 04 00:48:55 2013 -- Version 1.323\nSimRunner\n\nR"
+  "afal -- Sun Feb 03 22:29:11 2013 -- Version 1.322\n\n\nRafal -- Sun Feb 03 22:11:10 2013 -- Version 1.321\n\n\nRafal"
+  " -- Sun Feb 03 22:09:23 2013 -- Version 1.320\nNo initFcn\n\nRafal -- Fri Feb 01 00:20:34 2013 -- Version 1.319\n\n\n"
+  "Rafal -- Thu Jan 31 23:56:09 2013 -- Version 1.318\n\n\nRafal -- Thu Jan 31 23:45:26 2013 -- Version 1.317\n\n\nRafa"
+  "l -- Thu Jan 31 23:37:18 2013 -- Version 1.316\n\n\nRafal -- Thu Jan 31 23:32:50 2013 -- Version 1.315\n\n\nRafal --"
+  " Thu Jan 31 23:31:24 2013 -- Version 1.314\n\n\nRafal -- Sun Jan 20 23:13:45 2013 -- Version 1.313\nKorzystamy z zew"
+  "netrznych parametrow bactParams, dumpBact\nDla danych z BACT wyniki pokrywaja sie idealnie z modelem analitycznym i "
+  "modelem z Matlab files exchange\n\nRafal -- Sun Jan 20 20:08:58 2013 -- Version 1.312\n\n\nRafal -- Sun Jan 20 20:07"
+  ":59 2013 -- Version 1.311\n\n\nRafal -- Sun Jan 20 20:04:53 2013 -- Version 1.310\n\n\nRafal -- Sun Jan 20 19:07:50 "
+  "2013 -- Version 1.309\n\n\nRafal -- Sun Jan 20 18:53:01 2013 -- Version 1.308\n\n\nRafal -- Fri Jan 18 13:35:31 2013"
+  " -- Version 1.307\n\n\nRafal -- Thu Jan 17 00:20:40 2013 -- Version 1.306\n\n\nRafal -- Wed Jan 16 23:53:54 2013 -- "
+  "Version 1.305\n\n\nRafal -- Wed Jan 16 23:42:52 2013 -- Version 1.304\nDodana konfiguracjaL CriticalSpeed do oszacow"
+  "ania predkosci krytycznej.\n\nRafal -- Wed Jan 16 19:50:35 2013 -- Version 1.303\nFix na linearyzacje. \nWczesniej A"
+  "lpha_dot =  Alpha -> du/dt\nTeraz:\nWywalony bloczek 'du/dt'.\nAlpha_dot = Theta_dot - H_dot_dot/U0\nPochodna h_dot_"
+  "dot wzieta bezposrednio z bloczku Wing Body\n\nRafal -- Wed Jan 16 15:02:06 2013 -- Version 1.302\n\n\nRafal -- Wed "
+  "Jan 16 11:27:09 2013 -- Version 1.301\nTurbulence addedd\n\n"
+  ModelVersionFormat	  "1.%<AutoIncrement:336>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -2651,7 +2652,7 @@ Model {
   System {
     Name		    "WingSim"
     Location		    [3, 82, 1263, 764]
-    Open		    on
+    Open		    off
     ModelBrowserVisibility  off
     ModelBrowserWidth	    212
     ScreenColor		    "white"
@@ -2778,8 +2779,8 @@ Model {
       ClassName		      "Ground"
       CoordPosition	      "[0 0 0]"
       CoordPositionUnits      "m"
-      StateVectorMgrId	      "23"
-      MachineId		      "[24 0]"
+      StateVectorMgrId	      "51"
+      MachineId		      "[52 0]"
       ShowEnvPort	      on
     }
     Block {
@@ -2878,7 +2879,7 @@ Model {
       System {
 	Name			"RightWing"
 	Location		[3, 82, 1263, 764]
-	Open			off
+	Open			on
 	ModelBrowserVisibility	off
 	ModelBrowserWidth	200
 	ScreenColor		"white"
@@ -4501,11 +4502,11 @@ Model {
 	  BodyColor		  "[1 0 0]"
 	  AttachedToCS		  "CG"
 	  CG			  "Left$CG$[wing.Ycg 0 wing.Xcg]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$false$none"
-	  WorkingFrames		  "Left$CS7$[wing.Yac 0 wing.Xsp - wing.Xac]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$true$none#Left$CS"
-	  "1$[0 0 0]$Adjoining$Adjoining$m$[0 0 0]$Euler X-Y-Z$deg$Adjoining$true$none#Right$CS2$[wing.L 0 0]$CS1$CS1$m$[0 0 0"
-	  "]$Euler X-Y-Z$deg$CS1$true$none#Right$CS4$[wing.L 0 -wing.C2/4]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$true$none#Lef"
-	  "t$CS6$[0 0 -wing.C1/4]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$false$none#Left$CS5$[0 0 wing.C1*3/4]$CS1$CS1$m$[0 0 0"
-	  "]$Euler X-Y-Z$deg$CS1$false$none#Right$CS3$[wing.L 0 wing.C2*3/4]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$true$none"
+	  WorkingFrames		  "Left$CS7$[wing.Yac 0 0]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$true$none#Left$CS1$[0 0 0]$Adjoinin"
+	  "g$Adjoining$m$[0 0 0]$Euler X-Y-Z$deg$Adjoining$true$none#Right$CS2$[wing.L 0 0]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$"
+	  "CS1$true$none#Right$CS4$[wing.L 0 -wing.C2/4]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$true$none#Left$CS6$[0 0 -wing.C"
+	  "1/4]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$false$none#Left$CS5$[0 0 wing.C1*3/4]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$"
+	  "CS1$false$none#Right$CS3$[wing.L 0 wing.C2*3/4]$CS1$CS1$m$[0 0 0]$Euler X-Y-Z$deg$CS1$true$none"
 	  CGPos			  "[wing.Ycg 0 wing.Xcg]"
 	  CGRot			  "[0 0 0]"
 	  CS0Pos		  "[]"
@@ -4522,7 +4523,7 @@ Model {
 	  CS5Rot		  "[0 0 0]"
 	  CS6Pos		  "[0 0 -wing.C1/4]"
 	  CS6Rot		  "[0 0 0]"
-	  CS7Pos		  "[wing.Yac 0 wing.Xsp - wing.Xac]"
+	  CS7Pos		  "[wing.Yac 0 0]"
 	  CS7Rot		  "[0 0 0]"
 	  CS8Pos		  "[]"
 	  CS8Rot		  "[]"

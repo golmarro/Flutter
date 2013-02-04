@@ -30,8 +30,8 @@ classdef SimRunner < handle
         end
         function getInputSignal(this, stopTime)
             % TODO Make t, u dependent variables
-            this.t = (0:0.05:stopTime)';
-            this.u = arrayfun(this.wingFlutter.stepSignal,this.t);
+            this.t = (0:0.01:stopTime)';
+            this.u = arrayfun(this.wingFlutter.inputSignal,this.t);
         end
         function setState(this, state)
             this.state = [0 0 0 0 0 0];

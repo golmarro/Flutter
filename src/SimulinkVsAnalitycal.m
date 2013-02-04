@@ -9,33 +9,30 @@ wing = WingFlutter(wingParams);
 simRunner = SimRunner('simRunner', wing);
 wing.simStyle = 'r--';
 
-%% no aero (structural)
-
+%% Porownanie w prozni - tylko drgania strukturalne i grawitacja
 figure
 wing.isGravity = 'on';
 wing.AeroForces = 'off';
-wingParams.Xac_p = 0;
-%wingParams.Xcg_p = 0;
-%wingParams.Yac_p = 1/7;
-%wingParams.Ycg_p = 1/7;
 
 simRunner.sim(4);
 wing.sim(4);
 legend('Simulink', 'Analytical');
+title('Porownanie w prozni - tylko drgania strukturalne i grawitacja')
 
-%% No gravity, no aero, initial state
-
+%% Bez grawitacji, w prozni, stan poczatkowy
 figure
 wing.isGravity = 'off';
 wing.AeroForces = 'off';
-wingParams.Xcg_p = 0;
 
 state = [0 3*pi/180 0 0];
 simRunner.sim(4, state);
 wing.sim(4, state);
 legend('Simulink', 'Analytical');
+title('Bez grawitacji, w prozni, stan poczatkowy')
+% Tutaj widac duze roznice - najprawdopodobniej chodzi o shtheta Mozemy to
+% jednak zlekcewazyc, bo sily strukturalne maja mniejsze znaczenie
 
-%% All
+%% Skok jednostkowy na lotce
 figure
 wing.isGravity = 'on';
 wing.AeroForces = 'on';
@@ -43,6 +40,18 @@ wing.AeroForces = 'on';
 simRunner.sim(4);
 wing.sim(4);
 legend('Simulink', 'Analytical');
+title('Skok jednostkowy na lotce')
+% Roznice moga wynikac z samego sygnalu wejsciowego. W modelu simulink czas
+% probkowania = 0.01. W modelu analitycznym moze byc duzo mniejszy
 
+%% Bez grawitacji, Alpha 0
+figure
+wing.isGravity = 'off';
+wing.AeroForces = 'on';
+wing.setInputSignal('const');
+wingParams.alpha0 = 3*pi/180;
 
-%%
+simRunner.sim(4);
+wing.sim(4);
+legend('Simulink', 'Analytical');
+title('Bez grawitacji, Alpha 0');

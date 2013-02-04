@@ -21,6 +21,7 @@ classdef BactParams < handle
 		Ycg = 1
 		Xsp = 0
 		Ysp = 1
+        Yac = 1
 		
 		damph
 		damptheta
@@ -86,6 +87,7 @@ classdef BactParams < handle
         CMdelta
         shtheta
 		Inertia
+        mass
     end
     
     methods
@@ -146,7 +148,10 @@ classdef BactParams < handle
 		
 		function val = get.Inertia(this)
 			val = [this.Itheta 0 0; 0 2 0; 0 0 2];
-		end
+        end
+        function val = get.mass(this)
+            val = this.m;
+        end
         
         function compare(this, other)
             fields = fieldnames(this);

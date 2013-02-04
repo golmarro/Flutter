@@ -111,7 +111,7 @@ classdef WingFlutter < handle
         
         function Mg = get.Mg(this)
             if strcmp(this.isGravity, 'on')
-                Mg = [this.params.mass * this.params.Ycg_p / this.params.Yac_p; this.params.shtheta];
+                Mg = [this.params.mass * this.params.Ycg / this.params.Yac; this.params.shtheta];
             else
                 Mg = [0; 0];
             end
