@@ -1,4 +1,4 @@
-classdef WingFlutter < handle
+classdef WingFlutterOld < handle
     %WingFlutter Summary of this class goes here
     %   Detailed explanation goes here
     
@@ -7,12 +7,13 @@ classdef WingFlutter < handle
     end
     properties(GetAccess = 'public', SetAccess = 'public')
         U0 = 50;           % speed m/s
+        % q = 80;
         qOverride = Inf;    % To set dyn. pressure directly
         isGravity = 'on'
         ActuatorOutputs = 'off'
         AeroForces = 'on'
         
-        inputSignal = WingFlutter.stepSignal() % Input signal function
+        inputSignal = WingFlutterOld.stepSignal() % Input signal function
         params;             % Wing structural and aero params
         atmosphere;         % Flight conditions (altitude, density etc.)
         
@@ -36,7 +37,7 @@ classdef WingFlutter < handle
     end
     
     methods
-        function this = WingFlutter(params, atmosphere)
+        function this = WingFlutterOld(params, atmosphere)
             this.params = params;
             if ~exist('atmosphere','var')
                 atmosphere = Atmosphere;
@@ -52,7 +53,15 @@ classdef WingFlutter < handle
             else
                 q = 0.5 * this.atmosphere.rho * this.U0^2;
             end
+%             if this.qOverride == Inf
+%                 q = 0.5 * this.atmosphere.rho * this.U0^2;
+%             else
+%                 q = this.qOverride;
+%             end
         end
+%         function set.q(this, val)
+%             this.qOverride = val;
+%         end
         
         function Ms = get.Ms(this)
             Ms = [this.params.m this.params.shtheta; this.params.shtheta this.params.Itheta];
@@ -63,33 +72,31 @@ classdef WingFlutter < handle
         end
         
         function Ds = get.Ds(this)
-            % Here we use point mass, not the reduced
-            tmp = [this.params.mass this.params.shtheta; this.params.shtheta this.params.Itheta];
-            Ds = tmp*[2*this.params.zetah*this.params.omegah 0; 0 2*this.params.zetatheta*this.params.omegatheta]; %TODO
+            Ds = this.Ms*[2*this.params.zetah*this.params.omegah 0; 0 2*this.params.zetatheta*this.params.omegatheta]; %TODO
         end
         
         function Ma = get.Ma(this)
             Ma = this.q*this.params.S*this.params.c/(2*this.U0^2) * ...
-                [-this.params.CLalphadot, -this.params.l*this.params.CLalphadot; 
+                [this.params.CLalphadot, this.params.l*this.params.CLalphadot; 
                  this.params.c*this.params.CMalphadot, this.params.c*this.params.l*this.params.CMalphadot];
         end
         
         function Da = get.Da(this)
             Da = this.q*this.params.S/this.U0 *... 
-                [-this.params.CLalpha ,  -this.params.l*this.params.CLalpha  - this.params.c/2 * (this.params.CLalphadot+this.params.CLq);
+                [this.params.CLalpha ,  this.params.l*this.params.CLalpha  + this.params.c/2 * (this.params.CLalphadot+this.params.CLq);
                  this.params.c*this.params.CMalpha,  this.params.c*this.params.l*this.params.CMalpha + this.params.c*this.params.c/2*(this.params.CMalphadot+this.params.CMq)];
         end
         
         function Ka = get.Ka(this)
-            Ka = this.q*this.params.S*[0 -this.params.CLalpha; 0  this.params.c*this.params.CMalpha];
+            Ka = this.q*this.params.S*[0 this.params.CLalpha; 0  this.params.c*this.params.CMalpha];
         end
         
         function QT = get.QT(this)
-            QT = this.q*this.params.S*[-this.params.CLalpha; this.params.c*this.params.CMalpha];
+            QT = this.q*this.params.S*[this.params.CLalpha; this.params.c*this.params.CMalpha];
         end
         
         function B0 = get.B0(this)
-            B0 = this.q*this.params.S*[-this.params.CLdelta; this.params.c*this.params.CMdelta];
+            B0 = this.q*this.params.S*[this.params.CLdelta; this.params.c*this.params.CMdelta];
         end
         
         function M = get.M(this)
@@ -111,7 +118,7 @@ classdef WingFlutter < handle
         
         function Mg = get.Mg(this)
             if strcmp(this.isGravity, 'on')
-                Mg = [this.params.mass * this.params.Ycg_p / this.params.Yac_p; this.params.shtheta];
+                Mg = [this.params.mass; this.params.shtheta];
             else
                 Mg = [0; 0];
             end
@@ -162,6 +169,35 @@ classdef WingFlutter < handle
             end
             model = @Model;
         end
+        
+%         function model = getModelSim(this)
+%             delta = 0;
+%             function ydot = Model(t, y)
+%                 ydot = zeros(4,1);
+%                 ydot(1:2) = y(3:4); % hdot thetadot 
+%                 % -------------- sily strukturalne
+%                 ydot(3:4) = (this.Ms)\(this.Mg*this.g*cos(this.params.alpha0)...
+%                     - this.Ks*y(1:2) - this.Ds*y(3:4));
+%                 % -------------- sily aero
+%                 h = y(1);
+%                 theta = y(2);
+%                 hdot = y(3);
+%                 thetadot = y(4);
+% 
+%                 alpha = this.params.alpha0 + theta + hdot/this.U0 + this.params.l*thetadot/this.U0;
+%                 alphadot = thetadot; % 
+%                 CL = this.params.CLalpha*alpha + this.params.CLdelta*delta...
+%                     + this.params.c/(2*this.U0) * (this.params.CLalphadot*alphadot + this.params.CLq * thetadot);
+%                 Lift = this.q*this.params.S*CL;
+%                 CM = this.params.CMalpha*alpha + this.params.CMdelta*delta...
+%                     + this.params.c/(2*this.U0) * (this.params.CMalphadot*alphadot + this.params.CMq*thetadot);
+%                 Torque = this.q*this.params.S*this.params.c*CM;
+% 
+%                 ydot(3) = ydot(3) + Lift/this.params.m;
+%                 ydot(4) = ydot(4) + Torque/this.params.Itheta;
+%             end
+%             model = @Model;
+%         end
         
         function showModes(this)
             sys = this.getModelSS();
@@ -265,6 +301,13 @@ classdef WingFlutter < handle
             end
         end
         
+        function compareSimMat(this, stopTime)
+            if ~exist('stopTime','var')
+                stopTime = 4;
+            end
+            this.compareModels({this.getModelMat(), this.getModelSim()}, stopTime);
+        end
+        
         function compareMass(this, stopTime)
             if ~exist('stopTime','var')
                 stopTime = 20;
@@ -347,6 +390,23 @@ classdef WingFlutter < handle
             end
             
             Uf = (right+left)/2;
+%             if ~exist('U', 'var')
+%                 U = 15:3:this.atmosphere.c*0.5;
+%             end
+%             Uf = Inf;
+%             for i = 1:length(U)
+%                 this.U0 = U(i);
+%                 sys = this.getModelSS();
+%                 [V E] = eig(sys.a);
+%                 % Check if unstable
+%                 if sum(real(diag(E)) > 0) > 0
+%                     Uf = min(Uf, U(i));
+%                     break
+%                 end
+%             end
+%             if Uf ~= Inf
+%                 fprintf('Flutter for U = %f [m/s], %f [km/h], alt = %f m\n', Uf, Uf*3.6, this.atmosphere.h);
+%             end
         end
         
         function flutterSpeedVersusAlt(this, alt)

@@ -47,7 +47,7 @@ classdef WingParams < handle
         % Inertia approximation: m*C1^2/12
         %Itheta =        7.56;            % kg*m2
         Itheta =        11.34;            % kg*m2
-        % Kpsi =          870000;                  % [Nm/rad]
+        % Kphi =          870000;                  % [Nm/rad]
         Kh =            700000;                  % [Nm/rad]
         Ktheta =        40000;           % [Nm/rad]
         %omegah =        21.01;          % rad/s
@@ -91,14 +91,15 @@ classdef WingParams < handle
     
     properties(Dependent)
         CMalpha, CMalphadot, CMq, CMdelta
-        Kpsi
+        Kphi
         shtheta
         omegah, omegatheta
-        damppsi, damptheta
+        dampphi, damptheta
         m           % kg {reduced to AC: F = m*h_dotdot)
         S
         l        % AC position relatively to SSP
         Xcg, Xac, Xsp, Ycg, Yac
+        Iphi, Ipsi
     end
     
     properties(Dependent)   % Defined for Simulink model
@@ -148,14 +149,16 @@ classdef WingParams < handle
         function val = get.omegatheta(this)
             val = sqrt(this.Ktheta / this.Itheta);
         end
-        function val = get.damppsi(this)
-            val = 2 * this.zetah *sqrt(this.Kpsi * this.m); % TODO this.m -> this.Ipsi
+        function val = get.dampphi(this)
+            val = 2 * this.mass * this.zetah * this.omegah * this.Yac^2;
         end
         function val = get.damptheta(this)
-            val = 2 * this.zetatheta *sqrt(this.Ktheta * this.Itheta);
+            %val = 2 * this.zetatheta *sqrt(this.Ktheta * this.Itheta);
+            val = 2 * this.Itheta * this.zetatheta * this.omegatheta;
         end
         function val = get.shtheta(this)
-            val = this.m * this.Xcg;
+            val = this.mass * this.Xcg;
+            %val = this.Itheta / this.Xcg^2;
         end
         function val = getS(this)
             val = (this.C1 + this.C2)/2*this.L;  %[m2]
@@ -163,17 +166,23 @@ classdef WingParams < handle
         function val = get.l(this)
             val = (this.Xac_p - this.Xsp_p) * this.c;
         end
-%         function val = get.Kh(this)
-%             val = this.Kpsi / this.Yac ^2;
-%         end
-        function val = get.Kpsi(this)
+        function val = get.Kphi(this)
             val = this.Kh * this.Yac^2;
+            %val = this.Kh;
         end
         function val = get.m(this)
-            val = this.Itheta / this.Xac^2 + (this.Xcg/this.Xac)^2 * this.mass;
+            % val = this.Itheta / this.Xac^2 + (this.Xcg/this.Xac)^2 * this.mass;
+            val = this.Iphi / this.Yac^2 + (this.Ycg/this.Yac)^2 * this.mass;
+            % val = this.mass;
         end
+        function val = get.Iphi(this)
+            val = this.mass*this.L^2/12;
+        end
+        function val = get.Ipsi(this)
+            val = this.mass*this.L^2/12;
+		end
 		function val = get.Inertia(this)
-			val = [this.Itheta 0 0; 0 0 0; 0 0 0];
+			val = [this.Itheta 0 0; 0 this.Iphi 0; 0 0 this.Ipsi];
 		end
         function val = get.Xcg(this)
             val = this.Xcg_p * this.c;

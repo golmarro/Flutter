@@ -6,6 +6,7 @@ classdef SimRunner < handle
         % Default input signal
         t = [0 1 1 2]'
         u = [0 0 1 1]'
+        state
     end
     
     properties(Dependent)
@@ -29,20 +30,44 @@ classdef SimRunner < handle
         end
         function getInputSignal(this, stopTime)
             % TODO Make t, u dependent variables
-            this.t = (0:0.01:stopTime)';
+            this.t = (0:0.05:stopTime)';
             this.u = arrayfun(this.wingFlutter.stepSignal,this.t);
         end
-        function [t y] = sim(this, stopTime)
+        function setState(this, state)
+            this.state = [0 0 0 0 0 0];
+            % internal internal theta psi theta_dot psi_dot
+%             this.state(5) = state(2);                  % theta
+%             this.state(6) = state(1)*this.params.Yac;  % convert h to phi
+%             this.state(3) = state(4);                  % theta_dot
+%             this.state(4) = state(3)*this.params.Yac;  % convert h_dot to phi_dot
+            this.state(1) = state(2);                  % theta
+            this.state(2) = state(1)*this.params.Yac;  % convert h to phi
+            this.state(3) = state(4);                  % theta_dot
+            this.state(4) = state(3)*this.params.Yac;  % convert h_dot to phi_dot
+        end
+        function [t y] = sim(this, stopTime, state)
             % Prepare input signal
+            if nargin == 1
+                stopTime = 10;
+            end
             this.getInputSignal(stopTime);
+            % Prepare initial state
+            if nargin > 2
+                this.setState(state);
+            else
+                this.state = [0 0 0 0 0 0];
+            end
             % Load model
             load_system(this.mdl);
             % Prepare model configuration
             conf = getActiveConfigSet(this.mdl);
             cs = conf.copy();
             set_param(cs, 'StopTime', num2str(stopTime));
+            set_param(cs, 'RelTol', '1e-6');
             set_param(cs, 'LoadExternalInput', 'on');
             set_param(cs, 'ExternalInput', [ '[' this.thisName '.t,' this.thisName '.u]' ]);  % <-- 1
+            set_param(cs, 'LoadInitialState', 'on');
+            set_param(cs, 'InitialState', [ this.thisName '.state' ]);
             % Run simulation
             simout = sim(this.mdl, cs);
             % Plot results
@@ -51,7 +76,7 @@ classdef SimRunner < handle
             
             if nargout == 0
                 subplot(2,1,1); hold on;
-                plot(t, y(:,1), 'b--');
+                plot(t, -y(:,1), 'b--');
                 ylabel('h [m]')
                 subplot(2,1,2); hold on;
                 plot(t, 180/pi*y(:,2), 'b--');
