@@ -1,6 +1,6 @@
 %%
 clear
-wingParams = WingParams('CLinverse');
+wingParams = WingParams();
 plane = PlaneParams(wingParams);
 wing = WingFlutter(wingParams);
 Uf = wing.getFlutterSpeed();

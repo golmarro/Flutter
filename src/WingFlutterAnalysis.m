@@ -17,7 +17,7 @@ Gravity = 'on';
 U0 = 50;   % [m/s]
 
 % WingFlutter
-wingParams = WingParams('CLinverse');
+wingParams = WingParams();
 wingParams.alpha0 = alpha0;
 wing = WingFlutter(wingParams);
 wing.isGravity = Gravity;
@@ -45,7 +45,7 @@ Title('przebiegi czasowe (delta skok 5 stopni)');
 %% Predkosc flutteru dla roznych wysokosci
 clear
 figure; hold on;
-params = WingParams('CLinverse');
+params = WingParams();
 wing = WingFlutter(params);
 plane = PlaneParams(params);
 plane.fuelLevel = 0;
@@ -64,7 +64,7 @@ legend('fuel level = 0%', 'fuel level = 30%', 'fuel level = 100%');
 
 % Predkosc minimalna (zakladamy alpha max = 12 deg)
 clear;
-params = WingParams('CLinverse');
+params = WingParams();
 plane = PlaneParams();
 wing = WingFlutter(params);
 wing.isGravity = 'on';
@@ -94,7 +94,7 @@ grid
 %% Linia pierwiastkowa wzgledem predkosci dla roznych wysokosci
 clear
 figure
-params = WingParams('CLinverse');
+params = WingParams();
 % params.Xsp_p = 0.5;
 wing = WingFlutter(params);
 wing.flutterSpeedVersusAlt();
@@ -113,7 +113,7 @@ title('Root Locus versus speed')
 clear
 figure
 plane = PlaneParams;
-params = WingParams('CLinverse');
+params = WingParams();
 wing = WingFlutter(params);
 
 plane.fuelLevel = 0;
@@ -144,7 +144,7 @@ title('Root Locus versus speed')
 
 %% Czestotliwosc flutteru
 clear
-params = WingParams('CLinverse');
+params = WingParams();
 wing = WingFlutter(params);
 plane = PlaneParams(params);
 
@@ -173,7 +173,7 @@ omegaF = wn(find(z<=0.001, 1));
 fprintf('Flutter frequency for U = %f km/h: %f rad/s, %f Hz\n', wing.U0*3.6, omegaF, omegaF/2/pi);
 %% Znieksztalcenie plata pod wlasnym ciezarem
 clear;
-params = WingParams('CLinverse');
+params = WingParams();
 plane = PlaneParams(params);
 wing = WingFlutter(params);
 wing.isGravity = 'on';
@@ -195,7 +195,7 @@ fprintf('Pod wlasnym ciezarem (f=1): h = %f [m], theta = %f [deg]\n', state(1), 
 % #2 - zadane sila na mocowaniu K*x dla massPerWing
 
 clear;
-params = WingParams('CLinverse');
+params = WingParams();
 plane = PlaneParams();
 wing = WingFlutter(params);
 wing.isGravity = 'on';
@@ -246,7 +246,7 @@ end
 %% Postacie drgan dla U << Uf i dla U ~= Uf
 clear;
 % --------------------------- Wing
-wingParams = WingParams('CLinverse');
+wingParams = WingParams();
 plane = PlaneParams(wingParams);
 wing = WingFlutter(wingParams);
 wing.isGravity = 'on';
@@ -296,7 +296,7 @@ wing.showModes;
 
 %% Czestosci drgan skretnych i gietnych
 clear
-params = WingParams('clinverse');
+params = WingParams();
 plane = PlaneParams(params);
 plane.fuelLevel = 0;
 fprintf('Czestosc drgan skretnych: omega theta = %f [rad/s]\n', params.omegatheta);

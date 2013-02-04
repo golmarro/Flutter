@@ -6,7 +6,7 @@ classdef WingFlutter < handle
         g = 9.81;           % m/s2
     end
     properties(GetAccess = 'public', SetAccess = 'public')
-        U0 = 100;           % speed m/s
+        U0 = 50;           % speed m/s
         % q = 80;
         qOverride = Inf;    % To set dyn. pressure directly
         isGravity = 'on'
@@ -77,26 +77,26 @@ classdef WingFlutter < handle
         
         function Ma = get.Ma(this)
             Ma = this.q*this.params.S*this.params.c/(2*this.U0^2) * ...
-                [this.params.CLalphadot, this.params.l*this.params.CLalphadot; 
+                [-this.params.CLalphadot, -this.params.l*this.params.CLalphadot; 
                  this.params.c*this.params.CMalphadot, this.params.c*this.params.l*this.params.CMalphadot];
         end
         
         function Da = get.Da(this)
             Da = this.q*this.params.S/this.U0 *... 
-                [this.params.CLalpha ,  this.params.l*this.params.CLalpha  + this.params.c/2 * (this.params.CLalphadot+this.params.CLq);
+                [-this.params.CLalpha ,  -this.params.l*this.params.CLalpha  - this.params.c/2 * (this.params.CLalphadot+this.params.CLq);
                  this.params.c*this.params.CMalpha,  this.params.c*this.params.l*this.params.CMalpha + this.params.c*this.params.c/2*(this.params.CMalphadot+this.params.CMq)];
         end
         
         function Ka = get.Ka(this)
-            Ka = this.q*this.params.S*[0 this.params.CLalpha; 0  this.params.c*this.params.CMalpha];
+            Ka = this.q*this.params.S*[0 -this.params.CLalpha; 0  this.params.c*this.params.CMalpha];
         end
         
         function QT = get.QT(this)
-            QT = this.q*this.params.S*[this.params.CLalpha; this.params.c*this.params.CMalpha];
+            QT = this.q*this.params.S*[-this.params.CLalpha; this.params.c*this.params.CMalpha];
         end
         
         function B0 = get.B0(this)
-            B0 = this.q*this.params.S*[this.params.CLdelta; this.params.c*this.params.CMdelta];
+            B0 = this.q*this.params.S*[-this.params.CLdelta; this.params.c*this.params.CMdelta];
         end
         
         function M = get.M(this)
@@ -118,7 +118,7 @@ classdef WingFlutter < handle
         
         function Mg = get.Mg(this)
             if strcmp(this.isGravity, 'on')
-                Mg = [this.params.m; this.params.shtheta];
+                Mg = [this.params.mass; this.params.shtheta];
             else
                 Mg = [0; 0];
             end
@@ -170,34 +170,34 @@ classdef WingFlutter < handle
             model = @Model;
         end
         
-        function model = getModelSim(this)
-            delta = 0;
-            function ydot = Model(t, y)
-                ydot = zeros(4,1);
-                ydot(1:2) = y(3:4); % hdot thetadot 
-                % -------------- sily strukturalne
-                ydot(3:4) = (this.Ms)\(this.Mg*this.g*cos(this.params.alpha0)...
-                    - this.Ks*y(1:2) - this.Ds*y(3:4));
-                % -------------- sily aero
-                h = y(1);
-                theta = y(2);
-                hdot = y(3);
-                thetadot = y(4);
-
-                alpha = this.params.alpha0 + theta + hdot/this.U0 + this.params.l*thetadot/this.U0;
-                alphadot = thetadot; % 
-                CL = this.params.CLalpha*alpha + this.params.CLdelta*delta...
-                    + this.params.c/(2*this.U0) * (this.params.CLalphadot*alphadot + this.params.CLq * thetadot);
-                Lift = this.q*this.params.S*CL;
-                CM = this.params.CMalpha*alpha + this.params.CMdelta*delta...
-                    + this.params.c/(2*this.U0) * (this.params.CMalphadot*alphadot + this.params.CMq*thetadot);
-                Torque = this.q*this.params.S*this.params.c*CM;
-
-                ydot(3) = ydot(3) + Lift/this.params.m;
-                ydot(4) = ydot(4) + Torque/this.params.Itheta;
-            end
-            model = @Model;
-        end
+%         function model = getModelSim(this)
+%             delta = 0;
+%             function ydot = Model(t, y)
+%                 ydot = zeros(4,1);
+%                 ydot(1:2) = y(3:4); % hdot thetadot 
+%                 % -------------- sily strukturalne
+%                 ydot(3:4) = (this.Ms)\(this.Mg*this.g*cos(this.params.alpha0)...
+%                     - this.Ks*y(1:2) - this.Ds*y(3:4));
+%                 % -------------- sily aero
+%                 h = y(1);
+%                 theta = y(2);
+%                 hdot = y(3);
+%                 thetadot = y(4);
+% 
+%                 alpha = this.params.alpha0 + theta + hdot/this.U0 + this.params.l*thetadot/this.U0;
+%                 alphadot = thetadot; % 
+%                 CL = this.params.CLalpha*alpha + this.params.CLdelta*delta...
+%                     + this.params.c/(2*this.U0) * (this.params.CLalphadot*alphadot + this.params.CLq * thetadot);
+%                 Lift = this.q*this.params.S*CL;
+%                 CM = this.params.CMalpha*alpha + this.params.CMdelta*delta...
+%                     + this.params.c/(2*this.U0) * (this.params.CMalphadot*alphadot + this.params.CMq*thetadot);
+%                 Torque = this.q*this.params.S*this.params.c*CM;
+% 
+%                 ydot(3) = ydot(3) + Lift/this.params.m;
+%                 ydot(4) = ydot(4) + Torque/this.params.Itheta;
+%             end
+%             model = @Model;
+%         end
         
         function showModes(this)
             sys = this.getModelSS();

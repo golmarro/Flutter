@@ -91,13 +91,14 @@ classdef WingParams < handle
     
     properties(Dependent)
         CMalpha, CMalphadot, CMq, CMdelta
-        %Kh
+        Kpsi
         shtheta
         omegah, omegatheta
+        damppsi, damptheta
         m           % kg {reduced to AC: F = m*h_dotdot)
         S
         l        % AC position relatively to SSP
-        Xcg, Xac, Ycg, Yac
+        Xcg, Xac, Xsp, Ycg, Yac
     end
     
     properties(Dependent)   % Defined for Simulink model
@@ -147,6 +148,12 @@ classdef WingParams < handle
         function val = get.omegatheta(this)
             val = sqrt(this.Ktheta / this.Itheta);
         end
+        function val = get.damppsi(this)
+            val = 2 * this.zetah *sqrt(this.Kpsi * this.m); % TODO this.m -> this.Ipsi
+        end
+        function val = get.damptheta(this)
+            val = 2 * this.zetatheta *sqrt(this.Ktheta * this.Itheta);
+        end
         function val = get.shtheta(this)
             val = this.m * this.Xcg;
         end
@@ -159,6 +166,9 @@ classdef WingParams < handle
 %         function val = get.Kh(this)
 %             val = this.Kpsi / this.Yac ^2;
 %         end
+        function val = get.Kpsi(this)
+            val = this.Kh * this.Yac^2;
+        end
         function val = get.m(this)
             val = this.Itheta / this.Xac^2 + (this.Xcg/this.Xac)^2 * this.mass;
         end
@@ -170,6 +180,9 @@ classdef WingParams < handle
         end
         function val = get.Xac(this)
             val = this.Xac_p * this.c;
+        end
+        function val = get.Xsp(this)
+            val = this.Xsp_p * this.c;
         end
         function val = get.Ycg(this)
             val = this.Ycg_p * this.L;
