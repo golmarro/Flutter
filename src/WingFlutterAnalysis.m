@@ -14,7 +14,7 @@ figure
 alpha0 = 4*pi/180;
 alpha0 = 0;
 Gravity = 'on';
-U0 = 50;   % [m/s]
+U0 = 35;   % [m/s]
 
 % WingFlutter
 wingParams = WingParams();
@@ -25,21 +25,21 @@ wing.U0 = U0;
 wing.simStyle = 'r--';
 wing.sim(4);
 
-wing.params.Xcg_p = 0;
-wing.simStyle = 'g--';
-wing.sim(4);
+% wing.params.Xcg_p = 0;
+% wing.simStyle = 'g--';
+% wing.sim(4);
 
 % Bact
-params = BactParams('CLinverse metric');
-params.alpha0 = alpha0;
-wing = WingFlutter(params);
-% wing.isGravity = 'off';
+bactParams = BactParams('metric');
+bactParams.alpha0 = alpha0;
+wing = WingFlutter(bactParams);
+wing.isGravity = Gravity;
 wing.U0 = U0;
 wing.simStyle = 'k--';
-[t y] = wing.sim(4);
+wing.sim(4);
 
-legend('Wing', 'Wing Xcg=0','Bact');
-Title('przebiegi czasowe (delta skok 5 stopni)');
+legend('Wing','Bact');
+title('przebiegi czasowe (delta skok 5 stopni)');
 
 
 %% Predkosc flutteru dla roznych wysokosci
@@ -79,7 +79,7 @@ for loadLevel = [0 0.5 1]
     
     for i = 1:length(h)    % [m]
         wing.atmosphere.h = h(i);
-        Ustall(i) = sqrt(2 * (plane.totalMass/2 * wing.g) ./(-wing.atmosphere.rho*wing.params.S*wing.params.alphaMax*wing.params.CLalpha));
+        Ustall(i) = sqrt(2 * (plane.totalMass/2 * wing.g) ./(wing.atmosphere.rho*wing.params.S*wing.params.alphaMax*wing.params.CLalpha));
     end
     
     plot(Ustall*3.6, h);
@@ -99,11 +99,11 @@ params = WingParams();
 wing = WingFlutter(params);
 wing.flutterSpeedVersusAlt();
 wing.atmosphere.h = 0;
-wing.SpeedRootLocus(25:5:130,'r.');
+wing.SpeedRootLocus(25:5:110,'r.');
 wing.atmosphere.h = 5000;
-wing.SpeedRootLocus(25:5:180,'g.');
+wing.SpeedRootLocus(25:5:160,'g.');
 wing.atmosphere.h = 11000;
-wing.SpeedRootLocus(25:5:240,'b.');
+wing.SpeedRootLocus(25:5:200,'b.');
 legend('h = 0 m', 'h = 5000 m', 'h = 11000 m');
 ylabel('Imag')
 xlabel('Real')
@@ -112,30 +112,21 @@ title('Root Locus versus speed')
 %% Linia pierwiastkowa wzgledem predkosci dla roznej masy paliwa
 clear
 figure
-plane = PlaneParams;
 params = WingParams();
+plane = PlaneParams(params);
 wing = WingFlutter(params);
 
 plane.fuelLevel = 0;
-params.Xcg_p = plane.wingXcg_p;
-params.Itheta = plane.wingItheta;
-params.mass = plane.wingMass;
 l1 = sprintf('Xcg = %f %%, Itheta: %f, Mass: %f', params.Xcg_p*100, params.Itheta, params.mass);
-wing.SpeedRootLocus(25:5:180,'r.');
+wing.SpeedRootLocus(25:5:120,'r.');
 
 plane.fuelLevel = 0.5;
-params.Xcg_p = plane.wingXcg_p;
-params.Itheta = plane.wingItheta;
-params.mass = plane.wingMass;
 l2 = sprintf('Xcg = %f %%, Itheta: %f, Mass: %f', params.Xcg_p*100, params.Itheta, params.mass);
-wing.SpeedRootLocus(25:5:180,'g.');
+wing.SpeedRootLocus(25:5:130,'g.');
 
 plane.fuelLevel = 1;
-params.Xcg_p = plane.wingXcg_p;
-params.Itheta = plane.wingItheta;
-params.mass = plane.wingMass;
 l3 = sprintf('Xcg = %f %%, Itheta: %f, Mass: %f', params.Xcg_p*100, params.Itheta, params.mass);
-wing.SpeedRootLocus(25:5:150,'b.');
+wing.SpeedRootLocus(25:5:140,'b.');
 
 legend(l1,l2,l3);
 ylabel('Imag')
@@ -192,7 +183,6 @@ fprintf('Pod wlasnym ciezarem (f=1): h = %f [m], theta = %f [deg]\n', state(1), 
 %% Statyczne skrecenie i wygiecie plata dla g = 1
 % Dwa podejscia:
 % #1 - zadana sila nosna dla totalMass/2
-% #2 - zadane sila na mocowaniu K*x dla massPerWing
 
 clear;
 params = WingParams();
@@ -202,46 +192,38 @@ wing.isGravity = 'on';
 
 % Print alpha versus speed
 figure; hold on;
-% Theta  = [];
+styles = ['r','g','b'];
 for h = 1000    % [m]
     wing.atmosphere.h = h;
-
-    for loadLevel = [0 0.5 1]
-        plane.fuelLevel = loadLevel;
-        plane.payloadLevel = loadLevel;
+    loadLevel = [0 0.5 1];
+    for loadIndex = [1 2 3]
+        plane.fuelLevel = loadLevel(loadIndex);
+        plane.payloadLevel = loadLevel(loadIndex);
         
-        Ustall = sqrt(2 * (plane.totalMass/2 * wing.g) ./(-wing.atmosphere.rho*wing.params.S*wing.params.alphaMax*wing.params.CLalpha));
+        Ustall = sqrt(2 * (plane.totalMass/2 * wing.g) ./(wing.atmosphere.rho*wing.params.S*wing.params.alphaMax*wing.params.CLalpha));
         fprintf('Ustall: %f [km/h]\n', Ustall*3.6);
         U0 = (Ustall*3.6:20:400)/3.6;  % [m/s]
         fprintf('------------------ Total Mass: %f kg\n', plane.totalMass);
-        fprintf('V [km/h]  alpha0[deg]   h [m]    theta [deg]    g [-]    alpha0[deg]     h [m]     theta [deg]  g [-]\n');
+        fprintf('V [km/h]  alpha0[deg]   h [m]    theta [deg]    g [-]\n');
         alpha0 = [];
         for i = 1:length(U0)
             wing.U0 = U0(i);
             
             fprintf('%f\t', wing.U0*3.6)
-            
-%             a0 = wing.trimForce(-plane.massPerWing * wing.g);    % # 1
-%             state = wing.trim(a0, 0);
-%             fprintf('%f\t%f\t%f\t', a0*180/pi, state(1), state(2)*180/pi);
-%             fprintf('%f\t', state(1) * wing.params.Kh / (plane.massPerWing * wing.g));
-            
             a0 = wing.trimLift(-plane.totalMass/2 * wing.g);     % # 2
             state = wing.trim(a0, 0);
             fprintf('%f\t%f\t%f\t', a0*180/pi, state(1), state(2)*180/pi);
             fprintf('%f\n', wing.q*wing.params.S*(state(2)+a0)*wing.params.CLalpha / (plane.totalMass/2 * wing.g));
             alpha0(i) = a0;
         end
-        plot(U0, alpha0*180/pi);
+        plot(U0*3.6, alpha0*180/pi, styles(loadIndex));
     end
 end
-%wing.inputSignal = WingFlutter.constSignal();
-%wing.params.alpha0 = a0;
-%wing.sim(10,[state; 0; 0]);
-
-% alpha0_2 = wing.trimLift(-mass * wing.g);
-% fprintf('Kat natarcia dla m = %f kg, V = %f km/h: alpha0 = %f [deg]\n', mass, wing.U0*3.6, alpha0_1*180/pi)
-% fprintf('h = %f m, theta = %f deg\n', state(1), state(2)*180/pi);
+xlabel('V [km/h]');
+ylabel('\alpha [deg]');
+title('Kat natarcia wzgledem predkosci');
+legend('load level = 0', 'load level = 0.5', 'load level = 1');
+grid
 
 %% Postacie drgan dla U << Uf i dla U ~= Uf
 clear;
@@ -252,7 +234,7 @@ wing = WingFlutter(wingParams);
 wing.isGravity = 'on';
 
 % U << Uf
-Ustall = sqrt(2 * (plane.totalMass/2 * wing.g) ./(-wing.atmosphere.rho*wing.params.S*wing.params.alphaMax*wing.params.CLalpha));
+Ustall = sqrt(2 * (plane.totalMass/2 * wing.g) ./(wing.atmosphere.rho*wing.params.S*wing.params.alphaMax*wing.params.CLalpha));
 Uf = wing.getFlutterSpeed;
 wing.U0 = 1.2 * Ustall;
 
@@ -276,7 +258,7 @@ wing.showModes;
 
 % --------------------------- BACT
 clear
-bactParams = BactParams('CLinverse metric');
+bactParams = BactParams('metric');
 wing = WingFlutter(bactParams);
 wing.isGravity = 'on';
 

@@ -4,3 +4,7 @@
 
 # Autosave file
 *.asv
+
+# We don't want to control doc files
+*.odt
+*.odt#

@@ -46,8 +46,8 @@ classdef WingParams < handle
         %Itheta =        7.56;            % kg*m2
         Itheta_0 =        11.34;            % kg*m2
         % Kphi =          870000;                  % [Nm/rad]
-        Kh =            700000;                  % [Nm/rad]
-        Ktheta =        40000;           % [Nm/rad]
+        Kh =            50000;                  % [Nm/rad]
+        Ktheta =        36000;           % [Nm/rad]
         %omegah =        21.01;          % rad/s
         %omegatheta =    32.72;          % rad/s
         zetah =         0.0014;         % -
