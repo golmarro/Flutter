@@ -7,12 +7,14 @@ classdef SimRunner < handle
         t = [0 1 1 2]'
         u = [0 0 1 1]'
         state
+        actuatorModel = 'linear'
     end
     
     properties(Dependent)
         U0, Q, g
         aeroForceOn
-        params
+        wingParams
+        actuator
     end
     
     methods
@@ -41,9 +43,9 @@ classdef SimRunner < handle
 %             this.state(3) = state(4);                  % theta_dot
 %             this.state(4) = state(3)*this.params.Yac;  % convert h_dot to phi_dot
             this.state(1) = state(2);                  % theta
-            this.state(2) = state(1)*this.params.Yac;  % convert h to phi
+            this.state(2) = state(1)*this.wingParams.Yac;  % convert h to phi
             this.state(3) = state(4);                  % theta_dot
-            this.state(4) = state(3)*this.params.Yac;  % convert h_dot to phi_dot
+            this.state(4) = state(3)*this.wingParams.Yac;  % convert h_dot to phi_dot
         end
         function [t y] = sim(this, stopTime, state)
             % Prepare input signal
@@ -104,8 +106,24 @@ classdef SimRunner < handle
                 val = 1;
             end
         end
-        function val = get.params(this)
+        function val = get.wingParams(this)
             val = this.wingFlutter.params;
+        end
+        function val = get.actuator(this)
+            k = 1.02;           % [dg/deg]
+            zeta = 0.56;        % [-]
+            omega = 165.3;      % [rad/s]
+            val.tf = tf(k*omega^2, [1 2*zeta*omega omega^2]);
+            
+            if strcmp(this.actuatorModel, 'nonlinear')
+                val.rateLimit = Inf;    % TODO ????
+                val.rangeLimit = 45 * pi/180;
+            elseif strcmp(this.actuatorModel, 'linear')
+                val.rateLimit = Inf;
+                val.rangeLimit = Inf;
+            else        %  actuatorModel = 'none'
+                val.tf = tf(1, 1);
+            end
         end
     end
 end

@@ -1,0 +1,17 @@
+-------------- [  NOW  ] --------------
+* WingFlutter, WingSim - dynamika silownika
+
+* WingFlutter - turbulencje
+
+* PlaneRunner - trymowanie
+
+* PlaneStiffSim.mdl - przerobienie skrzydel na sztywne - dopiero jak Sim.mdl bedzie w ostatecznej wersji.
+
+* WingControl - pierwsza przymiarka, klasyczne podejscie
+
+-------------- [SOME DAY] --------------
+* Skreacanie lotki w WingVis.m
+* PlaneFlexSim.mdl - dostrojenie parametrow
+
+-------------- [ NEVER ] --------------
+* Nadal sa pewne roznice miedzy WingParams a WingSim, ale tylko jesli chodzi o zachowanie w prozni.
