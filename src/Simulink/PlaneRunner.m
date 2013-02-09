@@ -2,19 +2,21 @@ classdef PlaneRunner < SimRunner
     properties
         stabParams
         fuse
+        deltaTrim = [0 0 -20 20]*pi/180 % delta values after trim
+        lastOperPoint = [] % last operationg point evaluated by trim function
     end
     
     methods
-        function this = PlaneRunner(thisName, wingFlutter, mdl)   % Constructor
+        function this = PlaneRunner(thisName, mdl, wingFlutter)   % Constructor
             this = this@SimRunner(thisName);
                 
-            if nargin == 3
+            if nargin >= 2
                 this.mdl = mdl;
             else
                 this.mdl = 'PlaneSim';
             end
             
-            if nargin >= 2
+            if nargin == 3
                 this.wingFlutter = wingFlutter;
             else
                 wingParams = WingParams();
@@ -29,7 +31,11 @@ classdef PlaneRunner < SimRunner
             % TODO Make t, u dependent variables
             this.t = (0:0.01:stopTime)';
             %this.u = arrayfun(this.wingFlutter.inputSignal,this.t);
-            this.u = zeros(size(this.t,1), 4);
+            RA = ones(size(this.t,1),1)*this.deltaTrim(1);
+            LA = ones(size(this.t,1),1)*this.deltaTrim(2);
+            RE = ones(size(this.t,1),1)*this.deltaTrim(3);
+            LE = ones(size(this.t,1),1)*this.deltaTrim(4);
+            this.u = [RA LA RE LE];
         end
         function setState(this, state)
             this.state = [0 0 0 0 0 0];
@@ -76,6 +82,83 @@ classdef PlaneRunner < SimRunner
                 plot(t, 180/pi*y(:,2), 'b--');
                 xlabel('time [s]'); ylabel('\theta [deg]');
             end
+        end
+        
+        function op = trim(this)
+            savedActuatorMode = this.actuatorModel;
+            this.actuatorModel = 'none';
+            
+            DofIndex = 1;
+            
+            spec = operspec(this.mdl);
+            % TODO wspolna identyfikacja stanow dla wszystkich modeli
+            % theta, psi, phi,
+            set(spec.States(1),'SteadyState', 1)
+            set(spec.States(2),'Known', 1)
+            set(spec.States(3),'Known', 1)
+            set(spec.States(4),'Known', 1)  % pos
+            set(spec.States(5),'Known', 1)
+            set(spec.States(6),'Known', 1)  
+            set(spec.States(7),'Known', 1)  % p, q, r
+            set(spec.States(8),'Known', 1)
+            set(spec.States(9),'SteadyState', 0)
+            set(spec.States(10),'SteadyState', 0)    % V
+            set(spec.States(11),'Known', 1)
+            set(spec.States(12),'SteadyState', 0)
+            
+            
+%             for i = 1:size(spec.States,1)
+%                 % Actuator states don't have to be in equilibrium
+%                 if ~isempty(strfind(get(spec.States(i),'Block'), 'Actuator'))
+%                     set(spec.States(i),'SteadyState', [0;0])
+%                 % Fakejoint represents planes 6 DoF
+%                 elseif ~isempty(strfind(get(spec.States(i),'Block'), 'PlaneDOF'))
+%                     if DofIndex == 1
+%                         set(spec.States(i),'SteadyState', 1)
+%                         set(spec.States(i),'x', 5*pi/180)
+%                     else %if DofIndex < 7
+%                         set(spec.States(i),'Known', 1)
+%                     end
+%                     DofIndex = DofIndex + 1;
+%                 % All Joints can be distorted
+%                 elseif ~isempty(strfind(get(spec.States(i),'Block'), 'Joint'))
+%                     % Initial guess for theta:
+%                     set(spec.States(i),'SteadyState', 0)
+%                 % But cannot move too much
+%                 elseif ~isempty(strfind(get(spec.States(i),'Block'), 'Velocity'))
+%                     set(spec.States(i),'SteadyState', 1)
+%                 end
+%             end
+
+            % Ailerons:
+            set(spec.Inputs(1), 'Known', 1)
+            set(spec.Inputs(2), 'Known', 1)
+            % Elevetors:
+%             set(spec.Inputs(3), 'Min', -45*pi/180);
+%             set(spec.Inputs(3), 'Max', 45*pi/180);
+%             set(spec.Inputs(4), 'Min', -45*pi/180);
+%             set(spec.Inputs(4), 'Max', 45*pi/180);
+            set(spec.Inputs(3), 'u', -40*pi/180);
+            set(spec.Inputs(4), 'u', -40*pi/180);
+            
+            spec
+            [op, report] = findop(this.mdl,spec);
+            
+            for i=1:4
+                this.deltaTrim(i) = get(op.Inputs(i),'u');
+            end
+            
+            this.actuatorModel = savedActuatorMode;
+        end
+        
+        function sys = linearize(this)
+            if isempty(this.lastOperPoint)
+                this.trim();
+            end
+            
+            io = linio('this.mdl');
+            
+            sys = linearize(this.mdl, io);
         end
         
         function initFuselageParams(this)

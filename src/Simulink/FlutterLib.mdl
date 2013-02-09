@@ -15,9 +15,9 @@ Library {
   ModifiedByFormat	  "Rafal"
   LastModifiedBy	  "Rafal"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Feb 07 21:12:15 2013"
-  RTWModifiedTimeStamp	  282172332
-  ModelVersionFormat	  "1.%<AutoIncrement:11>"
+  LastModifiedDate	  "Sat Feb 09 02:05:44 2013"
+  RTWModifiedTimeStamp	  282276252
+  ModelVersionFormat	  "1.%<AutoIncrement:16>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -996,7 +996,7 @@ Library {
 	TiledPageScale		1
 	ShowPageBoundaries	off
 	ZoomFactor		"100"
-	SIDHighWatermark	101
+	SIDHighWatermark	103
 	SIDPrevWatermark	97
 	Block {
 	  BlockType		  Inport
@@ -1103,138 +1103,6 @@ Library {
 		}
 		Block {
 		  BlockType		  SubSystem
-		  Name			  "ASSERT \n|alpha_dot| < 12 deg/s"
-		  SID			  11
-		  Ports			  [1]
-		  Position		  [510, 240, 590, 280]
-		  MinAlgLoopOccurrences	  off
-		  PropExecContextOutsideSubsystem off
-		  RTWSystemCode		  "Auto"
-		  FunctionWithSeparateData off
-		  Opaque		  off
-		  RequestExecContextInheritance	off
-		  MaskHideContents	  off
-		  MaskPromptString	  "Absolute value that cannot be overriden"
-		  MaskStyleString	  "edit"
-		  MaskTunableValueString  "on"
-		  MaskEnableString	  "on"
-		  MaskVisibilityString	  "on"
-		  MaskToolTipString	  "on"
-		  MaskVariables		  "max=@1;"
-		  MaskIconFrame		  on
-		  MaskIconOpaque	  on
-		  MaskIconRotate	  "none"
-		  MaskPortRotate	  "default"
-		  MaskIconUnits		  "autoscale"
-		  MaskValueString	  "12*pi/180"
-		  System {
-		    Name		    "ASSERT \n|alpha_dot| < 12 deg/s"
-		    Location		    [320, 316, 852, 614]
-		    Open		    off
-		    ModelBrowserVisibility  off
-		    ModelBrowserWidth	    200
-		    ScreenColor		    "white"
-		    PaperOrientation	    "landscape"
-		    PaperPositionMode	    "auto"
-		    PaperType		    "A4"
-		    PaperUnits		    "centimeters"
-		    TiledPaperMargins	    [1.270000, 1.270000, 1.270000, 1.270000]
-		    TiledPageScale	    1
-		    ShowPageBoundaries	    off
-		    ZoomFactor		    "100"
-		    Block {
-		    BlockType		    Inport
-		    Name		    "Input"
-		    SID			    12
-		    Position		    [25, 38, 55, 52]
-		    IconDisplay		    "Port number"
-		    }
-		    Block {
-		    BlockType		    Reference
-		    Name		    "<= 12 stopni"
-		    SID			    13
-		    Ports		    [1, 1]
-		    Position		    [150, 29, 205, 61]
-		    SourceBlock		    "simulink/Logic and Bit\nOperations/Compare\nTo Constant"
-		    SourceType		    "Compare To Constant"
-		    ShowPortLabels	    "FromPortIcon"
-		    SystemSampleTime	    "-1"
-		    FunctionWithSeparateData "off"
-		    RTWMemSecFuncInitTerm   "Inherit from model"
-		    RTWMemSecFuncExecute    "Inherit from model"
-		    RTWMemSecDataConstants  "Inherit from model"
-		    RTWMemSecDataInternal   "Inherit from model"
-		    RTWMemSecDataParameters "Inherit from model"
-		    relop		    "<="
-		    const		    "max"
-		    LogicOutDataTypeMode    "boolean"
-		    ZeroCross		    "off"
-		    }
-		    Block {
-		    BlockType		    Reference
-		    Name		    ">= -12 stopni"
-		    SID			    14
-		    Ports		    [1, 1]
-		    Position		    [150, 89, 205, 121]
-		    SourceBlock		    "simulink/Logic and Bit\nOperations/Compare\nTo Constant"
-		    SourceType		    "Compare To Constant"
-		    ShowPortLabels	    "FromPortIcon"
-		    SystemSampleTime	    "-1"
-		    FunctionWithSeparateData "off"
-		    RTWMemSecFuncInitTerm   "Inherit from model"
-		    RTWMemSecFuncExecute    "Inherit from model"
-		    RTWMemSecDataConstants  "Inherit from model"
-		    RTWMemSecDataInternal   "Inherit from model"
-		    RTWMemSecDataParameters "Inherit from model"
-		    relop		    ">="
-		    const		    "-max"
-		    LogicOutDataTypeMode    "boolean"
-		    ZeroCross		    "off"
-		    }
-		    Block {
-		    BlockType		    Assertion
-		    Name		    "Assertion"
-		    SID			    15
-		    Position		    [235, 28, 275, 62]
-		    Enabled		    off
-		    }
-		    Block {
-		    BlockType		    Assertion
-		    Name		    "Assertion1"
-		    SID			    16
-		    Position		    [235, 88, 275, 122]
-		    Enabled		    off
-		    }
-		    Line {
-		    SrcBlock		    "Input"
-		    SrcPort		    1
-		    Points		    [50, 0]
-		    Branch {
-		    DstBlock		    "<= 12 stopni"
-		    DstPort		    1
-		    }
-		    Branch {
-		    Points		    [0, 60]
-		    DstBlock		    ">= -12 stopni"
-		    DstPort		    1
-		    }
-		    }
-		    Line {
-		    SrcBlock		    "<= 12 stopni"
-		    SrcPort		    1
-		    DstBlock		    "Assertion"
-		    DstPort		    1
-		    }
-		    Line {
-		    SrcBlock		    ">= -12 stopni"
-		    SrcPort		    1
-		    DstBlock		    "Assertion1"
-		    DstPort		    1
-		    }
-		  }
-		}
-		Block {
-		  BlockType		  SubSystem
 		  Name			  "Alpha calculation"
 		  SID			  17
 		  Ports			  [2, 1]
@@ -1304,7 +1172,7 @@ Library {
 		    MaskValueString	    "12*pi/180"
 		    System {
 		    Name		    "ASSERT |alpha| < 12 deg"
-		    Location		    [702, 455, 987, 541]
+		    Location		    [702, 455, 1168, 668]
 		    Open		    off
 		    ModelBrowserVisibility  off
 		    ModelBrowserWidth	    200
@@ -1326,33 +1194,47 @@ Library {
 		    }
 		    Block {
 		    BlockType		    Reference
-		    Name		    "<= 12 stopni"
+		    Name		    "< 12 stopni"
 		    SID			    22
 		    Ports		    [1, 1]
 		    Position		    [150, 29, 205, 61]
+		    LibraryVersion	    "1.768"
 		    SourceBlock		    "simulink/Logic and Bit\nOperations/Compare\nTo Constant"
 		    SourceType		    "Compare To Constant"
 		    ShowPortLabels	    "FromPortIcon"
 		    SystemSampleTime	    "-1"
-		    FunctionWithSeparateData "off"
+		    FunctionWithSeparateData off
 		    RTWMemSecFuncInitTerm   "Inherit from model"
 		    RTWMemSecFuncExecute    "Inherit from model"
 		    RTWMemSecDataConstants  "Inherit from model"
 		    RTWMemSecDataInternal   "Inherit from model"
 		    RTWMemSecDataParameters "Inherit from model"
-		    relop		    "<="
+		    relop		    "<"
 		    const		    "max"
 		    LogicOutDataTypeMode    "boolean"
-		    ZeroCross		    "off"
+		    ZeroCross		    off
 		    }
 		    Block {
-		    BlockType		    Abs
-		    Name		    "Abs"
-		    SID			    23
-		    Position		    [90, 30, 120, 60]
-		    OutDataType		    "fixdt(1, 16)"
-		    OutScaling		    "2^0"
-		    SaturateOnIntegerOverflow off
+		    BlockType		    Reference
+		    Name		    "> - 12 stopni"
+		    SID			    102
+		    Ports		    [1, 1]
+		    Position		    [150, 94, 205, 126]
+		    LibraryVersion	    "1.768"
+		    SourceBlock		    "simulink/Logic and Bit\nOperations/Compare\nTo Constant"
+		    SourceType		    "Compare To Constant"
+		    ShowPortLabels	    "FromPortIcon"
+		    SystemSampleTime	    "-1"
+		    FunctionWithSeparateData off
+		    RTWMemSecFuncInitTerm   "Inherit from model"
+		    RTWMemSecFuncExecute    "Inherit from model"
+		    RTWMemSecDataConstants  "Inherit from model"
+		    RTWMemSecDataInternal   "Inherit from model"
+		    RTWMemSecDataParameters "Inherit from model"
+		    relop		    ">"
+		    const		    "-max"
+		    LogicOutDataTypeMode    "boolean"
+		    ZeroCross		    off
 		    }
 		    Block {
 		    BlockType		    Assertion
@@ -1361,22 +1243,37 @@ Library {
 		    Position		    [235, 28, 275, 62]
 		    Enabled		    off
 		    }
+		    Block {
+		    BlockType		    Assertion
+		    Name		    "Assertion1"
+		    SID			    103
+		    Position		    [235, 93, 275, 127]
+		    Enabled		    off
+		    }
 		    Line {
-		    SrcBlock		    "<= 12 stopni"
+		    SrcBlock		    "< 12 stopni"
 		    SrcPort		    1
 		    DstBlock		    "Assertion"
 		    DstPort		    1
 		    }
 		    Line {
-		    SrcBlock		    "Abs"
-		    SrcPort		    1
-		    DstBlock		    "<= 12 stopni"
-		    DstPort		    1
-		    }
-		    Line {
 		    SrcBlock		    "Input"
 		    SrcPort		    1
-		    DstBlock		    "Abs"
+		    Points		    [45, 0]
+		    Branch {
+		    DstBlock		    "< 12 stopni"
+		    DstPort		    1
+		    }
+		    Branch {
+		    Points		    [0, 65]
+		    DstBlock		    "> - 12 stopni"
+		    DstPort		    1
+		    }
+		    }
+		    Line {
+		    SrcBlock		    "> - 12 stopni"
+		    SrcPort		    1
+		    DstBlock		    "Assertion1"
 		    DstPort		    1
 		    }
 		    }
@@ -1603,16 +1500,6 @@ Library {
 		  OutScaling		  "2^0"
 		}
 		Block {
-		  BlockType		  Constant
-		  Name			  "Constant3"
-		  SID			  38
-		  Position		  [70, 171, 110, 199]
-		  ShowName		  off
-		  Value			  "0.01"
-		  OutDataType		  "fixdt(1, 16)"
-		  OutScaling		  "2^0"
-		}
-		Block {
 		  BlockType		  Demux
 		  Name			  "Demux"
 		  SID			  39
@@ -1627,21 +1514,6 @@ Library {
 		    RTWStorageClass	    "Auto"
 		    DataLoggingNameMode	    "SignalName"
 		  }
-		}
-		Block {
-		  BlockType		  Product
-		  Name			  "Divide"
-		  SID			  40
-		  Ports			  [2, 1]
-		  Position		  [195, 132, 225, 163]
-		  Inputs		  "*/"
-		  InputSameDT		  off
-		  OutDataTypeMode	  "Inherit via internal rule"
-		  OutDataType		  "fixdt(1, 16)"
-		  OutScaling		  "2^-10"
-		  OutDataTypeStr	  "Inherit: Inherit via internal rule"
-		  RndMeth		  "Floor"
-		  SaturateOnIntegerOverflow off
 		}
 		Block {
 		  BlockType		  From
@@ -1662,30 +1534,6 @@ Library {
 		  CloseFcn		  "tagdialog Close"
 		  GotoTag		  "Q"
 		  TagVisibility		  "global"
-		}
-		Block {
-		  BlockType		  From
-		  Name			  "From4"
-		  SID			  43
-		  Position		  [65, 145, 120, 165]
-		  ShowName		  off
-		  CloseFcn		  "tagdialog Close"
-		  GotoTag		  "U0"
-		  TagVisibility		  "global"
-		}
-		Block {
-		  BlockType		  MinMax
-		  Name			  "Max"
-		  SID			  44
-		  Ports			  [2, 1]
-		  Position		  [145, 147, 175, 178]
-		  ShowName		  off
-		  Function		  "max"
-		  Inputs		  "2"
-		  InputSameDT		  off
-		  OutDataType		  "fixdt(1, 16)"
-		  OutScaling		  "2^0"
-		  SaturateOnIntegerOverflow off
 		}
 		Block {
 		  BlockType		  Mux
@@ -1728,22 +1576,6 @@ Library {
 		  SaturateOnIntegerOverflow off
 		}
 		Block {
-		  BlockType		  Sum
-		  Name			  "Sum1"
-		  SID			  48
-		  Ports			  [2, 1]
-		  Position		  [255, 135, 275, 155]
-		  ShowName		  off
-		  IconShape		  "round"
-		  Inputs		  "|-+"
-		  InputSameDT		  off
-		  OutDataTypeMode	  "Inherit via internal rule"
-		  OutDataType		  "fixdt(1, 16)"
-		  OutScaling		  "2^0"
-		  OutDataTypeStr	  "Inherit: Inherit via internal rule"
-		  SaturateOnIntegerOverflow off
-		}
-		Block {
 		  BlockType		  Outport
 		  Name			  "F [N]"
 		  SID			  49
@@ -1761,55 +1593,6 @@ Library {
 		  IconDisplay		  "Port number"
 		  OutDataType		  "fixdt(1, 16)"
 		  OutScaling		  "2^0"
-		}
-		Line {
-		  Name			  "h_dot_dot"
-		  Labels		  [0, 0]
-		  SrcBlock		  "Demux"
-		  SrcPort		  2
-		  Points		  [10, 0; 0, 50]
-		  DstBlock		  "Divide"
-		  DstPort		  1
-		}
-		Line {
-		  SrcBlock		  "Sum1"
-		  SrcPort		  1
-		  Points		  [35, 0; 0, -45; 165, 0]
-		  Branch {
-		    Points		    [0, 160]
-		    DstBlock		    "ASSERT \n|alpha_dot| < 12 deg/s"
-		    DstPort		    1
-		  }
-		  Branch {
-		    DstBlock		    "Mux3"
-		    DstPort		    3
-		  }
-		}
-		Line {
-		  SrcBlock		  "Max"
-		  SrcPort		  1
-		  DstBlock		  "Divide"
-		  DstPort		  2
-		}
-		Line {
-		  SrcBlock		  "Constant3"
-		  SrcPort		  1
-		  Points		  [5, 0; 0, -15]
-		  DstBlock		  "Max"
-		  DstPort		  2
-		}
-		Line {
-		  SrcBlock		  "From4"
-		  SrcPort		  1
-		  DstBlock		  "Max"
-		  DstPort		  1
-		}
-		Line {
-		  SrcBlock		  "Divide"
-		  SrcPort		  1
-		  Points		  [5, 0; 0, -5]
-		  DstBlock		  "Sum1"
-		  DstPort		  1
 		}
 		Line {
 		  SrcBlock		  "Demux"
@@ -1889,13 +1672,13 @@ Library {
 		  SrcPort		  1
 		  Points		  [25, 0]
 		  Branch {
-		    Points		    [0, 55; -200, 0]
-		    DstBlock		    "Sum1"
-		    DstPort		    2
-		  }
-		  Branch {
 		    DstBlock		    "Mux3"
 		    DstPort		    4
+		  }
+		  Branch {
+		    Points		    [0, -35]
+		    DstBlock		    "Mux3"
+		    DstPort		    3
 		  }
 		}
 		Line {
@@ -1938,6 +1721,10 @@ Library {
 		Annotation {
 		  Name			  "Wspolczynniki w jednostkach 1/rad\nWszystkie wartosci katowe musza byc w RADIANACH!"
 		  Position		  [349, 261]
+		}
+		Annotation {
+		  Name			  "It's stiff wing so alpha_dot is neglected\nIt solves problems with algebraic loop"
+		  Position		  [219, 149]
 		}
 	      }
 	    }
@@ -2186,7 +1973,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2259,7 +2046,7 @@ Library {
 	      SourceType	      "Body Actuator"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2326,7 +2113,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2373,7 +2160,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2459,7 +2246,7 @@ Library {
 	      SourceType	      "Body Actuator"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -3480,7 +3267,7 @@ Library {
 		    }
 		    Line {
 		    Name		    "alpha"
-		    Labels		    [0, 0]
+		    Labels		    [0, 0; 0, 0]
 		    SrcBlock		    "alpha:\ntheta-hDot/Uo"
 		    SrcPort		    1
 		    Points		    [95, 0]
@@ -3861,13 +3648,6 @@ Library {
 		  DstPort		  2
 		}
 		Line {
-		  SrcBlock		  "Divide"
-		  SrcPort		  1
-		  Points		  [5, 0; 0, -5]
-		  DstBlock		  "Sum1"
-		  DstPort		  1
-		}
-		Line {
 		  SrcBlock		  "From4"
 		  SrcPort		  1
 		  DstBlock		  "Max"
@@ -3902,11 +3682,18 @@ Library {
 		}
 		Line {
 		  Name			  "h_dot_dot"
-		  Labels		  [0, 0]
+		  Labels		  [0, 0; 0, 0]
 		  SrcBlock		  "Demux"
 		  SrcPort		  2
 		  Points		  [10, 0; 0, 50]
 		  DstBlock		  "Divide"
+		  DstPort		  1
+		}
+		Line {
+		  SrcBlock		  "Divide"
+		  SrcPort		  1
+		  Points		  [5, 0; 0, -5]
+		  DstBlock		  "Sum1"
 		  DstPort		  1
 		}
 		Annotation {
@@ -4154,6 +3941,7 @@ Library {
 	      SID		      64
 	      Ports		      [0, 1, 0, 0, 0, 1]
 	      Position		      [210, 15, 250, 55]
+	      LibraryVersion	      "1.1"
 	      DialogController	      "MECH.DynMechDlgSource"
 	      SourceBlock	      "mblibv1/Sensors & \nActuators/Body Sensor"
 	      SourceType	      "Body Sensor"
@@ -4202,6 +3990,7 @@ Library {
 	      BlockRotation	      270
 	      BackgroundColor	      "black"
 	      ShowName		      off
+	      LibraryVersion	      "1.1"
 	      DialogController	      "MECH.DynMechDlgSource"
 	      SourceBlock	      "mblibv1/Utilities/Mechanical\nBranching\nBar"
 	      SourceType	      "Mechanical Branching Bar"
@@ -4225,6 +4014,7 @@ Library {
 	      BlockRotation	      270
 	      BlockMirror	      on
 	      NamePlacement	      "alternate"
+	      LibraryVersion	      "1.1"
 	      DialogController	      "MECH.DynMechDlgSource"
 	      SourceBlock	      "mblibv1/Sensors & \nActuators/Body Actuator"
 	      SourceType	      "Body Actuator"
@@ -4291,6 +4081,7 @@ Library {
 	      Ports		      [0, 1, 0, 0, 0, 1]
 	      Position		      [90, 255, 130, 295]
 	      BlockRotation	      270
+	      LibraryVersion	      "1.1"
 	      DialogController	      "MECH.DynMechDlgSource"
 	      SourceBlock	      "mblibv1/Sensors & \nActuators/Body Sensor"
 	      SourceType	      "Body Sensor"
@@ -4337,6 +4128,7 @@ Library {
 	      Ports		      [0, 1, 0, 0, 0, 1]
 	      Position		      [65, 160, 105, 200]
 	      BlockRotation	      270
+	      LibraryVersion	      "1.1"
 	      DialogController	      "MECH.DynMechDlgSource"
 	      SourceBlock	      "mblibv1/Sensors & \nActuators/Body Sensor"
 	      SourceType	      "Body Sensor"
@@ -4382,6 +4174,7 @@ Library {
 	      SID		      71
 	      Ports		      [0, 1, 0, 0, 0, 1]
 	      Position		      [395, 490, 435, 530]
+	      LibraryVersion	      "1.1"
 	      DialogController	      "MECH.DynMechDlgSource"
 	      SourceBlock	      "mblibv1/Sensors & \nActuators/Body Sensor"
 	      SourceType	      "Body Sensor"
@@ -4427,6 +4220,7 @@ Library {
 	      SID		      72
 	      Ports		      [0, 1, 0, 0, 0, 1]
 	      Position		      [395, 420, 435, 460]
+	      LibraryVersion	      "1.1"
 	      DialogController	      "MECH.DynMechDlgSource"
 	      SourceBlock	      "mblibv1/Sensors & \nActuators/Body Sensor"
 	      SourceType	      "Body Sensor"
@@ -4536,6 +4330,7 @@ Library {
 	      BlockRotation	      270
 	      BlockMirror	      on
 	      NamePlacement	      "alternate"
+	      LibraryVersion	      "1.1"
 	      DialogController	      "MECH.DynMechDlgSource"
 	      SourceBlock	      "mblibv1/Sensors & \nActuators/Body Actuator"
 	      SourceType	      "Body Actuator"
@@ -4778,7 +4573,7 @@ Library {
 	    }
 	    Line {
 	      Name		      "Theta_dot"
-	      Labels		      [0, 0]
+	      Labels		      [0, 0; 0, 0]
 	      SrcBlock		      "Selector"
 	      SrcPort		      1
 	      Points		      [60, 0; 0, -45]
@@ -4793,7 +4588,7 @@ Library {
 	    }
 	    Line {
 	      Name		      "h_dot, h_dot_dot"
-	      Labels		      [1, 0]
+	      Labels		      [0, 0; 1, 0]
 	      SrcBlock		      "Selector3"
 	      SrcPort		      1
 	      Points		      [70, 0; 0, -135]

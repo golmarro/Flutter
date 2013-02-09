@@ -3,6 +3,11 @@ classdef StabParams < WingParams
         stabAlpha0 = -4 * pi/180;
     end
     
+    properties(Dependent)
+        rightOrient = [0 0 -30]
+        leftOrient = [stabAlpha0 0 210]
+    end
+    
     methods
         function this = StabParams()
             this.mass = 20;
@@ -13,6 +18,15 @@ classdef StabParams < WingParams
             this.C2 = 0.64;                          % [m]
             this.L = 2.5;                           % [m]
         end
-    end    
+
+        % ------------------------------- [getters] --------------
+        % Remember the order of rotations
+        function val = get.rightOrient(this)
+            val = [this.stabAlpha0 0 -30];
+        end
+        function val = get.leftOrient(this)
+            val = [this.stabAlpha0 0 210];
+        end
+    end
 end
 

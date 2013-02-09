@@ -4,8 +4,7 @@ classdef SimRunner < handle
         wingFlutter
         thisName
         % Default input signal
-        t = [0 1 1 2]'
-        u = [0 0 1 1]'
+        stopTime = 10
         state
         actuatorModel = 'linear'
     end
@@ -15,6 +14,7 @@ classdef SimRunner < handle
         aeroForceOn
         wingParams
         actuator
+        t, u         % input signal
     end
     
     methods
@@ -30,10 +30,13 @@ classdef SimRunner < handle
             
             this.thisName = thisName;
         end
-        function getInputSignal(this, stopTime)
+        function val = get.u(this)
             % TODO Make t, u dependent variables
-            this.t = (0:0.01:stopTime)';
-            this.u = arrayfun(this.wingFlutter.inputSignal,this.t);
+            % this.t = (0:0.01:this.stopTime)';
+            val = arrayfun(this.wingFlutter.inputSignal,this.t);
+        end
+        function val = get.t(this)
+            val = (0:0.01:this.stopTime)';
         end
         function setState(this, state)
             this.state = [0 0 0 0 0 0];
@@ -49,10 +52,10 @@ classdef SimRunner < handle
         end
         function [t y] = sim(this, stopTime, state)
             % Prepare input signal
-            if nargin == 1
-                stopTime = 10;
+            if nargin >= 2
+                this.stopTime = stopTime;
             end
-            this.getInputSignal(stopTime);
+            %this.getInputSignal(stopTime);
             % Prepare initial state
             if nargin > 2
                 this.setState(state);
@@ -64,7 +67,7 @@ classdef SimRunner < handle
             % Prepare model configuration
             conf = getActiveConfigSet(this.mdl);
             cs = conf.copy();
-            set_param(cs, 'StopTime', num2str(stopTime));
+            set_param(cs, 'StopTime', num2str(this.stopTime));
             set_param(cs, 'RelTol', '1e-6');
             set_param(cs, 'LoadExternalInput', 'on');
             set_param(cs, 'ExternalInput', [ '[' this.thisName '.t,' this.thisName '.u]' ]);  % <-- 1
@@ -122,6 +125,8 @@ classdef SimRunner < handle
                 val.rateLimit = Inf;
                 val.rangeLimit = Inf;
             else        %  actuatorModel = 'none'
+                val.rateLimit = Inf;
+                val.rangeLimit = Inf;
                 val.tf = tf(1, 1);
             end
         end
