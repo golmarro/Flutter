@@ -2,8 +2,14 @@ classdef PlaneRunner < SimRunner
     properties
         stabParams
         fuse
-        deltaTrim = [0 0 -20 20]*pi/180 % delta values after trim
+        deltaTrim = [0 0 0 0]*pi/180 % delta values after trim
         lastOperPoint = [] % last operationg point evaluated by trim function
+        lineStyle = 'k'
+        inputSignalType = 'const'
+    end
+    
+    properties(Dependent)
+        u_plane       % Can't overwrite get.u getter from SimRunner, so need new var
     end
     
     methods
@@ -27,46 +33,70 @@ classdef PlaneRunner < SimRunner
             this.stabParams = StabParams;
             this.initFuselageParams();
         end
-        function getInputSignal(this, stopTime)
-            % TODO Make t, u dependent variables
-            this.t = (0:0.01:stopTime)';
-            %this.u = arrayfun(this.wingFlutter.inputSignal,this.t);
-            RA = ones(size(this.t,1),1)*this.deltaTrim(1);
-            LA = ones(size(this.t,1),1)*this.deltaTrim(2);
-            RE = ones(size(this.t,1),1)*this.deltaTrim(3);
-            LE = ones(size(this.t,1),1)*this.deltaTrim(4);
-            this.u = [RA LA RE LE];
+
+        function val = get.u_plane(this)
+            step = arrayfun(WingFlutter.stepSignal(0.1,5*pi/180),this.t);
+            val = repmat(this.deltaTrim, size(this.t,1), 1);
+            
+            if strcmp(this.inputSignalType, 'const')
+                return
+            end
+            if ~isempty(strfind(this.inputSignalType, 'pitch_up'))
+                val(:,3) = val(:,3) - step;
+                val(:,4) = val(:,4) - step;
+            elseif ~isempty(strfind(this.inputSignalType, 'pitch_down'))
+                val(:,3) = val(:,3) + step;
+                val(:,4) = val(:,4) + step;
+            end
+            if ~isempty(strfind(this.inputSignalType, 'roll_right'))
+                val(:,1) = val(:,1) - step;
+                val(:,2) = val(:,2) + step;
+            elseif ~isempty(strfind(this.inputSignalType, 'roll_left'))
+                val(:,1) = val(:,1) + step;
+                val(:,2) = val(:,2) - step;
+            end
+            if ~isempty(strfind(this.inputSignalType, 'rudder_right'))
+                val(:,3) = val(:,3) - step;
+                val(:,4) = val(:,4) + step;
+            elseif ~isempty(strfind(this.inputSignalType, 'rudder_left'))
+                val(:,3) = val(:,3) + step;
+                val(:,4) = val(:,4) - step;
+            end
         end
         function setState(this, state)
             this.state = [0 0 0 0 0 0];
         end
         function [t y] = sim(this, stopTime, state)
             % Prepare input signal
-            if nargin == 1
-                stopTime = 10;
-            end
-            this.getInputSignal(stopTime);
-            % Prepare initial state
-            if nargin > 2
-                this.setState(state);
+            if nargin >= 2
+                this.stopTime = stopTime;
             else
-                this.state = [0 0 0 0 0 0];
+                this.stopTime = 10;
             end
+            % Prepare initial state
+            % TODO setState
+%             if nargin > 2
+%                 this.setState(state);
+%             else
+%                 this.state = [0 0 0 0 0 0];
+%             end
             % Load model
             load_system(this.mdl);
             % Prepare model configuration
             conf = getActiveConfigSet(this.mdl);
             cs = conf.copy();
-            set_param(cs, 'StopTime', num2str(stopTime));
+            set_param(cs, 'StopTime', num2str(this.stopTime));
             set_param(cs, 'RelTol', '1e-6');
             set_param(cs, 'LoadExternalInput', 'on');
-            set_param(cs, 'ExternalInput', [ '[' this.thisName '.t,' this.thisName '.u]' ]);  % <-- 1
+            set_param(cs, 'ExternalInput', [ '[' this.thisName '.t,' this.thisName '.u_plane]' ]);
             set_param(cs, 'SaveOutput', 'on');
             set_param(cs, 'OutputSaveName', 'yout');
             set_param(cs, 'SaveTime', 'on');
             set_param(cs, 'OutputTimes', 'tout');
-            %set_param(cs, 'LoadInitialState', 'on');
-            %set_param(cs, 'InitialState', [ this.thisName '.state' ]);
+            if ~isempty(this.state)
+                set_param(cs, 'LoadInitialState', 'on');
+                set_param(cs, 'InitialState', [ this.thisName '.state' ]);
+            end
             
             % Run simulation
             simout = sim(this.mdl, cs);
@@ -142,12 +172,18 @@ classdef PlaneRunner < SimRunner
             set(spec.Inputs(4), 'u', -40*pi/180);
             
             spec
-            [op, report] = findop(this.mdl,spec);
+            op = findop(this.mdl,spec);
             
+            % Extract states from operating point
+            for i = 1:size(spec.States,1)
+                this.state(i) = get(op.States(i),'x');
+            end
+            % Extract inputs from operating point
             for i=1:4
                 this.deltaTrim(i) = get(op.Inputs(i),'u');
             end
             
+            this.lastOperPoint = op;
             this.actuatorModel = savedActuatorMode;
         end
         
@@ -156,7 +192,7 @@ classdef PlaneRunner < SimRunner
                 this.trim();
             end
             
-            io = linio('this.mdl');
+            io = getlinio(this.mdl);
             
             sys = linearize(this.mdl, io);
         end
@@ -183,6 +219,34 @@ classdef PlaneRunner < SimRunner
             assert(det(this.fuse.Central.Inertia) ~= 0);
             assert(det(this.fuse.Front.Inertia) ~= 0);
             assert(det(this.fuse.Back.Inertia) ~= 0);
+        end
+        
+        function plotEuler(this, t, y)
+            subplot(3,1,1); hold on;
+            plot(t, y(:,1)*180/pi, this.lineStyle)
+            ylabel('\phi [deg]');
+
+            subplot(3,1,2); hold on;
+            plot(t, y(:,2)*180/pi, this.lineStyle)
+            ylabel('\theta [deg]');
+
+            subplot(3,1,3); hold on;
+            plot(t, y(:,3)*180/pi, this.lineStyle)
+            ylabel('\psi [deg]');
+        end
+        
+        function plotSpeed(this, t, y)
+            subplot(3,1,1); hold on;
+            plot(t, y(:,4), this.lineStyle)
+            ylabel('V_x [m]');
+
+            subplot(3,1,2); hold on;
+            plot(t, y(:,5), this.lineStyle)
+            ylabel('V_y [m]');
+
+            subplot(3,1,3); hold on;
+            plot(t, y(:,6), this.lineStyle)
+            ylabel('V_z [m]');
         end
     end
 end

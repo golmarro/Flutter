@@ -5,12 +5,12 @@ classdef SimRunner < handle
         thisName
         % Default input signal
         stopTime = 10
-        state
+        state = []
         actuatorModel = 'linear'
     end
     
     properties(Dependent)
-        U0, Q, g
+        U0, Q, g, rho
         aeroForceOn
         wingParams
         actuator
@@ -31,8 +31,6 @@ classdef SimRunner < handle
             this.thisName = thisName;
         end
         function val = get.u(this)
-            % TODO Make t, u dependent variables
-            % this.t = (0:0.01:this.stopTime)';
             val = arrayfun(this.wingFlutter.inputSignal,this.t);
         end
         function val = get.t(this)
@@ -94,6 +92,9 @@ classdef SimRunner < handle
         end
         function val = get.Q(this)
             val = this.wingFlutter.q;
+        end
+        function val = get.rho(this)
+            val = this.wingFlutter.atmosphere.rho;
         end
         function val = get.g(this)
             if strcmp(this.wingFlutter.isGravity,'off')

@@ -25,10 +25,10 @@ Model {
     Outport {
       BusObject		      ""
       BusOutputAsStruct	      "off"
-      Name		      "V_W [m/s]"
+      Name		      "V_E [m/s]"
     }
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.314"
+    ComputedModelVersion    "1.320"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -51,9 +51,9 @@ Model {
   ModifiedByFormat	  "Rafal"
   LastModifiedBy	  "Rafal"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Sat Feb 09 12:54:25 2013"
-  RTWModifiedTimeStamp	  282315224
-  ModelVersionFormat	  "1.%<AutoIncrement:314>"
+  LastModifiedDate	  "Sat Feb 09 17:36:10 2013"
+  RTWModifiedTimeStamp	  282332164
+  ModelVersionFormat	  "1.%<AutoIncrement:320>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -2917,6 +2917,11 @@ Model {
       FramePeriod	      "inf"
     }
     Block {
+      BlockType		      Fcn
+      Expr		      "sin(u[1])"
+      SampleTime	      "-1"
+    }
+    Block {
       BlockType		      From
       IconDisplay	      "Tag"
       TagVisibility	      "local"
@@ -3003,6 +3008,24 @@ Model {
       BlockType		      PMIOPort
     }
     Block {
+      BlockType		      Product
+      Inputs		      "2"
+      Multiplication	      "Element-wise(.*)"
+      CollapseMode	      "All dimensions"
+      CollapseDim	      "1"
+      InputSameDT	      on
+      OutMin		      "[]"
+      OutMax		      "[]"
+      OutDataTypeMode	      "Same as first input"
+      OutDataType	      "fixdt(1,16,0)"
+      OutScaling	      "[]"
+      OutDataTypeStr	      "Inherit: Same as first input"
+      LockScale		      off
+      RndMeth		      "Zero"
+      SaturateOnIntegerOverflow	on
+      SampleTime	      "-1"
+    }
+    Block {
       BlockType		      Selector
       NumberOfDimensions      "1"
       IndexMode		      "One-based"
@@ -3080,7 +3103,7 @@ Model {
   }
   System {
     Name		    "PlaneStiffSim"
-    Location		    [2, 74, 1262, 739]
+    Location		    [2, 82, 1262, 747]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    212
@@ -3095,7 +3118,7 @@ Model {
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
     BlocksetDataString	    "[0 0 0]|5|0|1e-3|5|1e-3|1|2|1e-4|1e-4|0|0|1|1e-5|Deprecated|0|0|0||1|0"
-    SIDHighWatermark	    1249
+    SIDHighWatermark	    1264
     Block {
       BlockType		      Inport
       Name		      "RightAileron [rad]"
@@ -3829,14 +3852,131 @@ Model {
       }
     }
     Block {
-      BlockType		      From
-      Name		      "From2"
-      SID		      676
-      Position		      [445, 75, 500, 95]
-      ShowName		      off
-      CloseFcn		      "tagdialog Close"
-      GotoTag		      "U0"
-      TagVisibility	      "global"
+      BlockType		      SubSystem
+      Name		      "DynamicPressure"
+      SID		      1263
+      Ports		      [0, 1]
+      Position		      [55, 25, 110, 55]
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      System {
+	Name			"DynamicPressure"
+	Location		[2, 102, 352, 219]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Fcn
+	  Name			  "Fcn"
+	  SID			  1259
+	  Position		  [105, 60, 165, 90]
+	  Expr			  "u(1)^2 + u(2)^2 + u(3)^2"
+	}
+	Block {
+	  BlockType		  From
+	  Name			  "From"
+	  SID			  1261
+	  Position		  [25, 66, 85, 84]
+	  ShowName		  off
+	  GotoTag		  "V0"
+	  TagVisibility		  "global"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain2"
+	  SID			  1260
+	  Position		  [185, 25, 215, 55]
+	  ShowName		  off
+	  Gain			  "0.5"
+	  ParameterDataTypeMode	  "Inherit via internal rule"
+	  ParameterDataType	  "fixdt(1, 16)"
+	  ParameterScaling	  "2^0"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeMode	  "Inherit via internal rule"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Product
+	  Name			  "Product"
+	  SID			  1262
+	  Ports			  [2, 1]
+	  Position		  [240, 32, 270, 63]
+	  ShowName		  off
+	  InputSameDT		  off
+	  OutDataTypeMode	  "Inherit via internal rule"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Constant
+	  Name			  "Q"
+	  SID			  1163
+	  Position		  [45, 29, 140, 51]
+	  BackgroundColor	  "lightBlue"
+	  NamePlacement		  "alternate"
+	  ShowName		  off
+	  Value			  "simRunner.rho"
+	  OutDataType		  "sfix(16)"
+	  OutScaling		  "2^0"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "Q [Pa]"
+	  SID			  1264
+	  Position		  [295, 43, 325, 57]
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Q"
+	  SrcPort		  1
+	  DstBlock		  "Gain2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "From"
+	  SrcPort		  1
+	  DstBlock		  "Fcn"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Gain2"
+	  SrcPort		  1
+	  DstBlock		  "Product"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Fcn"
+	  SrcPort		  1
+	  Points		  [55, 0]
+	  DstBlock		  "Product"
+	  DstPort		  2
+	}
+	Line {
+	  SrcBlock		  "Product"
+	  SrcPort		  1
+	  DstBlock		  "Q [Pa]"
+	  DstPort		  1
+	}
+      }
     }
     Block {
       BlockType		      SubSystem
@@ -4106,7 +4246,7 @@ Model {
       BlockType		      Goto
       Name		      "Goto2"
       SID		      1161
-      Position		      [160, 50, 230, 70]
+      Position		      [140, 30, 210, 50]
       NamePlacement	      "alternate"
       ShowName		      off
       GotoTag		      "Q"
@@ -4116,7 +4256,7 @@ Model {
       BlockType		      Goto
       Name		      "Goto3"
       SID		      1162
-      Position		      [165, 31, 230, 49]
+      Position		      [685, 26, 750, 44]
       ShowName		      off
       GotoTag		      "U0"
       TagVisibility	      "global"
@@ -4583,16 +4723,15 @@ Model {
       }
     }
     Block {
-      BlockType		      Constant
-      Name		      "Q"
-      SID		      1163
-      Position		      [45, 49, 140, 71]
-      BackgroundColor	      "lightBlue"
-      NamePlacement	      "alternate"
-      ShowName		      off
-      Value		      "simRunner.Q"
-      OutDataType	      "sfix(16)"
-      OutScaling	      "2^0"
+      BlockType		      Selector
+      Name		      "Selector"
+      SID		      1258
+      Ports		      [1, 1]
+      Position		      [625, 16, 665, 54]
+      InputPortWidth	      "3"
+      IndexOptions	      "Index vector (dialog)"
+      Indices		      "[3]"
+      OutputSizes	      "1"
     }
     Block {
       BlockType		      Reference
@@ -4697,13 +4836,113 @@ Model {
       BlockType		      Constant
       Name		      "U0"
       SID		      1164
-      Position		      [45, 30, 140, 50]
+      Position		      [425, 75, 520, 95]
       BackgroundColor	      "lightBlue"
       NamePlacement	      "alternate"
       ShowName		      off
       Value		      "simRunner.U0"
       OutDataType	      "sfix(16)"
       OutScaling	      "2^0"
+    }
+    Block {
+      BlockType		      SubSystem
+      Name		      "V_B to V_E"
+      SID		      1255
+      Ports		      [1, 1]
+      Position		      [650, 104, 745, 136]
+      MinAlgLoopOccurrences   off
+      PropExecContextOutsideSubsystem off
+      RTWSystemCode	      "Auto"
+      FunctionWithSeparateData off
+      Opaque		      off
+      RequestExecContextInheritance off
+      MaskHideContents	      off
+      Port {
+	PortNumber		1
+	LinearAnalysisOutput	on
+	RTWStorageClass		"Auto"
+	DataLoggingNameMode	"SignalName"
+      }
+      System {
+	Name			"V_B to V_E"
+	Location		[502, 193, 762, 308]
+	Open			off
+	ModelBrowserVisibility	off
+	ModelBrowserWidth	200
+	ScreenColor		"white"
+	PaperOrientation	"landscape"
+	PaperPositionMode	"auto"
+	PaperType		"A4"
+	PaperUnits		"centimeters"
+	TiledPaperMargins	[1.270000, 1.270000, 1.270000, 1.270000]
+	TiledPageScale		1
+	ShowPageBoundaries	off
+	ZoomFactor		"100"
+	Block {
+	  BlockType		  Inport
+	  Name			  "V_W [m/s]"
+	  SID			  1257
+	  Position		  [25, 38, 55, 52]
+	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Gain
+	  Name			  "Gain2"
+	  SID			  1252
+	  Position		  [150, 30, 180, 60]
+	  ShowName		  off
+	  Gain			  "-[-1 1 -1]"
+	  ParameterDataTypeMode	  "Inherit via internal rule"
+	  ParameterDataType	  "fixdt(1, 16)"
+	  ParameterScaling	  "2^0"
+	  ParamDataTypeStr	  "Inherit: Inherit via internal rule"
+	  OutDataTypeMode	  "Inherit via internal rule"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
+	  OutDataTypeStr	  "Inherit: Inherit via internal rule"
+	  SaturateOnIntegerOverflow off
+	}
+	Block {
+	  BlockType		  Selector
+	  Name			  "Selector"
+	  SID			  1253
+	  Ports			  [1, 1]
+	  Position		  [80, 26, 120, 64]
+	  InputPortWidth	  "3"
+	  IndexOptions		  "Index vector (dialog)"
+	  Indices		  "[3 1 2]"
+	  OutputSizes		  "1"
+	}
+	Block {
+	  BlockType		  Outport
+	  Name			  "V_E [m/s]"
+	  SID			  1256
+	  Position		  [205, 38, 235, 52]
+	  IconDisplay		  "Port number"
+	}
+	Line {
+	  SrcBlock		  "Selector"
+	  SrcPort		  1
+	  DstBlock		  "Gain2"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "Gain2"
+	  SrcPort		  1
+	  DstBlock		  "V_E [m/s]"
+	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "V_W [m/s]"
+	  SrcPort		  1
+	  DstBlock		  "Selector"
+	  DstPort		  1
+	}
+	Annotation {
+	  Name			  "V = [forward, right, down] = [-Vz Vx -Vy]"
+	  Position		  [140, 91]
+	}
+      }
     }
     Block {
       BlockType		      Constant
@@ -4728,9 +4967,9 @@ Model {
     }
     Block {
       BlockType		      Outport
-      Name		      "V_W [m/s]"
+      Name		      "V_E [m/s]"
       SID		      1216
-      Position		      [655, 108, 685, 122]
+      Position		      [775, 113, 805, 127]
       Port		      "2"
       IconDisplay	      "Port number"
       OutDataType	      "fixdt(1, 16)"
@@ -4826,7 +5065,7 @@ Model {
       DstPort		      LConn1
     }
     Line {
-      SrcBlock		      "From2"
+      SrcBlock		      "U0"
       SrcPort		      1
       DstBlock		      "Mux2"
       DstPort		      3
@@ -4948,18 +5187,6 @@ Model {
       DstPort		      1
     }
     Line {
-      SrcBlock		      "U0"
-      SrcPort		      1
-      DstBlock		      "Goto3"
-      DstPort		      1
-    }
-    Line {
-      SrcBlock		      "Q"
-      SrcPort		      1
-      DstBlock		      "Goto2"
-      DstPort		      1
-    }
-    Line {
       SrcBlock		      "Actuator RA"
       SrcPort		      1
       Points		      [0, -25; -100, 0; 0, -60]
@@ -5015,14 +5242,21 @@ Model {
     Line {
       SrcBlock		      "Sum1"
       SrcPort		      1
-      Points		      [10, 0]
+      Points		      [0, 0]
       Branch {
-	DstBlock		"Goto"
-	DstPort			1
+	Points			[10, 0]
+	Branch {
+	  DstBlock		  "Goto"
+	  DstPort		  1
+	}
+	Branch {
+	  Points		  [0, 45]
+	  DstBlock		  "V_B to V_E"
+	  DstPort		  1
+	}
       }
       Branch {
-	Points			[0, 40]
-	DstBlock		"V_W [m/s]"
+	DstBlock		"Selector"
 	DstPort			1
       }
     }
@@ -5032,6 +5266,24 @@ Model {
       Points		      [55, 0; 0, -130; 115, 0]
       DstBlock		      "Sum1"
       DstPort		      2
+    }
+    Line {
+      SrcBlock		      "V_B to V_E"
+      SrcPort		      1
+      DstBlock		      "V_E [m/s]"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Selector"
+      SrcPort		      1
+      DstBlock		      "Goto3"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "DynamicPressure"
+      SrcPort		      1
+      DstBlock		      "Goto2"
+      DstPort		      1
     }
     Annotation {
       Name		      "Orientacja wszystkich CSow definiowanych\nw obiektach Body jest bez zmian\nOrientacje zmieniamy tyl"
