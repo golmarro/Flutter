@@ -9,7 +9,7 @@ classdef WingFlutter < handle
         U0 = 50;           % speed m/s
         qOverride = Inf;    % To set dyn. pressure directly
         isGravity = 'on'
-        ActuatorOutputs = 'off'
+        accelOutputs = 'off'
         AeroForces = 'on'
         
         inputSignal = WingFlutter.stepSignal() % Input signal function
@@ -18,6 +18,8 @@ classdef WingFlutter < handle
         
         simStyle = 'k'
         lineFormat = 'b'
+        
+        actuatorModel = 'on'
     end
     
     properties(Dependent)
@@ -33,10 +35,15 @@ classdef WingFlutter < handle
         Mg
         % Cisnienie dynamiczne
         q       % [N/m2]
+        % Silownik
+        actuator
     end
     
     methods
         function this = WingFlutter(params, atmosphere)
+            if ~exist('params','var')
+                params = WingParams();
+            end
             this.params = params;
             if ~exist('atmosphere','var')
                 atmosphere = Atmosphere;
@@ -126,7 +133,7 @@ classdef WingFlutter < handle
             C = eye(4);
             D = zeros(4,1);
             
-            if strcmp(this.ActuatorOutputs, 'on');
+            if strcmp(this.accelOutputs, 'on');
                 C = [C; 
                     0 0 -1/this.g -this.params.Dleo/this.g; 
                     0 0 -1/this.g  this.params.Dteo/this.g];
@@ -135,18 +142,27 @@ classdef WingFlutter < handle
             end
             
             model = ss(A, B, C, D);
-            model.InputName = 'delta[rad]';
-            % TODO latex symbols
-            model.StateName = ['h [ft]           ';
+            states          = ['h [ft]           ';
                                'theta [rad]      ';
                                'h_dot [ft/s]     ';
                                'theta_dot [rad/s]'];
-            if strcmp(this.ActuatorOutputs, 'on');
-                model.OutputName = [model.StateName;
+            if strcmp(this.actuatorModel, 'on')
+                model = series(this.actuator,model, 1, 1);
+                model.StateName = [states;
+                               'actuator state1  ';
+                               'actuator state2  '];
+            else
+                model.StateName = states;
+            end
+            
+            model.InputName = 'delta[rad]';
+            
+            if strcmp(this.accelOutputs, 'on');
+                model.OutputName = [states;
                                'acc leading [g]  ';
                                'acc trailing [g] '];
             else
-                model.OutputName = model.StateName;
+                model.OutputName = states;
             end
         end
         
@@ -364,6 +380,17 @@ classdef WingFlutter < handle
             ylabel('Altitude [m]');
             xlabel('Flutter speed [km/h]')
             title('Flutter speed versus altitude');
+        end
+        
+        function val = get.actuator(this)
+            k = 1.02;           % [dg/deg]
+            zeta = 0.56;        % [-]
+            omega = 165.3;      % [rad/s]
+            val = tf(k*omega^2, [1 2*zeta*omega omega^2]);
+            
+            if strcmp(this.actuatorModel, 'off')
+                val = tf(1, 1);
+            end
         end
         
         function disp(this)

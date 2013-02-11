@@ -1,0 +1,136 @@
+Robust Multivariable Flutter Suppression for the Benchmark Active Control
+Technology (BACT) Wind-Tunnel Model
+
+May 12-14, 1997
+
+Martin R. Waszak
+NASA Langley Research Center
+Hampton, Virginia
+
+BACT - prostok¹tne skrzyd³o sztywno zamocowane o dwóch stopniach swobody.
+Pomiar za pomoc¹ dwóch przyspieszeniomierzy na koñcówkach skrzyd³a. El. wykonawcze - lotka i spoiler.
+Jednowymiarowe prawo sterowania jako punkt odniesienia dla projektu kontrolera wielowymiarowego.
+Wykorzystane techniki mu-synthesis i H-inf.
+Ocena jakoœci (efektywnoœci) - RMS wyjœcia i sygna³u steruj¹cego.
+Po³o¿ony nacisk na ocenê odpornoœci (rubasznoœci?)
+Jeden ustalony regulator dla ca³ego zakresu przewidzianych warunków operacyjnych zamiast zestawu regulatorów (gain scheduling).
+
+Model averaging - wyznacza model nominalny (œredni z punktu widzenia odpoweidzi czêstotliwoœciowej) + funkcja wagowa
+dla multiplikatywnej niepewnoœci strukturalnej.
+Do syntezy wykorzystano tylko prosty niestrukturalny model niepwenoœci (W0 = 1), bo algorytmy Hinf i mu wywala³y siê na
+bardziej z³o¿onym modelu wyznaczonym z model averaging.
+
+Strukturalna wartoœæ osobliwa (SSV) wykorzystana zosta³a do analizy odpornoœci (stabilnoœci i jakoœci - performance)
+
+------------------------------------------------------------------------------------------------------
+
+FLUTTER SUPPRESSION FOR THE ACTIVE FLEXIBLE WING:
+CONTROL SYSTEM DESIGN AND EXPERIMENTAL VALIDATION
+1991
+M.R. Waszak, NASA Langley Research Center, Homplon. Virginia* ** 
+Dr. S. Srinathkumar
+
+AFW - Active Flexible Wing
+Klasyczne techniki syntezy regulatora (Root-Locus, Nyquist Plot)
+Trzy powierzchnie sterowe myœliwca (2xlotka + przedni ??? slot)
+Pomiar, cztery przyspieszeniomierze rozmieszczone na skrzydle, ale tylko jeden n koñcu skrzyd³a, u¿ywany do regulacji.
+Model ca³ego samolotu nie tylko skrzyd³a. Jeden stopieñ swobody (tylko obrót - roll).
+Regulator by³ w stanie st³umiæ dwie postacie flutteru. Dzia³a³ równie¿ poprawnie w po³¹czeniu z regulatorem przechylania (manewr przechylania).
+Cele:
+* osi¹gniêcie stabilnoœci w za³o¿onym zakresie ciœnienia dynamicznego
+* wykonanie gwa³townego manewru przechylania z jednoczesnym t³umieniem flutteru (kontroler przechylania i AC dzia³aj¹ jednoczeœnie)
+Odpornoœæ:
+* zapas wzmocnienia i fazy: 4dB, 30 stopni (w ca³ym obszarze dzia³ania)
+* RMS prêdkoœci el. wykonawczego ograniczony do 1/3 maksymalnej wartoœci (wynosz¹cej oko³o 50 deg/s)
+
+Ryzyko, ¿e dwa kontrolery bêd¹ rywalizowaæ o moc sterowania.
+Cytat:
+When a control surface reaches its
+deflection or rate limit. a closed-locp system which uses that
+surface effecdvely becomes instantaneously open-loop. If this
+situation occurs bejond the open-loop flutter point for
+sufficiently long -periods of time, flutter niay occur. However, if
+control is only lost or degraded momentarily, siability can be
+maintained.
+
+Pasmo przenoszenia kontrolera przechylania - poni¿ej 1 Hz
+Czêstotliwoœæ postaci flutterowej - powy¿ej 10 Hz
+
+fixed-roll - postaæ symetryczna i antysymetryczna flutteru (nie rozumiem - je¿eli mocowanie skrzyde³ jest usztywnione, to mamy de-facto dwa osobne uk³ady)
+free-roll  - tylko postaæ symetryczna
+Postaæ symetryczna jest identyczna dla fixed-roll i free-roll.
+
+Analiza odpornoœci:
+Delta G (zmiana wzmocnienia na wyjœciu reg.)		+- 4dB (control sufrace effectiveness - po prostu wzmocnienie w pêtli sprzê¿enia)
+Omega_bending (zginanie)							+- 10% (aeroelastic freq. - odizolowany wspó³czynnik sztywnoœci aero)
+Omega_torsion (skrecanie)							+- 10%
+Razem - 3x3x3 = 27 przypadków (w tym nominalny)
+
+Kontroler okaza³ siê wra¿liwy na jednoczesne zmniejszenie czêstoœci zginania i zwiêkszenie skrêcania (Jest to oczywiste - w ten sposób czêstoœci
+te zbli¿y³y siê do siebie)
+
+Dobry cytat:
+Modem aircraft designs emphasize the reduction of structural
+weight to maximize efficiency and agility. Reduced structural
+weight. however. can result in reduced stiffness and may
+increase the likelihood of structural dynamic instabilities
+(flutter). Active flutter suppression is a possible solution to
+dynamic problems associated with reduced weight. Developing
+methods ICJ suppress flutter by utilizing active control systems
+was one objtctive of the Acti\e Flexible Wing (AFW) program
+[Perry, Cole and Miller (1992))
+
+
+------------------------------------------------------------------------------------------------------
+
+Transonic Flutter Suppression Control Law Design, Analysis and WindTunnel Test Results (1998) 
+1998
+Vivek Mukhopadhyay 
+
+Fajnie by³oby to zdobyæ. Badania nad BACT
+Techniki regulacji: klasyczne, LQG, minimax (game theory ??)
+
+------------------------------------------------------------------------------------------------------
+
+Historical Perspective on Analysis and Control of Aeroelastic Responses
+Vivek Mukhopadhyay
+
+Tak z ciekawoœci mo¿na przeczytaæ, te¿ z NASA Langley
+
+------------------------------------------------------------------------------------------------------
+
+Investigation of flutter suppression by active control
+Allen, Christian B. | Fenwick, Clare L. | Taylor, Neil V. | Djayapertapa, Lesmana
+21st AIAA Applied Aerodynamics Conference; Orlando, FL; June 23-26, 2003. 
+
+Obszar subsoniczny i transsoniczny
+
+------------------------------------------------------------------------------------------------------
+
+Zhang, R., Singh, S.N.: Adaptive output feedback control
+of an aeroelastic system with unstructured uncertainties.
+
+Nieliniowy model, pitch-plunge wing, 
+Kontroler adaptacyjny, obserwator o silnym wzmocnieniu + linearyzacja (feedback linearization)
+
+------------------------------------------------------------------------------------------------------
+
+Active flutter suppression control law design method based
+on balanced proper orthogonal decomposition reduced
+order model
+Chen Gang · Sun Jian · Li Yueming
+
+Problem z dotychczasow¹ prac¹ - dobre tylko dla subsonicznych warunków. W pobli¿u prêdkoœci dŸwiêku, zachodz¹
+zjawiska, które trudno opisaæ (ruch fali d¿wiêkowej, separacja przep³ywu).
+Modele s¹ s³abe ale okaza³y siê wystarczaj¹ce dla subsonicznych przypadków.
+Chodzi o redukcjê dobrego CFD/CSD i bardzo du¿ego (wiele stanów ~ 1000) modelu do postaci nadaj¹cej siê do u¿ycia w syntezie regulatora.
+Proper Orthogonal Decomposition (POD)
+
+------------------------------------------------------------------------------------------------------
+
+Zhang Min Chen Active flutter control of transonic flapped wing based on CFD/CSD coupling		-- Do œci¹gniêcia z IEEE
+
+http://ieeexplore.ieee.org/xpl/articleDetails.jsp;jsessionid=LM10PFhKLpvgLRZ1qWFLSpQ439SmDY11kRJrl14RgGb2JwJ539vd!1956481292?arnumber=4675399&contentType=Conference+Publications
+
+Dok³adny model dla BACT oparty o CFD/CSD jest poddany uproszczeniu (POD - Proper Orthogonal Decomposition), dla zredukowanego
+modelu jest projektowany regulator Hinf (freq. weighted). Okazuje siê ¿e wyniki lepsze

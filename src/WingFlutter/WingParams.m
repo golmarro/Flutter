@@ -81,10 +81,10 @@ classdef WingParams < handle
         c =             0.75;                 % [m]
         % l =            -0.175 * 1.33;      % ft
         
-        % Stale przyspieszeniomierzy (actuators data)
+        % Stale przyspieszeniomierzy
         % Tylko te polozone na koncu skrzydla
-        %Dleo =         -0.599           % ft
-        %Dteo =          0.420           % ft
+        Dleo =         -0.4           % m
+        Dteo =          0.4           % m
     end
     
     properties(Dependent)

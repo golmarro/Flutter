@@ -1,9 +1,8 @@
 -------------- [  NOW  ] --------------
-* WingFlutter, WingSim - dynamika silownika
+* WingSim - dynamika silownika
+* WingFlutter - turbulencje (mamy wg/ni - trzeba to wprowadzic do modelu SS)
 
-* WingFlutter - turbulencje
-
-* WingControl - pierwsza przymiarka, klasyczne podejscie
+* WingControl - pierwsza przymiarka, klasyczne podejscie, sciagnac z BACT control)
 
 -------------- [SOME DAY] --------------
 * Skreacanie lotki w WingVis.m
@@ -12,3 +11,4 @@
 
 -------------- [ NEVER ] --------------
 * Nadal sa pewne roznice miedzy WingParams a WingSim, ale tylko jesli chodzi o zachowanie w prozni.
+* Wektor sily aero wzgledem wektora predkosci a nie plaszczyzny skrzydla

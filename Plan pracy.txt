@@ -1,0 +1,44 @@
+Ca³oœæ podzielona na dwie fazy.
+
+Faza1. Model samego skrzyd³a - regulator klasyczny i odporny. Ta czêœæ stanowiæ 
+bêdzie punkt odniesienia dla fazy drugiej
+
+Faza2. Model ca³ego samolotu (sztywny i pó³sztywny). Synteza systemu sterowania
+dla modelu sztywnego i po³¹czenie jej z kontrolerem flutteru.
+kompleksowy regulator obejmuj¹cy zadanie systemu sterowania i aktywnego t³umienia
+flutteru.
+
+----------------------------------------------------------
+
+Rozdzia³ 1. Wsêp
+1. Ogólny opis zjawiska flutteru. 
+2. OdpowiedŸ na pytanie dlaczego warto stosowaæ aktywne t³umienie zamiast 
+pasywnych rozwi¹zañ.
+
+Rozdzia³ 2. Opis modelu skrzyd³a
+Dwa stopnie swobody (skrêcanie, zginanie), model si³owników, model turbulencji.
+
+Rozdzia³ 3. Opis modelu samolotu
+Model sztywny. Postacie ruchu (szybkie, fugoidalne, holendrowanie).
+Model pó³sztywny. Porównanie modeli.
+
+Rozdzia³ 4. Aktywne t³umienie flutteru skrzyd³a.
+Wymagania / za³o¿enia projektowe, Zakres zmiennoœci parametrów.
+Klasyczne podejœcie.
+Odporny system sterowania.
+  Model niepewnoœci
+  Hinf
+  Mu-synth
+
+Rozdzia³ 5. System sterowania (CAS - control augmentation system)
+Klasyczny regulator.
+
+Rozdzia³ 6. Po³¹czenie dwóch regulatorów.
+
+Rozdzia³ 7. Kompleksowa synteza regulatora.
+
+----------------------------------------------------------
+Za³¹cznik A. 
+Parametry modelu skrzyd³a.
+Parametry modelu samolotu.
+
