@@ -210,6 +210,31 @@ classdef WingParams < handle
                 end
             end
         end
+        
+        function sys = getTurbulence(this, U0)
+            % sigma = r.m.s. gust velocity
+            % sigma =
+            % clear air       - 0.5 m/s
+            % cumulus cloud   - 2   m/s
+            % severe storm    - 4   m/s
+
+            sigma = 0.5;
+
+            % L - Turbulence scale length, varies with height
+            hcg = 1000; % m
+            % hcg_ft = hcg/ft_to_m; % ft
+            if hcg > 580        % m (1750 ft)
+                L = 580; % m
+            else
+                L = hcg;   % ft
+            end
+
+            Beta = U0 / (sqrt(3) * L);
+            lambda = U0/L;
+            K = (2*U0*sigma^2) / (L * pi);
+            sys = tf(sqrt(K)*[1 Beta], [1 2*lambda lambda^2]);
+            sys = ss(sys);
+        end
     end    
 end
 

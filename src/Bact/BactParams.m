@@ -165,6 +165,23 @@ classdef BactParams < handle
                 end
             end
         end
+        
+        function sys = getTurbulence(this, U0)
+            % Params for speed = 400 fps
+            alpha = 0.082;
+            beta_p = 0.667;
+            gamma_p = 0.533;
+            L_t = 4.163;
+            
+            beta = beta_p * (2*pi*L_t/U0)^2;
+            gamma = gamma_p * (2*pi*L_t/U0)^2;
+            
+            K = 2*pi*sqrt(alpha*beta) / gamma;
+            A = 2*pi/sqrt(beta);
+            B = 2*pi/sqrt(gamma);
+            
+            sys = ss( K * tf([1 A], [1 2*B B^2]));
+        end
     end
     
     methods %TODO private

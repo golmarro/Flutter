@@ -13,6 +13,7 @@ state = wing.trim(0,0);
 
 %%
 clear vis
+figure
 vis = WingVis(wingParams);
 vis.init();
 vis.scale = 1;

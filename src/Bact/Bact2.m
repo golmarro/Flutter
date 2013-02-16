@@ -15,7 +15,7 @@ classdef Bact2 < handle
                             % 340 m/s
         isGravity = 'on'
         ActuatorOutputs = 'off'
-        inputSignal = Bact.stepSignal()
+        inputSignal = Bact2.stepSignal()
         lineFormat = 'b'
         params;
         simStyle = 'k'

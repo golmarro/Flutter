@@ -19,14 +19,14 @@ classdef WingFlutter < handle
         simStyle = 'k'
         lineFormat = 'b'
         
-        actuatorModel = 'on'
+        actuatorModel = 'off'
     end
     
     properties(Dependent)
         % Macierzowa postac parametrow strukturalnych
         Ms, Ks, Ds
         % Opis sil aero
-        Ma, Ka, Da, QT
+        Ma, Ka, Da, QT, Qw  % Qw - turbulence
         % Sterowanie
         B0, B1, B2
         % Wypadkowe macierze
@@ -93,6 +93,11 @@ classdef WingFlutter < handle
         
         function QT = get.QT(this)
             QT = this.q*this.params.S*[-this.params.CLalpha; this.params.c*this.params.CMalpha];
+        end
+        
+        function Qw = get.Qw(this)
+            Qw = this.q*this.params.S * [-this.params.c/(2*this.U0) * this.params.CLalphadot, - this.params.CLalpha;
+                                         this.params.c^2/(2*this.U0)* this.params.CMalphadot, this.params.c*this.params.CMalpha];
         end
         
         function B0 = get.B0(this)
@@ -179,6 +184,22 @@ classdef WingFlutter < handle
             model = @Model;
         end
         
+        % Analitycal model with turbulence
+        function model = getModelMatTurb(this)
+            delta = @this.inputSignal;
+            turb = this.params.getTurbulence(this.U0);
+            function ydot = Model(t, y)
+                ydot = zeros(6,1);
+                ydot(1:2) = y(3:4); % hdot thetadot 
+                
+                ydot(3:4) = (this.M)\(this.Mg*this.g*cos(this.params.alpha0)...
+                    + this.QT*this.params.alpha0 + this.B0*delta(t)...
+                    - this.K*y(1:2) - this.D*y(3:4));
+                ydot(5:6) = turb.A * y(5:6);
+            end
+            model = @Model;
+        end
+        
         function showModes(this)
             sys = this.getModelSS();
             [V E] = eig(sys.A);
@@ -236,24 +257,6 @@ classdef WingFlutter < handle
             alpha0 = fzero(@fun, a0);
         end
         
-        function compareModels(this, models, stopTime)
-            if ~exist('stopTime','var')
-                stopTime = 4;
-            end
-            figure
-            subplot(2,1,1); hold on; ylabel('h')
-            subplot(2,1,2); hold on; ylabel('theta')
-            
-            format = {'k','r:','g.','y'};
-            for i = 1:length(models)
-                [t y] = ode45(models{1}, [0 stopTime], [0 0 0 0]);
-                subplot(2,1,1)
-                plot(t, y(:,1),format{i})
-                subplot(2,1,2)
-                plot(t, y(:,2)*180/pi,format{i})
-            end
-        end
-        
         function [t y] = sim(this, stopTime, state)
             if ~exist('stopTime','var')
                 stopTime = 10;
@@ -279,19 +282,6 @@ classdef WingFlutter < handle
             elseif strcmp(type, 'step')
                 this.inputSignal = this.stepSignal();
             end
-        end
-        
-        function compareMass(this, stopTime)
-            if ~exist('stopTime','var')
-                stopTime = 20;
-            end
-            this.M = this.Ms;
-            model1 = this.getModelMat();
-            % TODO
-%             this.M = this.Ms - this.Ma;
-%             model2 = this.getModelMat();
-            this.compareModels({model1, model2}, stopTime)
-            legend('Only struct mass', 'Full model');
         end
         
         function Uf = SpeedRootLocus(this, U, format)
