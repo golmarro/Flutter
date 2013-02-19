@@ -129,6 +129,43 @@ classdef WingFlutter < handle
             end
         end
         
+        % Full model: wing, actuator, turbulence
+        function model = getLinearModel(this)
+            %        x                    v
+            A = [  zeros(2)      ,      eye(2)     ;
+                 -this.M\this.K  ,  -this.M\this.D ];
+            B = [zeros(2,1)      ;  this.M\this.B0 ];
+            
+            C = eye(4);
+            D = zeros(4,1);
+            
+            act = this.actuator;
+            A = [A zeros(4,1) B; 
+                 zeros(2,4), act.A];
+            B = [zeros(4,1); act.B];
+            C = [C zeros(4,2);
+                 zeros(1,4) 0 1];
+            D = zeros(5,1);
+            
+            % ss([-2*zeta*omega -omega^2; 1 0],[k*omega^2; 0], [0 1], 0);
+            
+            model = ss(A, B, C, D);
+            model.StateName = ['h [ft]           ';
+                               'theta [rad]      ';
+                               'h_dot [ft/s]     ';
+                               'theta_dot [rad/s]';
+                               'delta_dot [rad/s]';
+                               'delta [rad]      '];
+            
+            model.InputName = 'delta_c[rad]';
+            
+            model.OutputName = ['h [ft]           ';
+                               'theta [rad]      ';
+                               'h_dot [ft/s]     ';
+                               'theta_dot [rad/s]';
+                               'delta [rad]      '];
+        end
+        
         function model = getModelSS(this)
             %        x                    v
             A = [  zeros(2)      ,      eye(2)     ;
@@ -376,11 +413,12 @@ classdef WingFlutter < handle
             k = 1.02;           % [dg/deg]
             zeta = 0.56;        % [-]
             omega = 165.3;      % [rad/s]
-            val = tf(k*omega^2, [1 2*zeta*omega omega^2]);
+            %val = tf(k*omega^2, [1 2*zeta*omega omega^2]);
+            val = ss([-2*zeta*omega -omega^2; 1 0],[k*omega^2; 0], [0 1], 0);
             
-            if strcmp(this.actuatorModel, 'off')
-                val = tf(1, 1);
-            end
+%             if strcmp(this.actuatorModel, 'off')
+%                 val = tf(1, 1);
+%             end
         end
         
         function disp(this)

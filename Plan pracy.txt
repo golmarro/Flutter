@@ -29,6 +29,7 @@ Odporny system sterowania.
   Model niepewnoœci
   Hinf
   Mu-synth
+Porównanie
 
 Rozdzia³ 5. System sterowania (CAS - control augmentation system)
 Klasyczny regulator.
