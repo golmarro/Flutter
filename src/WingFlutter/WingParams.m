@@ -212,28 +212,77 @@ classdef WingParams < handle
         end
         
         function sys = getTurbulence(this, U0)
-            % sigma = r.m.s. gust velocity
-            % sigma =
-            % clear air       - 0.5 m/s
-            % cumulus cloud   - 2   m/s
-            % severe storm    - 4   m/s
+            % Turbulence from Bact document for speed 300 fps;
+            alpha = 0.007;
+            beta_p = 0.521;
+            gamma_p = 0.533;
+            L_t = 4.163;
 
-            sigma = 0.5;
+            V = 300; % fps
 
-            % L - Turbulence scale length, varies with height
-            hcg = 1000; % m
-            % hcg_ft = hcg/ft_to_m; % ft
-            if hcg > 580        % m (1750 ft)
-                L = 580; % m
-            else
-                L = hcg;   % ft
-            end
+            tmp = (2*pi*L_t/V)^2;
+            gamma = gamma_p*tmp;
+            beta = beta_p*tmp;
 
-            Beta = U0 / (sqrt(3) * L);
-            lambda = U0/L;
-            K = (2*U0*sigma^2) / (L * pi);
-            sys = tf(sqrt(K)*[1 Beta], [1 2*lambda lambda^2]);
-            sys = ss(sys);
+            K = 2*pi*sqrt(alpha*beta)/gamma;
+            A = 2*pi/sqrt(beta);
+            B = 2*pi/sqrt(gamma);
+
+            % Transfer function
+            %  w_g       s+A
+            %  --- = K -------
+            %  ni      (s+B)^2
+
+            %wg = K*tf([1 A],[1 2*A A^2]);
+            %wg_dot = K*tf([1 A 0],[1 2*A A^2]);
+            %w_tf = [wg;wg_dot];
+
+            % State-space model
+            At = [0 1; -B^2 -2*B];
+            Bt = [0;1];
+            Ct = K*[A 1; -B^2 (A-2*B)];
+            Dt = K*[0;1];
+            
+            % Conversion to metric units
+            Ct = this.ft_m * Ct;
+            Dt = this.ft_m * Dt;
+            
+            sys = ss(At,Bt,Ct,Dt);
+            sys.StateName = ['turb1';'turb2'];
+            sys.InputNames = 'turb in';
+            sys.OutputName = ['w     [m/s]';
+                              'w_dot [m/s]'];
+        end
+        
+        function sys = getTurbulenceTF(this, U0)
+            % Turbulence from Bact document for speed 300 fps;
+            alpha = 0.007;
+            beta_p = 0.521;
+            gamma_p = 0.533;
+            L_t = 4.163;
+
+            V = 300; % fps
+
+            tmp = (2*pi*L_t/V)^2;
+            gamma = gamma_p*tmp;
+            beta = beta_p*tmp;
+
+            K = 2*pi*sqrt(alpha*beta)/gamma;
+            A = 2*pi/sqrt(beta);
+            B = 2*pi/sqrt(gamma);
+
+            % Transfer function
+            %  w_g       s+A
+            %  --- = K -------
+            %  ni      (s+B)^2
+
+            wg = this.ft_m*K*tf([1 A],[1 2*A A^2]);
+            wg_dot = this.ft_m*K*tf([1 A 0],[1 2*A A^2]);
+            sys = [wg;wg_dot];
+            
+            sys.InputNames = 'turb in';
+            sys.OutputNames = ['w     [m/s]';
+                               'w_dot [m/s]'];
         end
     end    
 end

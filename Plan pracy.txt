@@ -20,21 +20,29 @@ Dwa stopnie swobody (skrêcanie, zginanie), model si³owników, model turbulencji.
 
 Rozdzia³ 3. Opis modelu samolotu
 Model sztywny. Postacie ruchu (szybkie, fugoidalne, holendrowanie).
-Model pó³sztywny. Porównanie modeli.
+Model pó³sztywny. Postacie ruchu (inne postacie flutteru? symetryczne/asymetryczne)
+Porównanie modeli (sztywny, pó³sztywny).
+Porównanie modeli szkrzyd³a (sztywno zamocowanego i swobodnego)
 
 Rozdzia³ 4. Aktywne t³umienie flutteru skrzyd³a.
-Wymagania / za³o¿enia projektowe, Zakres zmiennoœci parametrów.
+Warunki pracy - zakres zmiennoœci parametrów.
+Wymagania / za³o¿enia projektowe.
 Klasyczne podejœcie.
 Odporny system sterowania.
   Model niepewnoœci
   Hinf
   Mu-synth
-Porównanie
+Porównanie ró¿nych regulatorów dla skrzyd³a sztywno zamocowanego.
+Sprawdzenie efektywnoœci dla skrzyd³a swobodnego
 
 Rozdzia³ 5. System sterowania (CAS - control augmentation system)
-Klasyczny regulator.
+Wymagania projektowe.
+Kilka klasycznych regulatorów SISO.
+Analiza skutecznoœci
 
 Rozdzia³ 6. Po³¹czenie dwóch regulatorów.
+Po³¹czenie CAS z rozdzia³u 5. i regulator z rozdz. 4.
+Analiza stabilnoœci i efektywnoœci
 
 Rozdzia³ 7. Kompleksowa synteza regulatora.
 

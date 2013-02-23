@@ -15,9 +15,9 @@ Library {
   ModifiedByFormat	  "Rafal"
   LastModifiedBy	  "Rafal"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Sat Feb 09 02:05:44 2013"
-  RTWModifiedTimeStamp	  282276252
-  ModelVersionFormat	  "1.%<AutoIncrement:16>"
+  LastModifiedDate	  "Sat Feb 23 17:51:16 2013"
+  RTWModifiedTimeStamp	  283542667
+  ModelVersionFormat	  "1.%<AutoIncrement:17>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -831,7 +831,7 @@ Library {
     ShowPageBoundaries	    off
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
-    SIDHighWatermark	    107
+    SIDHighWatermark	    110
     Block {
       BlockType		      SubSystem
       Name		      "Actuator"
@@ -1203,7 +1203,7 @@ Library {
 		    SourceType		    "Compare To Constant"
 		    ShowPortLabels	    "FromPortIcon"
 		    SystemSampleTime	    "-1"
-		    FunctionWithSeparateData off
+		    FunctionWithSeparateData "off"
 		    RTWMemSecFuncInitTerm   "Inherit from model"
 		    RTWMemSecFuncExecute    "Inherit from model"
 		    RTWMemSecDataConstants  "Inherit from model"
@@ -1212,7 +1212,7 @@ Library {
 		    relop		    "<"
 		    const		    "max"
 		    LogicOutDataTypeMode    "boolean"
-		    ZeroCross		    off
+		    ZeroCross		    "off"
 		    }
 		    Block {
 		    BlockType		    Reference
@@ -1225,7 +1225,7 @@ Library {
 		    SourceType		    "Compare To Constant"
 		    ShowPortLabels	    "FromPortIcon"
 		    SystemSampleTime	    "-1"
-		    FunctionWithSeparateData off
+		    FunctionWithSeparateData "off"
 		    RTWMemSecFuncInitTerm   "Inherit from model"
 		    RTWMemSecFuncExecute    "Inherit from model"
 		    RTWMemSecDataConstants  "Inherit from model"
@@ -1234,7 +1234,7 @@ Library {
 		    relop		    ">"
 		    const		    "-max"
 		    LogicOutDataTypeMode    "boolean"
-		    ZeroCross		    off
+		    ZeroCross		    "off"
 		    }
 		    Block {
 		    BlockType		    Assertion
@@ -1413,7 +1413,7 @@ Library {
 		    }
 		    Line {
 		    Name		    "alpha"
-		    Labels		    [0, 0]
+		    Labels		    [0, 0; 0, 0]
 		    SrcBlock		    "alpha:\ntheta-hDot/Uo"
 		    SrcPort		    1
 		    Points		    [95, 0]
@@ -1973,7 +1973,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData off
+	      FunctionWithSeparateData "off"
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2046,7 +2046,7 @@ Library {
 	      SourceType	      "Body Actuator"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData off
+	      FunctionWithSeparateData "off"
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2113,7 +2113,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData off
+	      FunctionWithSeparateData "off"
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2160,7 +2160,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData off
+	      FunctionWithSeparateData "off"
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2246,7 +2246,7 @@ Library {
 	      SourceType	      "Body Actuator"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData off
+	      FunctionWithSeparateData "off"
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -2429,7 +2429,7 @@ Library {
 	    }
 	    Line {
 	      Name		      "h_dot, h_dot_dot"
-	      Labels		      [1, 0]
+	      Labels		      [0, 0; 1, 0]
 	      SrcBlock		      "Selector3"
 	      SrcPort		      1
 	      Points		      [70, 0; 0, -135]
@@ -2444,7 +2444,7 @@ Library {
 	    }
 	    Line {
 	      Name		      "Theta_dot"
-	      Labels		      [0, 0]
+	      Labels		      [0, 0; 0, 0]
 	      SrcBlock		      "Selector"
 	      SrcPort		      1
 	      Points		      [60, 0; 0, -45]
@@ -2697,7 +2697,7 @@ Library {
       BlockType		      SubSystem
       Name		      "Wing"
       SID		      1
-      Ports		      [1, 4, 0, 0, 0, 1]
+      Ports		      [2, 4, 0, 0, 0, 1]
       Position		      [80, 37, 200, 98]
       LibraryVersion	      "1.6"
       MinAlgLoopOccurrences   off
@@ -2740,8 +2740,18 @@ Library {
 	  BlockType		  Inport
 	  Name			  "delta [rad]"
 	  SID			  2
-	  Position		  [135, 133, 165, 147]
+	  Position		  [230, 63, 260, 77]
 	  IconDisplay		  "Port number"
+	}
+	Block {
+	  BlockType		  Inport
+	  Name			  "w (turb)"
+	  SID			  108
+	  Position		  [185, 83, 215, 97]
+	  Port			  "2"
+	  IconDisplay		  "Port number"
+	  OutDataType		  "fixdt(1, 16)"
+	  OutScaling		  "2^0"
 	}
 	Block {
 	  BlockType		  Gain
@@ -2770,8 +2780,8 @@ Library {
 	  BlockType		  SubSystem
 	  Name			  "RightWing"
 	  SID			  4
-	  Ports			  [1, 2, 0, 0, 0, 1]
-	  Position		  [200, 74, 285, 116]
+	  Ports			  [2, 2, 0, 0, 0, 1]
+	  Position		  [315, 69, 400, 111]
 	  MinAlgLoopOccurrences	  off
 	  PropExecContextOutsideSubsystem off
 	  RTWSystemCode		  "Auto"
@@ -2802,6 +2812,22 @@ Library {
 	      IconDisplay	      "Port number"
 	      OutDataType	      "sfix(16)"
 	      OutScaling	      "2^0"
+	    }
+	    Block {
+	      BlockType		      Inport
+	      Name		      "w (turb)"
+	      SID		      109
+	      Position		      [245, 148, 275, 162]
+	      Port		      "2"
+	      IconDisplay	      "Port number"
+	      OutDataType	      "fixdt(1, 16)"
+	      OutScaling	      "2^0"
+	      Port {
+		PortNumber		1
+		Name			"w, w_dot"
+		RTWStorageClass		"Auto"
+		DataLoggingNameMode	"SignalName"
+	      }
 	    }
 	    Block {
 	      BlockType		      SubSystem
@@ -3947,7 +3973,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -4020,7 +4046,7 @@ Library {
 	      SourceType	      "Body Actuator"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -4087,7 +4113,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -4134,7 +4160,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -4180,7 +4206,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -4226,7 +4252,7 @@ Library {
 	      SourceType	      "Body Sensor"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -4336,7 +4362,7 @@ Library {
 	      SourceType	      "Body Actuator"
 	      ShowPortLabels	      "FromPortIcon"
 	      SystemSampleTime	      "-1"
-	      FunctionWithSeparateData "off"
+	      FunctionWithSeparateData off
 	      RTWMemSecFuncInitTerm   "Inherit from model"
 	      RTWMemSecFuncExecute    "Inherit from model"
 	      RTWMemSecDataConstants  "Inherit from model"
@@ -4363,6 +4389,22 @@ Library {
 	      CoordPosition	      "on"
 	      Force		      "on"
 	      Torque		      "off"
+	    }
+	    Block {
+	      BlockType		      Sum
+	      Name		      "Sum1"
+	      SID		      110
+	      Ports		      [2, 1]
+	      Position		      [330, 145, 350, 165]
+	      ShowName		      off
+	      IconShape		      "round"
+	      Inputs		      "|++"
+	      InputSameDT	      off
+	      OutDataTypeMode	      "Inherit via internal rule"
+	      OutDataType	      "fixdt(1, 16)"
+	      OutScaling	      "2^0"
+	      OutDataTypeStr	      "Inherit: Inherit via internal rule"
+	      SaturateOnIntegerOverflow	off
 	    }
 	    Block {
 	      BlockType		      Reference
@@ -4587,15 +4629,6 @@ Library {
 	      DstPort		      4
 	    }
 	    Line {
-	      Name		      "h_dot, h_dot_dot"
-	      Labels		      [0, 0; 1, 0]
-	      SrcBlock		      "Selector3"
-	      SrcPort		      1
-	      Points		      [70, 0; 0, -135]
-	      DstBlock		      "Aerodynamika"
-	      DstPort		      3
-	    }
-	    Line {
 	      SrcBlock		      "Aerodynamika"
 	      SrcPort		      1
 	      Points		      [65, 0]
@@ -4693,6 +4726,30 @@ Library {
 	      SrcPort		      1
 	      DstBlock		      "Moment"
 	      DstPort		      1
+	    }
+	    Line {
+	      Name		      "h_dot, h_dot_dot"
+	      Labels		      [0, 0]
+	      SrcBlock		      "Selector3"
+	      SrcPort		      1
+	      Points		      [105, 0]
+	      DstBlock		      "Sum1"
+	      DstPort		      2
+	    }
+	    Line {
+	      Name		      "w, w_dot"
+	      Labels		      [0, 0]
+	      SrcBlock		      "w (turb)"
+	      SrcPort		      1
+	      DstBlock		      "Sum1"
+	      DstPort		      1
+	    }
+	    Line {
+	      SrcBlock		      "Sum1"
+	      SrcPort		      1
+	      Points		      [30, 0; 0, -70]
+	      DstBlock		      "Aerodynamika"
+	      DstPort		      3
 	    }
 	    Annotation {
 	      Name		      "Polozenie plata\nwzgledem WORLD CS"
@@ -5070,7 +5127,7 @@ Library {
 	  BlockType		  Outport
 	  Name			  "Af [m/s2]"
 	  SID			  96
-	  Position		  [325, 78, 355, 92]
+	  Position		  [440, 73, 470, 87]
 	  Port			  "3"
 	  IconDisplay		  "Port number"
 	}
@@ -5078,7 +5135,7 @@ Library {
 	  BlockType		  Outport
 	  Name			  "Ab [m/s2]"
 	  SID			  97
-	  Position		  [370, 98, 400, 112]
+	  Position		  [485, 93, 515, 107]
 	  Port			  "4"
 	  IconDisplay		  "Port number"
 	}
@@ -5112,7 +5169,7 @@ Library {
 	Line {
 	  SrcBlock		  "delta [rad]"
 	  SrcPort		  1
-	  Points		  [10, 0; 0, -55]
+	  Points		  [0, 5]
 	  DstBlock		  "RightWing"
 	  DstPort		  1
 	}
@@ -5134,6 +5191,12 @@ Library {
 	  SrcPort		  2
 	  DstBlock		  "Ab [m/s2]"
 	  DstPort		  1
+	}
+	Line {
+	  SrcBlock		  "w (turb)"
+	  SrcPort		  1
+	  DstBlock		  "RightWing"
+	  DstPort		  2
 	}
       }
     }

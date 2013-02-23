@@ -14,6 +14,7 @@ classdef SimRunner < handle
         aeroForceOn
         wingParams
         actuator
+        turbulence
         t, u         % input signal
     end
     
@@ -31,13 +32,14 @@ classdef SimRunner < handle
             this.thisName = thisName;
         end
         function val = get.u(this)
-            val = arrayfun(this.wingFlutter.inputSignal,this.t);
+            val = [arrayfun(this.wingFlutter.inputSignal,this.t),...
+                   arrayfun(this.wingFlutter.turbulenceInputSignal, this.t)];
         end
         function val = get.t(this)
             val = (0:0.01:this.stopTime)';
         end
         function setState(this, state)
-            this.state = [0 0 0 0 0 0];
+            this.state = [0 0 0 0 0 0 0 0];
             % internal internal theta psi theta_dot psi_dot
 %             this.state(5) = state(2);                  % theta
 %             this.state(6) = state(1)*this.params.Yac;  % convert h to phi
@@ -58,7 +60,7 @@ classdef SimRunner < handle
             if nargin > 2
                 this.setState(state);
             else
-                this.state = [0 0 0 0 0 0];
+                this.state = [0 0 0 0 0 0 0 0];
             end
             % Load model
             load_system(this.mdl);
@@ -114,10 +116,7 @@ classdef SimRunner < handle
             val = this.wingFlutter.params;
         end
         function val = get.actuator(this)
-            k = 1.02;           % [dg/deg]
-            zeta = 0.56;        % [-]
-            omega = 165.3;      % [rad/s]
-            val.tf = tf(k*omega^2, [1 2*zeta*omega omega^2]);
+            val.tf = this.wingFlutter.actuator;
             
             if strcmp(this.actuatorModel, 'nonlinear')
                 val.rateLimit = Inf;    % TODO ????
@@ -130,6 +129,9 @@ classdef SimRunner < handle
                 val.rangeLimit = Inf;
                 val.tf = tf(1, 1);
             end
+        end
+        function val = get.turbulence(this)
+            val = this.wingFlutter.params.getTurbulence();
         end
     end
 end

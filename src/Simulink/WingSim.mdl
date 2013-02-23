@@ -3,9 +3,12 @@ Model {
   Version		  7.4
   MdlSubVersion		  0
   GraphicalInterface {
-    NumRootInports	    1
+    NumRootInports	    2
     Inport {
       Name		      "RightAileron [rad]"
+    }
+    Inport {
+      Name		      "Turbulence Input"
     }
     NumRootOutports	    4
     Outport {
@@ -29,7 +32,7 @@ Model {
       Name		      "Ab [m/s2]"
     }
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.342"
+    ComputedModelVersion    "1.346"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -52,36 +55,40 @@ Model {
   ModifiedByFormat	  "Rafal"
   LastModifiedBy	  "Rafal"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Thu Feb 07 20:03:51 2013"
-  RTWModifiedTimeStamp	  282168232
-  ModifiedComment	  "Rafal -- Thu Feb 07 20:03:51 2013 -- Version 1.342\n"
-  ModifiedHistory	  "Rafal -- Thu Feb 07 20:03:51 2013 -- Version 1.342\n\n\nRafal -- Thu Feb 07 20:02:41 2013 -- Vers"
-  "ion 1.341\n\n\nRafal -- Thu Feb 07 20:01:15 2013 -- Version 1.340\n\n\nRafal -- Thu Feb 07 19:10:07 2013 -- Version "
-  "1.339\nMask Wing subystem\n\nRafal -- Thu Feb 07 19:00:08 2013 -- Version 1.338\nWing subsystem moved to shared libr"
-  "ary\n\nRafal -- Thu Feb 07 18:59:31 2013 -- Version 1.337\nWing subsystem removed to shared library\n\nRafal -- Tue "
-  "Feb 05 00:13:44 2013 -- Version 1.336\n\n\nRafal -- Tue Feb 05 00:12:22 2013 -- Version 1.335\n\n\nRafal -- Mon Feb "
-  "04 19:51:08 2013 -- Version 1.334\n\n\nRafal -- Mon Feb 04 19:14:36 2013 -- Version 1.333\n\n\nRafal -- Mon Feb 04 1"
-  "9:09:34 2013 -- Version 1.332\n\n\nRafal -- Mon Feb 04 19:01:45 2013 -- Version 1.331\n\n\nRafal -- Mon Feb 04 18:55"
-  ":54 2013 -- Version 1.330\n\n\nRafal -- Mon Feb 04 18:24:17 2013 -- Version 1.329\n\n\nRafal -- Mon Feb 04 18:17:49 "
-  "2013 -- Version 1.328\n\n\nRafal -- Mon Feb 04 02:04:22 2013 -- Version 1.327\n\n\nRafal -- Mon Feb 04 02:00:31 2013"
-  " -- Version 1.326\n\n\nRafal -- Mon Feb 04 01:01:05 2013 -- Version 1.325\n\n\nRafal -- Mon Feb 04 00:56:31 2013 -- "
-  "Version 1.324\n\n\nRafal -- Mon Feb 04 00:48:55 2013 -- Version 1.323\nSimRunner\n\nRafal -- Sun Feb 03 22:29:11 201"
-  "3 -- Version 1.322\n\n\nRafal -- Sun Feb 03 22:11:10 2013 -- Version 1.321\n\n\nRafal -- Sun Feb 03 22:09:23 2013 --"
-  " Version 1.320\nNo initFcn\n\nRafal -- Fri Feb 01 00:20:34 2013 -- Version 1.319\n\n\nRafal -- Thu Jan 31 23:56:09 2"
-  "013 -- Version 1.318\n\n\nRafal -- Thu Jan 31 23:45:26 2013 -- Version 1.317\n\n\nRafal -- Thu Jan 31 23:37:18 2013 "
-  "-- Version 1.316\n\n\nRafal -- Thu Jan 31 23:32:50 2013 -- Version 1.315\n\n\nRafal -- Thu Jan 31 23:31:24 2013 -- V"
-  "ersion 1.314\n\n\nRafal -- Sun Jan 20 23:13:45 2013 -- Version 1.313\nKorzystamy z zewnetrznych parametrow bactParam"
-  "s, dumpBact\nDla danych z BACT wyniki pokrywaja sie idealnie z modelem analitycznym i modelem z Matlab files exchang"
-  "e\n\nRafal -- Sun Jan 20 20:08:58 2013 -- Version 1.312\n\n\nRafal -- Sun Jan 20 20:07:59 2013 -- Version 1.311\n\n\n"
-  "Rafal -- Sun Jan 20 20:04:53 2013 -- Version 1.310\n\n\nRafal -- Sun Jan 20 19:07:50 2013 -- Version 1.309\n\n\nRafa"
-  "l -- Sun Jan 20 18:53:01 2013 -- Version 1.308\n\n\nRafal -- Fri Jan 18 13:35:31 2013 -- Version 1.307\n\n\nRafal --"
-  " Thu Jan 17 00:20:40 2013 -- Version 1.306\n\n\nRafal -- Wed Jan 16 23:53:54 2013 -- Version 1.305\n\n\nRafal -- Wed"
-  " Jan 16 23:42:52 2013 -- Version 1.304\nDodana konfiguracjaL CriticalSpeed do oszacowania predkosci krytycznej.\n\nR"
-  "afal -- Wed Jan 16 19:50:35 2013 -- Version 1.303\nFix na linearyzacje. \nWczesniej Alpha_dot =  Alpha -> du/dt\nTer"
-  "az:\nWywalony bloczek 'du/dt'.\nAlpha_dot = Theta_dot - H_dot_dot/U0\nPochodna h_dot_dot wzieta bezposrednio z blocz"
-  "ku Wing Body\n\nRafal -- Wed Jan 16 15:02:06 2013 -- Version 1.302\n\n\nRafal -- Wed Jan 16 11:27:09 2013 -- Version"
-  " 1.301\nTurbulence addedd\n\n"
-  ModelVersionFormat	  "1.%<AutoIncrement:342>"
+  LastModifiedDate	  "Sat Feb 23 17:53:04 2013"
+  RTWModifiedTimeStamp	  283542802
+  ModifiedComment	  "Rafal -- Sat Feb 23 17:53:04 2013 -- Version 1.346\nTurbulence applied directly to alpha calculat"
+  "ion (not U0)"
+  ModifiedHistory	  "Rafal -- Sat Feb 23 17:53:04 2013 -- Version 1.346\nTurbulence applied directly to alpha calculat"
+  "ion (not U0)\n\nRafal -- Sat Feb 23 17:44:49 2013 -- Version 1.345\nFix turbulence\n\nRafal -- Sat Feb 23 17:32:06 2"
+  "013 -- Version 1.344\nTurbulence. Only w is used (not w_dot)\n\nRafal -- Sat Feb 23 17:22:58 2013 -- Version 1.343\n"
+  "Turbulence added\n\nRafal -- Thu Feb 07 20:03:51 2013 -- Version 1.342\n\n\nRafal -- Thu Feb 07 20:02:41 2013 -- Ver"
+  "sion 1.341\n\n\nRafal -- Thu Feb 07 20:01:15 2013 -- Version 1.340\n\n\nRafal -- Thu Feb 07 19:10:07 2013 -- Version"
+  " 1.339\nMask Wing subystem\n\nRafal -- Thu Feb 07 19:00:08 2013 -- Version 1.338\nWing subsystem moved to shared lib"
+  "rary\n\nRafal -- Thu Feb 07 18:59:31 2013 -- Version 1.337\nWing subsystem removed to shared library\n\nRafal -- Tue"
+  " Feb 05 00:13:44 2013 -- Version 1.336\n\n\nRafal -- Tue Feb 05 00:12:22 2013 -- Version 1.335\n\n\nRafal -- Mon Feb"
+  " 04 19:51:08 2013 -- Version 1.334\n\n\nRafal -- Mon Feb 04 19:14:36 2013 -- Version 1.333\n\n\nRafal -- Mon Feb 04 "
+  "19:09:34 2013 -- Version 1.332\n\n\nRafal -- Mon Feb 04 19:01:45 2013 -- Version 1.331\n\n\nRafal -- Mon Feb 04 18:5"
+  "5:54 2013 -- Version 1.330\n\n\nRafal -- Mon Feb 04 18:24:17 2013 -- Version 1.329\n\n\nRafal -- Mon Feb 04 18:17:49"
+  " 2013 -- Version 1.328\n\n\nRafal -- Mon Feb 04 02:04:22 2013 -- Version 1.327\n\n\nRafal -- Mon Feb 04 02:00:31 201"
+  "3 -- Version 1.326\n\n\nRafal -- Mon Feb 04 01:01:05 2013 -- Version 1.325\n\n\nRafal -- Mon Feb 04 00:56:31 2013 --"
+  " Version 1.324\n\n\nRafal -- Mon Feb 04 00:48:55 2013 -- Version 1.323\nSimRunner\n\nRafal -- Sun Feb 03 22:29:11 20"
+  "13 -- Version 1.322\n\n\nRafal -- Sun Feb 03 22:11:10 2013 -- Version 1.321\n\n\nRafal -- Sun Feb 03 22:09:23 2013 -"
+  "- Version 1.320\nNo initFcn\n\nRafal -- Fri Feb 01 00:20:34 2013 -- Version 1.319\n\n\nRafal -- Thu Jan 31 23:56:09 "
+  "2013 -- Version 1.318\n\n\nRafal -- Thu Jan 31 23:45:26 2013 -- Version 1.317\n\n\nRafal -- Thu Jan 31 23:37:18 2013"
+  " -- Version 1.316\n\n\nRafal -- Thu Jan 31 23:32:50 2013 -- Version 1.315\n\n\nRafal -- Thu Jan 31 23:31:24 2013 -- "
+  "Version 1.314\n\n\nRafal -- Sun Jan 20 23:13:45 2013 -- Version 1.313\nKorzystamy z zewnetrznych parametrow bactPara"
+  "ms, dumpBact\nDla danych z BACT wyniki pokrywaja sie idealnie z modelem analitycznym i modelem z Matlab files exchan"
+  "ge\n\nRafal -- Sun Jan 20 20:08:58 2013 -- Version 1.312\n\n\nRafal -- Sun Jan 20 20:07:59 2013 -- Version 1.311\n\n"
+  "\nRafal -- Sun Jan 20 20:04:53 2013 -- Version 1.310\n\n\nRafal -- Sun Jan 20 19:07:50 2013 -- Version 1.309\n\n\nRa"
+  "fal -- Sun Jan 20 18:53:01 2013 -- Version 1.308\n\n\nRafal -- Fri Jan 18 13:35:31 2013 -- Version 1.307\n\n\nRafal "
+  "-- Thu Jan 17 00:20:40 2013 -- Version 1.306\n\n\nRafal -- Wed Jan 16 23:53:54 2013 -- Version 1.305\n\n\nRafal -- W"
+  "ed Jan 16 23:42:52 2013 -- Version 1.304\nDodana konfiguracjaL CriticalSpeed do oszacowania predkosci krytycznej.\n\n"
+  "Rafal -- Wed Jan 16 19:50:35 2013 -- Version 1.303\nFix na linearyzacje. \nWczesniej Alpha_dot =  Alpha -> du/dt\nTe"
+  "raz:\nWywalony bloczek 'du/dt'.\nAlpha_dot = Theta_dot - H_dot_dot/U0\nPochodna h_dot_dot wzieta bezposrednio z bloc"
+  "zku Wing Body\n\nRafal -- Wed Jan 16 15:02:06 2013 -- Version 1.302\n\n\nRafal -- Wed Jan 16 11:27:09 2013 -- Versio"
+  "n 1.301\nTurbulence addedd\n\n"
+  ModelVersionFormat	  "1.%<AutoIncrement:346>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -2514,7 +2521,7 @@ Model {
     ZoomFactor		    "100"
     ReportName		    "simulink-default.rpt"
     BlocksetDataString	    "[0 0 0]|5|0|1e-3|5|1e-3|1|2|1e-4|1e-4|0|0|1|1e-5|Deprecated|0|0|0||1|0"
-    SIDHighWatermark	    1232
+    SIDHighWatermark	    1236
     Block {
       BlockType		      Inport
       Name		      "RightAileron [rad]"
@@ -2531,6 +2538,16 @@ Model {
       }
     }
     Block {
+      BlockType		      Inport
+      Name		      "Turbulence Input"
+      SID		      1233
+      Position		      [260, 33, 290, 47]
+      Port		      "2"
+      IconDisplay	      "Port number"
+      OutDataType	      "fixdt(1, 16)"
+      OutScaling	      "2^0"
+    }
+    Block {
       BlockType		      Display
       Name		      "Display"
       SID		      1125
@@ -2538,6 +2555,15 @@ Model {
       Position		      [505, 118, 595, 142]
       Decimation	      "1"
       Lockdown		      off
+    }
+    Block {
+      BlockType		      From
+      Name		      "From"
+      SID		      1236
+      Position		      [235, 301, 295, 319]
+      ShowName		      off
+      GotoTag		      "Wt"
+      TagVisibility	      "global"
     }
     Block {
       BlockType		      From
@@ -2581,7 +2607,7 @@ Model {
       Name		      "Ground"
       SID		      473
       Ports		      [0, 0, 0, 0, 0, 1, 1]
-      Position		      [190, 305, 230, 345]
+      Position		      [190, 310, 230, 350]
       LibraryVersion	      "1.1"
       UserDataPersistent      on
       UserData		      "DataTag1"
@@ -2604,16 +2630,36 @@ Model {
       ClassName		      "Ground"
       CoordPosition	      "[0 0 0]"
       CoordPositionUnits      "m"
-      StateVectorMgrId	      "-1"
-      MachineId		      "[0 0]"
+      StateVectorMgrId	      "19"
+      MachineId		      "[20 0]"
       ShowEnvPort	      on
+    }
+    Block {
+      BlockType		      Reference
+      Name		      "LTI System"
+      SID		      1234
+      Ports		      [1, 1]
+      Position		      [330, 22, 445, 58]
+      LibraryVersion	      "1.107"
+      SourceBlock	      "cstblocks/LTI System"
+      SourceType	      "LTI Block"
+      ShowPortLabels	      "FromPortIcon"
+      SystemSampleTime	      "-1"
+      FunctionWithSeparateData off
+      RTWMemSecFuncInitTerm   "Inherit from model"
+      RTWMemSecFuncExecute    "Inherit from model"
+      RTWMemSecDataConstants  "Inherit from model"
+      RTWMemSecDataInternal   "Inherit from model"
+      RTWMemSecDataParameters "Inherit from model"
+      sys		      "simRunner.turbulence"
+      IC		      "[]"
     }
     Block {
       BlockType		      Reference
       Name		      "Machine\nEnvironment"
       SID		      482
       Ports		      [0, 0, 0, 0, 0, 0, 1]
-      Position		      [115, 315, 155, 335]
+      Position		      [115, 320, 155, 340]
       LibraryVersion	      "1.1"
       DialogController	      "MECH.DialogSource"
       SourceBlock	      "mblibv1/Bodies/Machine\nEnvironment"
@@ -2676,6 +2722,14 @@ Model {
       OutScaling	      "2^0"
     }
     Block {
+      BlockType		      Goto
+      Name		      "Turbulence"
+      SID		      1235
+      Position		      [480, 25, 520, 55]
+      GotoTag		      "Wt"
+      TagVisibility	      "global"
+    }
+    Block {
       BlockType		      Constant
       Name		      "U0"
       SID		      1216
@@ -2691,9 +2745,9 @@ Model {
       BlockType		      Reference
       Name		      "Wing"
       SID		      1232
-      Ports		      [1, 4, 0, 0, 0, 1]
+      Ports		      [2, 4, 0, 0, 0, 1]
       Position		      [340, 277, 460, 338]
-      LibraryVersion	      "1.6"
+      LibraryVersion	      "1.17"
       SourceBlock	      "FlutterLib/Wing"
       SourceType	      ""
       ShowPortLabels	      "FromPortIcon"
@@ -2779,7 +2833,7 @@ Model {
       SourceType	      "Ramp"
       ShowPortLabels	      "FromPortIcon"
       SystemSampleTime	      "-1"
-      FunctionWithSeparateData "off"
+      FunctionWithSeparateData off
       RTWMemSecFuncInitTerm   "Inherit from model"
       RTWMemSecFuncExecute    "Inherit from model"
       RTWMemSecDataConstants  "Inherit from model"
@@ -2788,7 +2842,7 @@ Model {
       slope		      "1"
       start		      "0"
       X0		      "0"
-      VectorParams1D	      "on"
+      VectorParams1D	      on
     }
     Block {
       BlockType		      SignalViewerScope
@@ -2880,20 +2934,6 @@ Model {
       DstPort		      1
     }
     Line {
-      SrcBlock		      "velocity"
-      SrcPort		      1
-      Points		      [30, 0]
-      Branch {
-	DstBlock		"Mux2"
-	DstPort			1
-      }
-      Branch {
-	Points			[0, 10]
-	DstBlock		"Mux2"
-	DstPort			2
-      }
-    }
-    Line {
       SrcBlock		      "U0"
       SrcPort		      1
       DstBlock		      "Goto3"
@@ -2908,7 +2948,7 @@ Model {
     Line {
       SrcBlock		      "RightAileron [rad]"
       SrcPort		      1
-      Points		      [45, 0; 0, 20]
+      Points		      [45, 0; 0, 15]
       DstBlock		      "Wing"
       DstPort		      1
     }
@@ -2929,6 +2969,38 @@ Model {
       SrcPort		      4
       DstBlock		      "Ab [m/s2]"
       DstPort		      1
+    }
+    Line {
+      SrcBlock		      "Turbulence Input"
+      SrcPort		      1
+      DstBlock		      "LTI System"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "velocity"
+      SrcPort		      1
+      Points		      [25, 0]
+      Branch {
+	DstBlock		"Mux2"
+	DstPort			1
+      }
+      Branch {
+	Points			[0, 10]
+	DstBlock		"Mux2"
+	DstPort			2
+      }
+    }
+    Line {
+      SrcBlock		      "LTI System"
+      SrcPort		      1
+      DstBlock		      "Turbulence"
+      DstPort		      1
+    }
+    Line {
+      SrcBlock		      "From"
+      SrcPort		      1
+      DstBlock		      "Wing"
+      DstPort		      2
     }
     Annotation {
       Name		      "zolty\nfiolet\nseledynowy"

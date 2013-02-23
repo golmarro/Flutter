@@ -13,6 +13,7 @@ classdef WingFlutter < handle
         AeroForces = 'on'
         
         inputSignal = WingFlutter.stepSignal() % Input signal function
+        turbulenceInputSignal = WingFlutter.constSignal(0) % Turbulence input signal
         params;             % Wing structural and aero params
         atmosphere;         % Flight conditions (altitude, density etc.)
         
@@ -96,8 +97,10 @@ classdef WingFlutter < handle
         end
         
         function Qw = get.Qw(this)
-            Qw = this.q*this.params.S * [-this.params.c/(2*this.U0) * this.params.CLalphadot, - this.params.CLalpha;
-                                         this.params.c^2/(2*this.U0)* this.params.CMalphadot, this.params.c*this.params.CMalpha];
+            % [h_dot; theta_dot] = Qw * [wg; wg_dot]
+            Qw = this.q*this.params.S/this.U0 * ...
+                 [-this.params.CLalpha              , -this.params.c/(2*this.U0) * this.params.CLalphadot;
+                   this.params.c*this.params.CMalpha, this.params.c^2/(2*this.U0)* this.params.CMalphadot];
         end
         
         function B0 = get.B0(this)
@@ -137,15 +140,25 @@ classdef WingFlutter < handle
             B = [zeros(2,1)      ;  this.M\this.B0 ];
             
             C = eye(4);
-            D = zeros(4,1);
             
             act = this.actuator;
+            turb = this.params.getTurbulence();
+            
+            % Add actuator model
             A = [A zeros(4,1) B; 
                  zeros(2,4), act.A];
             B = [zeros(4,1); act.B];
             C = [C zeros(4,2);
                  zeros(1,4) 0 1];
-            D = zeros(5,1);
+            %D = zeros(5,1);
+            
+            % Add turbulence model
+            A = [A [zeros(2); this.Qw*turb.C; zeros(2)];
+                 zeros(size(turb.A,1),size(A,2)) turb.A];
+            B = [[B; zeros(2,1)] [zeros(2,1); this.Qw*turb.D; zeros(2,1); turb.B]];
+            C = blkdiag(C, turb.C);
+            D = [zeros(5,2); [zeros(2,1) turb.D]];
+                 
             
             % ss([-2*zeta*omega -omega^2; 1 0],[k*omega^2; 0], [0 1], 0);
             
@@ -155,15 +168,20 @@ classdef WingFlutter < handle
                                'h_dot [ft/s]     ';
                                'theta_dot [rad/s]';
                                'delta_dot [rad/s]';
-                               'delta [rad]      '];
+                               'delta [rad]      ';
+                               'turb state 1     ';
+                               'turb state 2     '];
             
-            model.InputName = 'delta_c[rad]';
+            model.InputName = ['delta_c[rad]';
+                               'turb in     '];
             
             model.OutputName = ['h [ft]           ';
-                               'theta [rad]      ';
-                               'h_dot [ft/s]     ';
-                               'theta_dot [rad/s]';
-                               'delta [rad]      '];
+                                'theta [rad]      ';
+                                'h_dot [ft/s]     ';
+                                'theta_dot [rad/s]';
+                                'delta [rad]      ';
+                                'w [m/s]          ';
+                                'w dot [m/s]      '];
         end
         
         function model = getModelSS(this)
@@ -452,7 +470,7 @@ classdef WingFlutter < handle
                 value = 0;
             end
             function s = signal(t)
-                s = 0;
+                s = value;
             end
             fun = @signal;
         end
