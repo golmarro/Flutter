@@ -8,3 +8,9 @@
 # We don't want to control doc files
 *.odt
 *.odt#
+
+doc/pm.aux
+doc/*.log
+doc/pm.pdf
+doc/pm.toc
+doc/Ilustracje

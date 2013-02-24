@@ -1,0 +1,8 @@
+23.02.2013 - Problem z wprowadzeniem turbulencji w modelu WingSim.
+Wyniki symulacji WingFlutter.getLinearModel nie pokrywaja sie z WingSim (ani rz¹d wielkoœci, ani charakter)
+
+Rozwi¹zanie.
+Do czego potrzebujemy turbulencjê?
+ - analiza wysi³ku sterowania - odpowiedni szum na wejœciu, obliczamy rms sygna³u steruj¹cego.
+ - do synteza regulatora - chodzi o minimalizacjê wp³ywu turbulencji na "wysi³ek" sterowania i obci¹¿enia
+Byc mo¿e nie bêdzie w ogóle potrzebny model turbulencji w WingSim.

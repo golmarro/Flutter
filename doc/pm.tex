@@ -1,0 +1,301 @@
+\documentclass[12pt,a4paper]{book}
+\usepackage{polski}
+\usepackage[cp1250]{inputenc}
+\usepackage{multirow}
+\usepackage{subfigure}
+\usepackage{fancyhdr}
+\usepackage{psfrag}
+\usepackage{theorem}
+\usepackage{longtable}
+\usepackage[isu]{caption}
+\usepackage[toc,page]{appendix}
+\usepackage[pdftex]{graphicx}
+\usepackage{mathtools}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{epstopdf}  % .eps to pdf
+
+\graphicspath{{Ilustracje//}}
+
+\hyphenpenalty=1000
+%\pdfcompresslevel=0
+
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.65}
+\renewcommand{\floatpagefraction}{0.60}
+
+\voffset = 0.1cm
+\setlength{\topmargin}{0pt} 
+\setlength{\textheight}{23cm}
+\setlength{\headsep}{0.5cm} 
+\headheight = 27.25pt
+
+\setlength{\textwidth}{5.6in} 
+\oddsidemargin = 65pt \evensidemargin = 5pt
+
+
+\fancyhead{} \fancyfoot{} 
+\fancyhead[LO]{}
+\fancyhead[RE]{} 
+\fancyhead[RO,LE]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\pagestyle{empty}
+
+\renewcommand{\theequation}{\arabic{chapter}.\arabic{equation}}
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+
+\author{Rafa³ Golcz}
+\title{Projektowanie odpornych (robust) systemów sterowania}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% STRONA  PIERWSZA
+\noindent
+\vspace{-50pt}\\
+\includegraphics[width=3cm]{PWlogo.jpg}
+\parbox[b][.4in][b]{9cm}{
+\centering
+\LARGE{Politechnika Warszawska\\}
+\Large{Wydzia³ Elektroniki i Technik Informacyjnych\\}
+\large{Zak³ad Automatyki i Informatyki Stosowanej}}
+\hfill
+\includegraphics[width=1cm]{EITIlogo.jpeg}
+\rule[.1in]{\textwidth}{.2pt}
+
+\vspace{0.9in}
+\begin{center}
+    {\LARGE \sffamily Praca dyplomowa magisterska} \\
+    \vspace{.5in}
+    {\Large \sffamily {Rafa³ Golcz\\}}
+    \vspace{.5in}
+    {\LARGE \sffamily {Projektowanie odpornych (robust) systemów sterowania\\}}
+    \vspace{0.2in}
+    {\Large \sffamily {Robust Control Systems Design\\}}
+    \vspace{.5in}
+
+\end{center}
+\vspace{1in} \hfill
+\parbox{3in}{ nr albumu: 200883\\
+              kierunek: Systemy Informacyjno-Decyzyjne\\}
+\vfill
+
+\noindent
+\parbox{3in}{
+Promotor:\\ 
+dr in¿. Adam WoŸniak
+}
+\vspace{0.6in}
+\begin{center}
+Warszawa, wrzesieñ 2011
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% STRONA  DRUGA
+\clearpage
+\vspace{4cm}
+\begin{center}
+\textbf{Oœwiadczenie autora pracy}
+\end{center}
+\vspace{2cm}
+Œwiadom odpowiedzialnoœci prawnej oœwiadczam, ¿e przedstawiona praca dyplomowa:
+\begin{itemize}
+\renewcommand{\labelitemi}{--}
+\item zosta³a napisana przeze mnie samodzielnie i nie zawiera treœci uzyskanych w sposób niezgodny z obowi¹zuj¹cymi przepisami,
+\item nie by³a wczeœniej przedmiotem procedur zwi¹zanych z uzyskaniem tytu³u zawodowego lub stopnia naukowego w wy¿szej uczelni.
+\end{itemize}
+Oœwiadczam ponadto, ¿e niniejsza wersja pracy jest identyczna z za³¹czon¹ wersj¹ elektroniczn¹.
+
+\vspace{3cm}
+\parbox{4.7cm}{
+..........................................
+\begin{center}
+\tiny{data}
+\end{center}
+}
+\hfill
+\parbox{4.7cm}{
+..........................................
+\begin{center}
+\tiny{podpis autora pracy}
+\end{center}
+}
+\vspace{9cm}
+\begin{description}
+\item[S£OWA KLUCZOWE:] robust control, system sterowania, odporne systemy sterowania, quadrocopter.
+\end{description}
+\clearpage
+
+%-------------------------------------------------------------
+\newcommand{\thesistitle}[1]{%
+  {\Large \sffamily
+    \begin{center}
+      #1
+    \end{center}
+  }
+}
+\newcommand{\abstracttitle}[1]{\hfill {\large \sffamily #1} \hfill
+\vspace{.1in}}
+
+%%----------------------------------------------------------------------
+
+\vfill
+
+\thesistitle{Projektowanie odpornych (robust) systemów sterowania}
+
+\abstracttitle{Streszczenie}
+
+Celem pracy jest analiza i porównanie technik sterowania odpornego (robust control). W praktyce model matematyczny nigdy nie jest na tyle dok³adny, by w pe³ni odzwierciedlaæ rzeczywiste zjawiska zachodz¹ce w obiekcie regulacji. W rezultacie mamy do czynienia z pojêciem niepewnoœci. Robust control to zbiór technik, pozwalaj¹cych projektowaæ uk³ady regulacji z uwzglêdnieniem ograniczonej wiedzy co do obiektu tak, aby zagwarantowaæ stabilnoœæ i jakoœæ
+regulacji pomimo wystêpowania niepewnoœci.
+
+Praktyczna czêœæ pracy polega na opracowaniu odpornego regulatora dla obiektu lataj¹cego - wirop³ata typu quadrocopter, spe³niaj¹cego rolê Systemu Wspomaganie Statecznoœci i Sterowania (SCAS). Za³o¿enia projektowe dotycz¹ce zachowania uk³adu zamkniêtego zostan¹ postawione na podstawie podobnych rozwi¹zañ oraz uwarunkowañ fizycznych i sprzêtowych. Realizacja zadania wymaga opracowania modelu symulacyjnego obiektu wnikaj¹cego w charakterystykê uk³adu napêdowego i naturê zaburzeñ zewnêtrznych towarzysz¹cych lotom atmosferycznym. Na podstawie modelu zostanie opracowany kontroler, którego skutecznoœæ zostanie zbadana na drodze standardowej analizy w dziedzinie czasu i czêstotliwoœci oraz na podstawie symulacji w czasie rzeczywistym z udzia³em pilota.
+%%----------------------------------------------------------------------
+\vfill \vspace{.2in}
+
+\thesistitle{Robust Control Sytems Design}
+
+\abstracttitle{Abstract}
+
+\vfill \cleardoublepage
+
+
+\pagenumbering{arabic} \pagestyle{fancy}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SPIS TRESCI
+\tableofcontents
+
+\chapter *{Spis oznaczeñ i skrótów}
+\addcontentsline{toc}{section}{Spis oznaczeñ i skrótów}
+%\renewcommand{\rightmark}{SPIS OZNACZEÑ I SKRÓTÓW}
+\begin{tabular}{l c p{11cm}}
+p, q, r & -- & prêdkoœci k¹towe przechylania, pochylania i odchylania\\
+\(V_x,\;V_y,\;V_z\) & -- & liniowe prêdkoœci ruchu w uk³adzie zwi¹zanym z obiektem\\
+\(\phi,\;\theta,\;\psi \)& -- & k¹ty Eulera orientacji przestrzennej wzglêdem ziemi\\
+\(\theta_{01},\;\theta_{02}\) & -- & k¹ty skoku ogólnego wirnika lewego i prawego\\
+\(\theta_{S1},\;\theta_{S2}\) & -- & k¹ty skoku okresowego pod³u¿nego wirnika lewego i prawego\\
+ACAH & -- & sterowanie po³o¿eniem / utrzymanie po³o¿enia (attitude command attitude hold)\\
+ADS & -- & normy projektowania konstrukcji lotniczej (Aeronautical Design Standard)\\
+AFCS & -- & uk³ad automatycznego sterowania lotem (automatic flight control system)\\
+%IAS & -- & prêdkoœæ wskazywana  (indicated air speed)\\
+MTE & -- & element zadania w ramach misji (mission-task element)\\
+PIO & -- & oscylacje wzbudzane przez pilota (pilot induced oscillation)\\
+SCAS & -- & system wspomagania statecznoœci i sterownoœci (stability and control augmentation system)\\
+UCE & -- & œrodowisko u¿ytecznych sygna³ów dla pilota (usable cue environment)\\
+\end{tabular}
+
+\chapter *{Spis pojêæ}
+\addcontentsline{toc}{section}{Spis pojêæ}
+\begin{tabular}{l c p{11cm}}
+sterowanie odporne (Robust Control) & -- &  \\
+niepewnoœæ (uncertainty) & -- &  \\
+niepewnoœæ strukturalna (parametryczna)
+\end{tabular}
+
+\chapter *{Wstêp}
+\addcontentsline{toc}{section}{Wstêp}
+
+Ka¿dy zaawansowany projekt systemu sterowania opiera siê na modelu matematycznym obiektu. Rozbie¿noœæ miêdzy opisem, a rzeczywistoœci¹ jest nieunikniona i wynika zazwyczaj z dwóch podstawowych powodów:
+\begin{itemize}
+\item niektóre zjawiska fizyczne s¹ zbyt skomplikowane, lub nawet bli¿ej nieznane, aby móc je uwzglêdniæ;
+\item prawdziwe parametry pracy lub œrodowisko, w którym obiekt bêdzie pracowa³ mog¹ siê zmieniaæ.
+\end{itemize}
+Chocia¿ niedok³adnoœæ opisu zazwyczaj wynika z ograniczeñ wiedzy lub mo¿liwoœci pomiarowych, bardzo czêsto mo¿e byæ wprowadzona œwiadomie. Ograniczony czas lub koszty badañ zmuszaj¹ projektantów do budowy uproszczonych modeli.
+Niezale¿nie od pochodzenia owa niedok³adnoœæ opisu, czyli rozbie¿noœæ miêdzy obiektem rzeczywistym, a modelem matematycznym, nosi nazwê \emph niepewnoœci modelu \emph (model uncertainty).
+	Odpornoœæ jest to cecha uk³adu regulacji, 
+W takim razie projektowanie odpornych systemów sterowania dotyczy metod
+projektowych uwzglêdniaj¹cych apriori niepewnoœæ modelu. Skala tej niepewnoœci musi byæ wobec
+tego w pewien sposób mierzalna i opisywalna.
+W³aœciwie ka¿da metoda projektowa mo¿e w pewnym stopniu uwzglêdniaæ niepewnoœæ modelu.
+Jednak czêsto w literaturze
+
+Metod projektowania odpornych regulatorów maj¹ szczególne znaczenie w zastosowaniu do wielowymiarowych obiektów, poniewa¿ tutaj zawodz¹ standardowe miary odpornoœci sprawdzone w zastosowaniu do obiektów jednowymiarowych.
+
+Due to the increasing complexity of physical systems under control and
+rising demands on system properties, most industrial control systems are no
+longer single-input and single-output (SISO) but multi-input and multi-output
+(MIMO) systems with a high interrelationship (coupling) between these chan nels. The number of (state) variables in a system could be very large as well.
+These systems are called multivariable systems.
+
+\chapter *{Cel i zakres pracy}
+\addcontentsline{toc}{section}{Cel i zakres pracy}
+
+\subsection*{Zakres zadania}
+\subsubsection{Struktura pracy}
+
+\input{Intro.tex}
+
+\input{WingModel.tex}
+
+\input{PlaneModel.tex}
+
+\input{WingCtrl.tex}
+
+\input{bib.tex}
+
+\appendix
+\renewcommand{\thefigure}{\Alph{chapter}.\arabic{figure}}
+
+\clearpage
+\addcontentsline{toc}{chapter}{Za³¹czniki}
+\chapter{Wyci¹g z dokumentu ADS-33}
+
+\chapter{Wykorzystane narzêdzia}
+Ca³oœæ projektu zosta³a wykonana przy u¿yciu oprogramowania Flightlab i Matlab. Wybór Flightlaba by³ narzucony z powodu posiadanego modelu zaimplementowanego w tym œrodowisku. Matlab zosta³ wybrany przez swój uniwersalny charakter i wygodne œrodowisko. Decyduj¹c¹ zalet¹ jest zestaw narzêdzi do projektowania systemów sterowania oraz mo¿liwoœæ automatyzacji badañ poprzez pisanie skryptów. Simulink jako uniwersalne œrodowisko do symulacji uk³adów fizycznych okaza³ siê idealnym narzêdziem do implementacji systemu sterowania. Weryfikacja za³o¿eñ projektowych nie by³aby mo¿liwa, gdyby nie sieciowe po³¹czenie pracy Flightlaba i Simulinka za pomoc¹ techniki opisanej w \cite{FlightSim}. Tabela \ref{TabNarzedzia} przedstawia zakres zadañ wykonanych z u¿yciem poszczególnych narzêdzi.
+
+\chapter{Model liniowy Eriki}
+\label{chap:ModelEriki}
+
+
+
+
+\chapter{Skrypty, dane i modele}
+
+\subsubsection*{ModeleZawis.mat}
+Zapisane wszystkie modele liniowe obliczone w zawisie.
+
+\subsubsection*{ModeleLotPoziomy.mat}
+Zapisane wszystkie modele liniowe obliczone w locie poziomym w ró¿nych kierunkach lotu.
+
+\subsubsection*{RegulatorPI.mat}
+Zapisane macierze wzmocnieñ regulatora PI obliczone za pomoc¹ metody LQR.
+
+\subsubsection*{AnalizaUkladuOtwartego.m}
+Skrypt s³u¿¹cy do analizy obiektu bez systemu sterowania, a przede wszystkim do wyznaczenia postaci ruchu.
+
+\subsubsection*{RegulatorPI.m}
+Skrypt zawieraj¹cy wszelkie obliczenia zwi¹zane z prawami sterowania.
+
+\subsubsection*{BadaniaHH.m}
+Skrypt wykorzystywany do analizy uk³adu Heading Hold.
+
+\subsubsection*{CzestoscGraniczna.m}
+Funkcja s³u¿¹ca do wyznaczenia czêstoœci granicznej i opóŸnienia fazy dla podanego obiektu jednowymiarowego na podstawie wykresu Bodego.
+
+\subsubsection*{DostrajanieLQR.m}
+Skrypt s³u¿¹cy do analizy wp³ywu macierzy wagowej Q na zachowanie poszczególnych parametrów w³aœciwoœci lotnych.
+
+\subsubsection*{WeryfikacjaCharOdp.m}
+Skrypt s³u¿¹cy do badania charakteru odpowiedzi uk³adu zamkniêtego z modelem nieliniowym. Wykorzystuje model AnalizaNieliniowa.mdl.
+
+\subsubsection*{WeryfikacjaUtrzymaniePozycji.m}
+Skrypt s³u¿¹cy do weryfikacji kryteriów utrzymania pozycji i kierunku na podstawie symulacji z udzia³em modelu nieliniowego. Wykorzystuje model AnalizaNieliniowa.mdl
+
+\subsubsection*{WeryfikacjaCzestoscGraniczna.m}
+Skrypt s³u¿¹cy do weryfikacji kryteriów odpowiedzi krótko-okresowych. Dla 11 modeli liniowych oblicza czêstoœci graniczne i opóŸnienia fazowe.
+
+\subsubsection*{WeryfikacjaStatecznoœæ.m}
+Skrypt s³u¿¹cy do wyznaczenia mapy biegunów dla 11 modeli liniowych w celu weryfikacji kryterium statecznoœci.
+
+\subsubsection*{WeryfikacjaParamSzybkosci.m}
+Skrypt s³u¿¹cy do przeprowadzenia szeregu symulacji z udzia³em modelu nieliniowego (AnalizaNieliniowa.mdl) w celu wyznaczenia parametru szybkoœci dla trzech kana³ów sterowania.
+
+\subsubsection*{WeryfikacjaMocSterowania.m}
+Skrypt generuj¹cy przebiegi czasowe dla weryfikacji maksymalnych osi¹galnych k¹tów orientacji przestrzennej i prêdkoœci odchylania.
+
+\subsubsection*{WeryfikacjaTC.m}
+Skrypt s³u¿¹cy do weryfikacji kryterium koordynacji zakrêtu poprzez symulacjê z udzia³em modelu nieliniowego. 
+
+\subsubsection*{AnalizaLiniowa.mdl}
+Model uk³adu zamkniêtego z udzia³em modelu liniowego o oœmiu stopniach swobody.
+
+\subsubsection*{AnalizaNieliniowa.mdl}
+Zaimplementowany pe³ny system zaprojektowany w niniejszej pracy. Model s³u¿y do analizy systemu z udzia³em modelu nieliniowego poprzez wykorzystanie po³¹czenia sieciowego z oprogramowaniem Flightlab.
+
+\end{document}

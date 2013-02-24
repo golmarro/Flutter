@@ -1,0 +1,56 @@
+\chapter{Aktywne t³umienie flutteru skrzyd³a}
+Celem poni¿szego rozdzia³u jest opracowanie systemu aktywnego t³umienia flutteru skrzyd³a, który pos³u¿y za punkt odniesienia dla dalszej czêœci pracy.
+
+\section{Warunki pracy}
+Podstawowym parametrem wp³ywaj¹cym na dynamikê obiektu jest ciœnienie dynamiczne~q. Zakres zmiennoœci tego parametru wynika z osi¹gów samolotu - zakresu prêdkoœci i wysokoœci lotu. Prêdkoœæ maksymalna zosta³a arbitralnie za³o¿ona na potrzeby projektu i znacznie przekracza prêdkoœæ krytyczn¹ flutteru dla uk³adu otwartego.
+
+Wykres prezentuje zale¿noœæ ro¿nych prêdkoœci od wysokoœci.
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{Predkosci.eps}
+\caption{Zale¿noœæ prêdkoœci \(V_{min}, V_k\) od wysokoœci i poziomu paliwa.}
+\label{RysPredkosci}
+\end{figure}
+
+Drugim wa¿nym czynnikiem jest poziom paliwa, który ma poœredni wp³yw na wiele parametrów takich jak:
+- po³o¿enie œrodka ciê¿koœci (które jest krytyczne w zagadnieniach flutteru)
+- masa skrzyd³a, a co za tym idzie czêstoœci drgañ giêtnych i skrêtnych.
+
+Tabela~\ref{TabZakresParam} przedstawia przyk³adowe wartoœci parametrów w zale¿noœci od poziomu paliwa. Warto zwróciæ uwagê na siln¹ korelacjê tych wartoœci.
+
+\begin{center}
+\begin{tabular}[hbt]{|r|r|r|r|r|r|}
+\hline
+Poziom paliwa [\%] & \(\bar{c_{cg}}\) [\%] & m [kg] & \(I_{\theta}\) [kg] & \(\omega_h\) [rad/s] & \(\omega_{\theta}\) [rad/s] \\
+\hline
+0 & 1.00 & 90.00 & 7.56 & 36.37 & 68.98 \\
+25 & 2.47 & 127.50 & 9.45 & 30.55 & 61.58 \\ 
+50 & 3.27 & 165.00 & 11.34 & 26.86 & 56.10 \\ 
+75 & 3.78 & 202.50 & 13.23 & 24.24 & 51.85 \\ 
+100 & 4.13 & 240.00 & 15.12 & 22.27 & 48.43 \\
+\hline
+\end{tabular}
+\label{TabZakresParam}
+\end{center}
+
+Poniewa¿ ze wzrostem iloœci paliwa w skrzydle, po³o¿enie œrodka ciê¿koœci przesuwa siê do ty³u, prêdkoœæ krytyczna flutteru maleje, co mo¿na zaobserwowaæ na wykresie~\ref{RysPredkosci}.
+
+\section{Za³o¿enia projektowe}
+Podstawowym celem aktywnego systemu t³umienia flutteru jest zwiêkszenie \( V_k \), przy uwzglêdnieniu limitów uk³adu wykonawczego.
+
+Definicja prêdkoœci krytycznej jest œciœle zwi¹zana ze stabilnoœci¹, ale jest to kryterium niewystarczaj¹ce. Nale¿a³oby zaostrzyæ tê definicjê, tak aby nawet w zakresie stabilnej pracy nie dosz³o do przekroczenia dopuszczalnych naprê¿eñ. Za odpowiednik dopuszczalnych naprê¿enia przyjêto statyczne zniekszta³cenia \( h\) i \(\theta\) dla lotu z maksymalnym przeci¹¿eniem \(g = 6\).
+
+Poza tym nale¿y uwzglêdniæ ograniczone mo¿liwoœci elementów wykonawczych, a wiêc "wysi³ek" sterowania. Maksymalne wychylenia lotek wynosz¹ \(\pm 45^\circ\). System t³umienia flutteru nie mo¿e jednak wykorzystaæ ca³ego zakresu, musi zostawiæ miejsce na realizowanie poleceñ pilota lub systemu CAS. Dlatego dopuszczalne wartoœci sygna³u steruj¹cego zosta³y arbitralnie wybrane na poziomie \(30\%\delta_c\).
+
+Poni¿ej w zwiêz³ej formie podsumowano za³o¿enia projektowe.
+\begin{enumerate}
+\item Maksymalne rozszerzenie zakresu stabilnej pracy, spe³niaj¹cej dodatkowe kryteria:
+\item Sygna³ steruj¹cy \(|\delta_c| < 0,3\delta_{max} \)
+\item Obci¹¿enia \(|h(t)| < h_{max}\) i \(|\theta(t)| < \theta_{max}\)
+\end{enumerate}
+dla dowolnego sygna³u wejœciowego: \\*
+\(|\delta_p(t)| < 0,7\delta_{max}\) i \(\eta(t) = 0\), lub \\*
+\( \delta_p(t) = 0 \) i \(\eta(t) = bialy szum \) TODO
+
+Kryteria w takiej formie mog¹ zostaæ bezpoœrednio prze³o¿one na pojêcia zwi¹zane z robust control. Pierwsze kryterium nazywa siê odporn¹ stabilnoœci¹, pozosta³e dwa - odpornymi osi¹gami. Odporne osi¹gi mo¿na zwiêŸle przedstawiæ wykorzystuj¹c normê \(H_{\infty}\). \\*
+\(|\delta_c|_{\infty} < 0,3 \delta_{max} \) ????

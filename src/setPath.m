@@ -5,3 +5,4 @@ path(path, 'Bact/UnitTest');
 path(path, 'Simulink');
 path(path, 'Simulink/lib');
 path(path, 'Control');
+path(path, 'pm');
