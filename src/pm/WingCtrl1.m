@@ -47,7 +47,7 @@ end
 
 xlabel('U [km/h]');
 ylabel('Altitude [m]');
-title('Zale¿noœæ prêdkoœci V\{min} i V_k wzglêdem wysokoœci i poziomu paliwa')
+title('Zale¿noœæ prêdkoœci Vmin i Vk wzglêdem wysokoœci i poziomu paliwa')
 %legend('Load level = 0', 'Load level = 50%', 'Load level = 100%');
 grid
 

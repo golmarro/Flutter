@@ -1,2 +1,157 @@
 \chapter{Model skrzyd³a}
+W poni¿szym rozdziale zosta³ zawarty opis modelu matematycznego skrzyd³a podlegaj¹cego zjawisku flutteru.
 
+Model matematyczny (TODO pó³?)sztywnego skrzyd³a o dwóch stopniach swobody zosta³ opracowany w \ref{WaszakModel}. Zwiêz³y opis modelu zawarto w tabeli \ref{TabModelSkrzydla}. Na model sk³ada siê dynamika strukturalna, aerodynamika quasi-stacjonarna, dynamika elementu wykonawczego oraz prosty model turbulencji.
+
+\begin{center}
+\begin{tabular}[hbt]{|r|r|r|r|}
+\hline
+ & opis & jedn. & model \\
+\hline
+\( h \) & przemieszczenie pionowe skrzyd³a & [m] &  \\
+\( \theta \) & skrêcenie skrzyd³a & [rad] &  \\
+\( \dot{h} \) &  & [m/s] &  \\
+\( \dot{\theta} \) &  & [rad/s] &  \\
+\hline
+\( \dot{\delta} \) & wychylenie lotki & [rad/s] &  \\
+\( \delta \) &  & [rad] &  \\
+\hline
+\( t_1 \) & stan zwi¹zany z modelem turbulencji & &  \\
+\( t_2 \) & stan zwi¹zany z modelem turbulencji & &  \\
+\hline \hline
+Sygna³y wejœciowe  &  & &  \\
+\hline
+\( \delta_c \) & Zadana wartoœæ wychylenia lotki  & [rad] &  \\
+\( \eta \) & Sygna³ turbulencji  & [??] &  \\
+\hline \hline
+Sygna³y wyjœciowe  &  & &  \\
+\hline
+\( h \) &   & [m] &  \\
+\( \theta \) &   & [rad/s] &  \\
+\( \dot{h} \) &  & [m/s] &  \\
+\( \dot{\theta} \) &  & [rad/s] &  \\
+\( \delta \) & Zadana wartoœæ wychylenia lotki  & [rad] &  \\
+\( w_g \) & Pionowa wartoœæ podmuchu & [m/s] & \\
+\( \dot{w_g} \) & Pionowa wartoœæ podmuchu & [m/s\(^2\)] & \\
+\hline
+\end{tabular}
+\label{TabModelSkrzydla}
+\end{center}
+
+\section{Równania strukturalne ???? }
+Równanie \ref{EqModelStruktury} opisuje drgania skrêtne i giêtne skrzyd³a.
+
+\begin{equation}
+\left[ \begin{array}{cc} m & s_{h\theta} \\ s_{h\theta} & I_\theta \\ \end{array} \right] 
+\left\{ \begin{array}{c} \ddot{h} \\ \ddot{\theta} \end{array} \right\}
++ \left[ \begin{array}{cc} K_h & 0 \\ 0 & K_\theta \\ \end{array} \right]
+\left\{ \begin{array}{c} h \\ \theta \end{array} \right\}
+= \left\{ \begin{array}{c} m \\ s_{h\theta} \cos\theta \end{array} \right\} g \cos\theta_T
++ \left\{ \begin{array}{c} Q_h \\ Q_\theta \end{array} \right\}
+\label{EqModelStruktury}
+\end{equation}
+
+Jak siê okazuje wspó³czynnik sprzê¿enia drgañ giêtnych i skrêtnych \( s_{h\theta} \), którego wartoœæ wynika z po³o¿enia CG skrzyd³a wzglêdem SSP, ma decyduj¹ce znaczenie na to kiedy i czy w ogóle wyst¹pi zjawisko flutteru.
+
+\section{Model aerodynamiki quasi-statycznej}
+Standardow¹ metod¹ przybli¿ania si³ aerodynamicznych jest u¿ycie stability and control derivatives. Si³y aerodynamiczne mog¹ zostaæ przedstawione jako funkcje liniowe k¹ta natarcia, wychylenia powierzchni sterowych oraz ich pochodnych wzglêdem czasu - równania \ref{EqSilyAero}. Wartoœci wspó³czynników aerodynamicznych zosta³y zawarte w tabeli~\ref{TabWspAero}
+
+\begin{center}
+\label{EqSilyAero}
+\begin{eqnarray}
+L = qSC_L = qS \left[ C_{L_0} +C_{L_\alpha} \alpha + C_{L_\delta} \delta \newline 
++ \frac{\bar{c}}{2U_0} \left(C_{L_{\dot{alpha}}} \dot{\alpha} 
++ C_{L_q} \dot{\theta} + C_{L_{\dot{\delta}}} \dot\delta \right) \right]
+\\
+M = qS\bar{c}C_M = qS\bar{c} \left[ C_{M_0} +C_{M_\alpha} \alpha + C_{M_\delta} \delta 
+\newline + \frac{\bar{c}}{2U_0} (C_{M_{\dot{alpha}}} \dot{\alpha} + C_{M_q} \dot{\theta} + C_{M_{\dot{\delta}}} \dot\delta) \right] \\
+\end{eqnarray}
+\end{center}
+
+%TODO - skopiowaæ z dokumentu BACT?
+%\begin{table}[hbt]
+%\label{TabWspAero}
+%\caption{Wspó³czynniki aerodynamiczne modelu skrzyd³a.}
+%\end{table}
+
+Jak wspomniano w \ref{WaszakModel}, model aerodynamiki oparty na wspó³czynnikach jest raczej uproszczonym podejœciem, ale w zupe³noœci wystarczaj¹cy aby uchwyciæ najwa¿niejsze cechy zjawiska flutteru.
+
+Niestacjonarny charakter modelu aerodynamiki wynika z uwzglêdnienia wspó³czynników wzglêdem pochodnych (np. \( C_{L_{\dot\alpha}} \). Poni¿sze wyra¿enie pozwala wyznaczyæ k¹t natarcia \ref{EqKatNatarcia}.
+
+\begin{equation}
+\alpha(t) = \theta_T + \theta(t) + \frac{\dot{h}(t)}{U_0} + \frac{l\dot{\theta}(t)}{U_0} - \frac{w_g(t)}{U_0}
+\label{EqKatNatarcia}
+\end{equation}
+
+\section{Model elementów wykonawczych}
+Parametry si³ownika zosta³y równie¿ zaczerpniête z \ref{WaszakModel}. Model drugiego rzêdu przedstawia równanie~\ref{EqSilownik}.
+
+\begin{equation}
+\frac{\delta(s)}{\delta_c(s)} = \frac{k\omega^2}{s^2 + 2\zeta\omega s + \omega^2}
+\label{EqSilownik}
+\end{equation} 
+
+Wspó³czynnik \( k_\delta\) okreœla wzmocnienie, \(\omega_\delta\) czêstoœæ, a \(\zeta_\delta\) t³umienie uk³adu. Wartoœci liczbowe zosta³y zawarte w tabeli~\ref{TabActuatorParams}.
+
+\begin{center}
+\label{TabActuatorParams}
+\begin{tabular}[hbt]{|c|c|c|c|}
+\hline
+Symbol & Opis & Wartoœæ & Jedn. \\
+\hline
+k & Wspó³czynnik wzmocnienia & 1,02 & - \\
+\(\omega_\delta\) & Czêstoœæ drgañ w³asnych & 165,3 & rad/s \\
+\(\zeta_\delta\) & Wspó³czynnik t³umienia & 0.56 & - \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Model turbulencji}
+Do opisu turbulencji wykorzystywana jest widmowa gêstoœæ mocy, lecz zamiast zwyk³ej czêstotliwoœci mamy czêstotliwoœæ przestrzenn¹ wyliczan¹ wzglêdem prêdkoœci lotu.
+\begin{equation} % TODOczy to potrzebne?
+\Omega = \frac{\omega}{U_0}
+\end{equation}
+Istniej¹ dwie praktyczne analityczne reprezentacje widmowej gêstoœci mocy u¿ywane w badaniach nad dynamik¹ lotu. Pierwsze - spektrum Von Karmana lepiej oddaje dane pomiarowe, ale do analitycznych badañ chêtniej wykorzystywany jest prostszy model Drydena (\ref{EqDryden}.
+\begin{equation}
+\frac{w_g(s)}{\eta_g(s)} = A \frac{s + B}{\left( s + B \right) ^2}
+\label{EqDryden}
+\end{equation}
+Wartoœci kolejnych parametrów zosta³y zaczerpniête z~\ref{WaszakModel} i zosta³y zawarte w tabeli~\ref{TabTurbParams}.
+
+% TODO parametry turbulencji
+
+\section{Pe³ny model w przestrzeni stanów}
+
+\section{Wartoœci liczbowe - parametry}
+
+Parametry wyjœciowego modelu zosta³y odpowiednio przeskalowane tak, aby w³aœciwoœci skrzyd³a odpowiada³y skrzyd³u Preadatora. Model jest parametryzowany prêdkoœci¹ i wysokoœci¹ lotu oraz poziomem paliwa w skrzyd³ach. Wysokoœæ lotu determinuje gêstoœæ powietrza, co razem z prêdkoœci¹ wyznacza ciœnienie dynamiczne. Poziom paliwa ma wp³yw na masê i moment bezw³adnoœci. Przyk³adowe wartoœci parametrów modelu dla nominalnych warunków lotu zosta³y zawarte w tabeli \ref{TabParametrySkrzydla}
+
+\begin{center}
+\begin{table}[hbt]
+\begin{tabular}{|c|c|c|c|}
+\hline
+Symbol & Opis & Wartoœæ & Jednostki \\
+\hline
+\( U_0 \) & Prêdkoœæ lotu & & [m/s] \\
+\( h \) & Wysokoœæ lotu & & [m] \\
+\( q \) & Ciœnienie dynamiczne & & [Pa] \\
+\( m \) & Zgeneralizowana masa (zginania) & & [kg] \\
+\( I_\theta \) & Moment bezw³adnoœci & & [kg*m\(^2\)] \\
+\( K_h \) & Sztywnoœæ na zginanie & & [N/m] \\
+\( K_\theta \) & Sztywnoœæ na skrêcanie & & [Nm/rad] \\
+\( \omega_h \) & Czêstoœæ drgañ giêtnych & & [rad/s] \\
+\( \omega_\theta \) & Czêstoœæ drgañ skrêtnych & & [rad/s] \\
+\( \zeta_h \) & Wsp. t³umienia zginania & & [-] \\
+\( \zeta_\theta \) & Wsp. t³umienia skrêcania & & [-] \\
+\(  \) & & & [] \\
+\(  \) & & & [] \\
+\(  \) & & & [] \\
+\(  \) & & & [] \\
+\(  \) & & & [] \\
+\(  \) & & & [] \\
+\hline
+\end{tabular}
+\caption{Przyk³adowe wartoœci parametrów modelu dla nominalnych warunków lotu}
+\end{table}
+\label{TabParametrySkrzydla}
+\end{center}
