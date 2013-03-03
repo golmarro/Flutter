@@ -1,1 +1,2 @@
 structural model - model strukturalny, równwnia dynamiki struktury ???
+stability and control derivatives - pochodne stabilnoœciowe i sterowania

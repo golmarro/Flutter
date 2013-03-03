@@ -4,6 +4,36 @@
 \fancyhead[RE]{\slshape \rightmark} 
 
 \section{Zjawisko flutteru}
+Flutter jest niebezpiecznym zjawiskiem spotykanym w elastycznych strukturach poddanych si³om aerodynamicznym. Flutter wystêpuje jako rezultat interakcji miêdzy si³ami aerodynamicznymi, sztywnoœci oraz bezw³adnoœci. 
 
+W miarê wzrostu prêdkoœci op³ywu powietrza, t³umienie strukturalne mo¿e byæ niewystarczaj¹ce aby rozproszyæ energiê dostarczan¹ z zewn¹trz. Jest to rodzaj drgañ samowzbudnych, czyli wymuszonych nieoscylacyjn¹ si³¹ zewnêtrzn¹, sterowan¹ przez sam uk³ad \ref{DUL}. Szybko narastaj¹ca amplituda oscylacji mo¿e w krótkim czasie doprowadziæ do zniszczenia konstrukcji.
+
+Klasyczny typ flutteru, nazywany giêtno-skrêtnym, przedstawiono na rys.~\ref{RysKlasycznyFlutter}. Jest to wêdrówka profilu w pewnej reprezentacyjnej odleg³oœci od nasady skrzyd³a. Najistotniejsz¹ cech¹ klasycznego flutteru jest opóŸnienie zginania wzglêdem skrêcania, które wynosi w przybli¿eniu \(90^\circ\).
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{KlasycznyFlutter.png}
+\caption{Wêdrówka profilu w klasycznym zjawisku flutteru.}
+\label{RysKlasycznyFlutter}
+\end{figure}
+
+Tylko kombinacja dwóch postaci ruchu - skrêcania i zginania prowadzi do powstania flutteru. Ze wzrostem prêdkoœci czêstotliwoœci tych postaci zbiegaj¹ siê, aby objawiæ siê jako jedna niestabilna postaæ ruchu po przekroczeniu prêdkoœci krytycznej.
+
+Fundamentalny model opisuj¹cy zjawisko posiada dwa stopnie swobody - Rys.~\ref{RysPodstawowyModel}. Sprê¿yna 1 reprezentuje sztywnoœæ na zginanie, sprê¿yna 2 - sztywnoœæ na skrêcanie. Kszta³t profilu determinuje po³o¿enie œrodka aerodynamicznego (AC), natomiast po³o¿enie œrodka ciê¿koœci (CG) wynika z rozk³adu masy w skrzydle. Po³o¿enie œrodka si³ poprzecznych (EA) zale¿y od budowy skrzyd³a.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth/2]{PodstawowyModel.png}
+\caption{Podstawowy model do opisu zjawiska flutteru.}
+\label{RysPodstawowyModel}
+\end{figure}
+
+Poza omówionym rodzajem flutteru wystêpuj¹ jeszcze inne (np. flutter panelowy, galopowanie, buzz), ale nie stanowi¹ one tematu niniejszej pracy.
 
 \section{Aktywny system t³umienia flutteru}
+Podstawowym zadaniem projektanta jest uzyskanie takiej konstrukcji, w której flutter w ogóle nie wyst¹pi, lub prêdkoœæ przy której mo¿e wyst¹piæ bêdzie odpowiednio oddalona od maksymalnej prêdkoœci osi¹ganej przez samolot. Istnieje wiele sposobów radzenia sobie z tym problemem np. odpowiednie wywa¿enie skrzyd³a, zwiêkszenie sztywnoœci konstrukcji, specyficzna zmiana w³aœciwoœci aerodynamicznych. Te statyczne metody, chocia¿ bardzo skuteczne, maj¹ jednak wspóln¹ wadê - zawsze wi¹¿¹ siê ze wzrostem masy.
+
+Wymagania wspó³czesnego lotnictwa zmuszaj¹ konstruktorów do minimalizowania masy struktury samolotu dla osi¹gniêcia coraz wiêkszej efektywnoœci. Mniejsza masa przy zachowaniu smuk³oœci sylwetki prowadzi niechybnie do mo¿liwoœci wyst¹pienia flutteru, a statyczne metody jego zapobiegania nie s¹ odpowiedzi¹ na problem. Kluczowym kierunkiem wysoko wydajnych konstrukcji jest zastosowanie aktywnego t³umienia - czyli wykorzystania istniej¹cych powierzchni sterowych do zapewnienia dynamicznej stabilnoœci~\ref{WaszakRobust}.
+
+Skutecznoœæ takiego podejœcia zosta³a udowodniona (\ref{WaszakRobust}, \ref{WaszakFlutter} TODO - jeszcze jakieœ Ÿród³a).
+
