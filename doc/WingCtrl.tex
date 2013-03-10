@@ -54,3 +54,21 @@ dla dowolnego sygna³u wejœciowego: \\*
 
 Kryteria w takiej formie mog¹ zostaæ bezpoœrednio prze³o¿one na pojêcia zwi¹zane z robust control. Pierwsze kryterium nazywa siê odporn¹ stabilnoœci¹, pozosta³e dwa - odpornymi osi¹gami. Odporne osi¹gi mo¿na zwiêŸle przedstawiæ wykorzystuj¹c normê \(H_{\infty}\). \\*
 \(|\delta_c|_{\infty} < 0,3 \delta_{max} \) ????
+
+\section{Kryteria porównawcze}
+Oprócz za³o¿eñ projektowych, które regulator musi spe³niæ potrzebny bêdzie równie¿ zestaw kryteriów, które u³atwi¹ obiektywn¹ ocenê jakoœci regulacji.
+
+Podstawowe kryterium pozwala odpowiedzieæ na pytanie "Jaki jest zysk?", czyli o ile procentowo zdo³aliœmy zwiêkszyæ prêdkoœæ krytyczn¹ uk³adu \( \frac{U_{fcl}}{U_{fol}} \), dla nominalnych warunków pracy (patrz Tabela~(TODO nominalne warunki pracy).
+
+Kolejne kryteria odpowiadaj¹ na pytanie "Jakim kosztem?", czyli jak du¿y sygna³ steruj¹cy jest potrzebny aby zapewniæ stabilnoœæ uk³adu.
+
+Drugie kryterium okreœla iloœciowi wysi³ek sterowania wzglêdem turbulencji liczony jako œrednia kwadratowa sygna³u wyjœciowego regulatora \(\delta_c(t)\) dla ustalonego przebiegu prêdkoœci pionowej turbulencji \( w_g(t) \):
+
+\begin{equation}
+\Delta_{turb} = \sqrt{\frac{1}{T}}\int{\left[\delta_c(t) \right]^2} dt
+\label{EqWysilekSterowania}
+\end{equation}
+
+Kolejne kryterium dotyczy wysi³ku sterowania ze wzglêdu na zewnêtrzny sygna³ steruj¹cy \( \delta_p(t) \) w postaci skoku jednostkowego o wartoœci 70\% maksymalnego wychylenia powierzchni sterowej \( ( \delta_p = 0,7 \cdot \delta_{max} ) \).
+
+Poza tym wa¿n¹ miar¹ jakoœci jest wartoœæ maksymalna modu³u sygna³u steruj¹cego \( \max( \left| \delta_c(t) \right| ) \).

@@ -29,3 +29,22 @@ plot(w/(2*pi), abs(H));
 subplot(2,1,2); hold on;
 plot(w/(2*pi), 180/pi*angle(H));
 
+%% Analysis
+K = [-1 0];
+
+analysis = LinearAnalysis(K);
+analysis.resetDefaultConditions();
+analysis.turbulenceAnalysis();
+U1 = analysis.U0;
+
+analysis.lineColor = 'r';
+analysis.resetDefaultConditions();
+Uf = analysis.wing.getFlutterSpeed();
+analysis.U0 = Uf;
+analysis.turbulenceAnalysis();
+U2 = analysis.U0;
+
+l1 = sprintf('U = %.1f m/s (%.0f%% U_f)', U1, U1/Uf * 100);
+l2 = sprintf('U = %.1f m/s (%.0f%% U_f)', U2, U2/Uf * 100);
+legend(l1,l2);
+

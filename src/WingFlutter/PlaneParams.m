@@ -4,7 +4,7 @@ classdef PlaneParams < handle
     
     properties
         fuelLevel = 0.5             % [-]
-        payloadLevel = 0            % [-]
+        payloadLevel = 0.5          % [-]
         wingParams = []
     end
     
@@ -68,6 +68,11 @@ classdef PlaneParams < handle
         function set.payloadLevel(this, val)
             this.payloadLevel = val;
             this.setParams();
+        end
+        
+        function reset(this)        % Reset to default params
+            this.fuelLevel = 0.5;
+            this.payloadLevel = 0.5;
         end
         
         function setParams(this)

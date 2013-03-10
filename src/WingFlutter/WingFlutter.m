@@ -392,7 +392,7 @@ classdef WingFlutter < handle
             if ~exist('right','var')
                 right = this.atmosphere.c*2;
             end
-            this.U0 = 10;
+            this.U0 = left;
             assert(this.isStable());
             this.U0 = right;
             assert(~this.isStable());
