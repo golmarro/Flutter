@@ -3,9 +3,9 @@
 % Simplest possible controller delta_c = -theta_dot
 clear
 figure
-K = [-1 0];
+K = [0 -1 0 0];
 analysis = LinearAnalysis(K);
-OLanalysis = LinearAnalysis([0 0]);
+OLanalysis = LinearAnalysis([0 0 0 0]);
 ol = analysis.OL;
 cl = analysis.CL;
 
@@ -45,7 +45,7 @@ legend(l0,l1,l2);
 %% Turbulence analysis
 clear
 figure
-K = [-1 0];
+K = [0 -1 0 0];
 
 analysis = LinearAnalysis(K);
 analysis.resetDefaultConditions();
@@ -65,7 +65,7 @@ legend(l1,l2);
 
 %% Turbulence rms analysis - Tune
 clear
-K = [-1 0];
+K = [0 -1 0 0];
 analysis = LinearAnalysis(K);
 fprintf('Analiza wrazliwosci na turbulencje')
 fprintf('Porowannie wariancji wynikow w zaleznosci od czasu symulacji')
@@ -77,13 +77,13 @@ analysis.turbulenceRmsAnalysisTune(4);
 
 %% Full analysis
 clear
-K = [-1 0];
+K = [0 -1 0 0];
 analysis = LinearAnalysis(K);
 
 f1 = figure; hold on;
 f2 = figure; hold on;
 analysis.fullAnalysis(f1, f2);
 
-K = [0 -1];
+K = [-1 0 0 0];
 analysis = LinearAnalysis(K);
 analysis.fullAnalysis(f1, f2);

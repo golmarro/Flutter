@@ -72,3 +72,41 @@ Drugie kryterium okreœla iloœciowi wysi³ek sterowania wzglêdem turbulencji liczo
 Kolejne kryterium dotyczy wysi³ku sterowania ze wzglêdu na zewnêtrzny sygna³ steruj¹cy \( \delta_p(t) \) w postaci skoku jednostkowego o wartoœci 70\% maksymalnego wychylenia powierzchni sterowej \( ( \delta_p = 0,7 \cdot \delta_{max} ) \).
 
 Poza tym wa¿n¹ miar¹ jakoœci jest wartoœæ maksymalna modu³u sygna³u steruj¹cego \( \max( \left| \delta_c(t) \right| ) \).
+
+\section{Klasyczne podejœcie}
+Zaprojektowanie jednowymiarowego regulatora przy wykorzystaniu klasycznych technik syntezy prawa sterowania pozwala szybko uzyskaæ wyniki stanowi¹ce punkt odniesienia do dalszych prac.
+
+Z podstawowej analizy uk³adu otwartego mo¿na siê szybko zorientowaæ, ¿e potrzebne jest dodatnie sprzê¿enie zwrotne (wynika to z przyjêtej konwekcji znaków i chocia¿ jest to niestandardowa konwencja, autor postanowi³ zastosowaæ j¹ dla uproszczenia analizy porównawczej).
+
+Standardowo u¿ywanymi przyrz¹dami pomiarowymi w praktycznych systemach t³umienia flutteru s¹ przyspieszeniomierze. Odpowiednie kombinacje liniowe sygna³ów z dwóch przyspieszeniomierzy umieszczonych na krawêdziach skrzyd³a (na wysokoœci profilu odniesienia) odpowiadaj¹ \( \ddot{h(t)} \) i \( \ddot{\theta(t)} \).
+
+Zgodnie z [\ref{Vivek}] w przypadku jednowymiarowego regulatora najlepsze efekty uzyskujemy poprzez wykorzystanie do sterowania sygna³u prêdkoœci k¹towej skrêcania. \( \dot{\theta(t)} \) uzyskamy bezpoœrednio poprzez ca³kowanie odpowiedniej kombinacji linowej sygna³ów wyjœciowych przyspieszeniomierzy. Problemem przyspieszeniomierzy jest jednak wystêpowanie sta³ego, lub wolnozmiennego b³êdu, który zosta³by wzmocniony przez element ca³kuj¹cy. Do pozbycia siê go zastosowano filtr washout (TODO) w postaci \( s/(s+a) \), co razem z elementem ca³kuj¹cym daje lag compensator (TODO) \( a/(s+a) \).
+
+Filtr washout dobrano tak, aby mia³ minimalny wp³yw na sygna³ pomiarowy w okolicach czêstotliwoœci flutteru \( f_f = 6,67 Hz \) - czêstotliwoœæ kompensatora jest o rz¹d wielkoœci mniejsza od \( f_f \). \(f_w = 0,667 Hz, \omega_w = 4.19 rad/s \).
+
+\begin{equation}
+F_w(s) = \frac{4,19}{s + 4,19}
+\end{equation}
+
+Wartoœæ wzmocnienia wybrano korzystaj¹c z metody linii pierwiastkowej dla uk³adu \( F_w(s) \cdot G_{\dot{\theta}}(s) \). Najwiêksze t³umienie osi¹gniêto dla wzmocnienia \( K= 0,2 \).
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{WingCtrlClassicRLocus.eps}
+\caption{Linia pierwiastkowa uk³adu z filtrem \( F_w(s) \cdot G_{\dot{\theta}}(s) \).}
+\label{RysWingCtrlClassicRLocus}
+\end{figure}
+
+Poniewa¿ uk³ad otwarty posiada dwa niestabilne pierwiastki, wykres Nyquista odpowiedzi amplitudowo-fazowej uk³adu powinien otoczyæ punk (-1,0) jednokrotnie w kierunku przeciwnym do ruchu wskazówek zegara. Rysunek~\ref{RysWingCtrlNyquist} zapewnia, ¿e warunek ten jest spe³niony i uk³ad zamkniêty jest stabilny. Dodatkowo, na przybli¿eniu okolic punku (-1,0) mo¿emy odczytaæ wartoœci marginesów stabilnoœci, które okazuj¹ siê byæ zupe³nie zadowalaj¹ce. Margines fazy poni¿ej czêstotliwoœci flutteru wynosi -82 stopnie, natomiast powy¿ej 38,4 stopnie. Najmniejszy margines wzmocnienia wynosi 7,18 dB.
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{WingCtrlNyquist2.eps}
+\caption{Charakterystyka amlitudowo-fazowa uk³adu otwartego, zbli¿enie okolic punktu (-1,0) po prawej.}
+\label{RysWingCtrlNyquist}
+\end{figure}
+%Do dodania jakoœ obok z lewej:
+%WingCtrlNyquist1
+
+Wstêpna analiza pokaza³a, ¿e klasyczny regulator o postaci \( K_c(s) = -0,2 \frac{4,19}{s + 4,19} \) mo¿e zapewniæ stabilnoœæ uk³adu do \(149 \% U_{fol}\). Pe³na analiza uk³adu zamkniêtego zosta³a umieszczona w dalszej czêœci rozdzia³u.
+
+\section{Regulator LQG}

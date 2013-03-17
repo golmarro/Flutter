@@ -159,7 +159,9 @@ classdef WingFlutter < handle
             C = blkdiag(C, turb.C);
             D = [zeros(5,2); [zeros(2,1) turb.D]];
                  
-            
+            % Add accelerometers outputs
+            C = [C; A(3:4,:)];
+            D = [D; B(3:4,:)];
             % ss([-2*zeta*omega -omega^2; 1 0],[k*omega^2; 0], [0 1], 0);
             
             model = ss(A, B, C, D);
@@ -181,7 +183,9 @@ classdef WingFlutter < handle
                                 'theta_dot [rad/s]';
                                 'delta [rad]      ';
                                 'w [m/s]          ';
-                                'w dot [m/s]      '];
+                                'w dot [m/s]      ';
+                                'h_dd [m/s2]      ';
+                                'theta_dd [rad/s2 '];
         end
         
         function model = getModelSS(this)

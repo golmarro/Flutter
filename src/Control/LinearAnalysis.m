@@ -19,8 +19,10 @@ classdef LinearAnalysis < handle
         out_delta       = 5;
         out_w           = 6;
         out_w_dot       = 7;
+        out_h_dd        = 8;
+        out_theta_dd    = 9;
         % additionally in closed-loop
-        out_delta_c     = 8;
+        out_delta_c     = 10;
         
     end
         
@@ -67,8 +69,18 @@ classdef LinearAnalysis < handle
                 C = [this.OL.C; zeros(1, size(this.OL.C,2))];
                 D = [this.OL.D; 1 0];
                 sys = ss(this.OL.a, this.OL.b, C, D);
+                sys.InputName = this.OL.InputName;
+                sys.OutputName = [this.OL.OutputName;
+                                  'delta_c [rad]    '];
                 
-                val = feedback(sys, this.K, 1, 3:4);
+                
+                % val = feedback(sys, this.K, 1, 3:4);
+                if(size(this.K,2) == 4)
+                    val = feedback(sys, this.K, 1, ...
+                        [this.out_h_dot this.out_theta_dot this.out_h_dd this.out_theta_dd]);
+                else
+                    val = feedback(sys, this.K, 'name');
+                end
                 
                 val.InputName = ['delta_p[rad]';
                                  'turb in     '];
@@ -79,6 +91,8 @@ classdef LinearAnalysis < handle
                                   'delta [rad]      ';
                                   'w [m/s]          ';
                                   'w dot [m/s]      ';
+                                  'h_dd [m/s2]      ';
+                                  'theta_dd [rad/s2 ';
                                   'delta_c [rad]    '];
             else
                 warning('RG:all','No controller specified yet K = []');
@@ -136,7 +150,7 @@ classdef LinearAnalysis < handle
             % delta (delta_p)
             % delta_p -> delta_c
             % this.resetDefaultConditions();
-            [y, t] = step(0.7 * this.deltaMax * this.CL(:,this.in_delta_p), this.deltaStepTime);
+            [y, t] = step(this.CL(:,this.in_delta_p) * 0.7 * this.deltaMax, this.deltaStepTime);
             %y = y - 0.7 * this.deltaMax;
             delta = y(:,this.out_delta_c);
             delta_dot = (delta - [delta(1); delta(1:end-1)]) ./ (t - [t(2:end); t(end) + t(end) - t(end-1) ]);
@@ -144,7 +158,7 @@ classdef LinearAnalysis < handle
             
             if nargout == 0
                 subplot(2,2,1); hold on;
-                plot(t,(y(:,8) - 0.7*this.deltaMax)*180/pi, this.lineFormat);
+                plot(t,(y(:,this.out_delta_c) - 0.7*this.deltaMax)*180/pi, this.lineFormat);
                 xlabel('t [s]');
                 ylabel('\delta_c [deg]');
                 title('Control signal');
@@ -156,10 +170,10 @@ classdef LinearAnalysis < handle
                 title('Control signal effort');
 
                 subplot(2,2,3); hold on;
-                plot(t, y(:,1), this.lineFormat); ylabel('h [m]'); xlabel('t [s]');
+                plot(t, y(:,this.out_h), this.lineFormat); ylabel('h [m]'); xlabel('t [s]');
 
                 subplot(2,2,4); hold on;
-                plot(t, y(:,2)*180/pi, this.lineFormat); ylabel('\theta [deg]'); xlabel('t [s]');
+                plot(t, y(:,this.out_theta)*180/pi, this.lineFormat); ylabel('\theta [deg]'); xlabel('t [s]');
                 
                 fprintf('RMS of delta_dot signal due to 0.7 delta_max input: %f [rad/s]\n', rms(end));
             end
@@ -215,16 +229,16 @@ classdef LinearAnalysis < handle
             
             if nargout == 0
                 subplot(2,2,1); hold on;
-                plot(t, y(:,6), this.lineFormat); ylabel('w [m/s]'); xlabel('t [s]');
+                plot(t, y(:,this.out_w), this.lineFormat); ylabel('w [m/s]'); xlabel('t [s]');
 
                 subplot(2,2,2); hold on;
-                plot(t,y(:,8)*180/pi, this.lineFormat); ylabel('\delta_c [deg]'); xlabel('t [s]');
+                plot(t,y(:,this.out_delta_c)*180/pi, this.lineFormat); ylabel('\delta_c [deg]'); xlabel('t [s]');
 
                 subplot(2,2,3); hold on;
-                plot(t, y(:,1), this.lineFormat); ylabel('h [m]'); xlabel('t [s]');
+                plot(t, y(:,this.out_h), this.lineFormat); ylabel('h [m]'); xlabel('t [s]');
 
                 subplot(2,2,4); hold on;
-                plot(t, y(:,2)*180/pi, this.lineFormat); ylabel('\theta [deg]'); xlabel('t [s]');
+                plot(t, y(:,this.out_theta)*180/pi, this.lineFormat); ylabel('\theta [deg]'); xlabel('t [s]');
                 
                 fprintf('RMS of delta signal due to turbulence input: %f\n', rms);
             end

@@ -7,7 +7,7 @@ descriptions = {};
 colors = {'k','b','r','g','y'};
 
 % open-loop
-controllers{end+1} = [0 0];
+controllers{end+1} = [0 0 0 0];
 descriptions{end+1} = 'open-loop';
 
 [k descr] = classicsisocontroller();
