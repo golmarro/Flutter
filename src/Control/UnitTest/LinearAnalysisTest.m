@@ -33,13 +33,6 @@ l1 = sprintf('closed-loop U = %.1f m/s (%.0f%% U_{fol})', U1, U1/Ufol * 100);
 l2 = sprintf('closed-loop U = %.1f m/s (%.0f%% U_{fol})', U2, U2/Ufol * 100);
 legend(l0,l1,l2);
 
-%% RMS analysis of control signal due to pilot command on delta_p
-clear
-figure
-K = [-1 0];
-analysis = LinearAnalysis(K);
-analysis.controlSignalRmsAnalysis();
-
 %% RMS depends on simulation time when the signal converges to zero
 
 % for t = 0.05:0.05:1
@@ -56,14 +49,14 @@ K = [-1 0];
 
 analysis = LinearAnalysis(K);
 analysis.resetDefaultConditions();
-analysis.turbulenceAnalysis();
+analysis.turbulenceAnalysis(1);
 U1 = analysis.U0;
 
 analysis.lineColor = 'r';
 analysis.resetDefaultConditions();
 Uf = analysis.wing.getFlutterSpeed();
 analysis.U0 = Uf;
-analysis.turbulenceAnalysis();
+analysis.turbulenceAnalysis(1);
 U2 = analysis.U0;
 
 l1 = sprintf('U = %.1f m/s (%.0f%% U_f)', U1, U1/Uf * 100);
@@ -74,20 +67,13 @@ legend(l1,l2);
 clear
 K = [-1 0];
 analysis = LinearAnalysis(K);
+fprintf('Analiza wrazliwosci na turbulencje')
+fprintf('Porowannie wariancji wynikow w zaleznosci od czasu symulacji')
 analysis.turbulenceRmsAnalysisTune(1);
 analysis.turbulenceRmsAnalysisTune(2);
 analysis.turbulenceRmsAnalysisTune(3);
 analysis.turbulenceRmsAnalysisTune(4);
 
-%% Turbulence rms analysis
-
-clear
-figure
-K = [-1 0];
-
-analysis = LinearAnalysis(K);
-
-analysis.turbulenceRmsAnalysis
 
 %% Full analysis
 clear

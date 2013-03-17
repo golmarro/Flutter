@@ -91,6 +91,60 @@ title('Stall speed and flutter speed versus altitude')
 legend('Load level = 0', 'Load level = 50%', 'Load level = 100%');
 grid
 
+%% Cisnienie dynamiczne flutteru dla roznych wysokosci
+clear
+figure; hold on;
+params = WingParams();
+wing = WingFlutter(params);
+plane = PlaneParams(params);
+plane.fuelLevel = 0;
+[h Uf qf] = wing.flutterSpeedVersusAlt();
+plot(qf, h, 'k');
+
+plane.fuelLevel = 0.5;
+disp(params);
+[h Uf qf] = wing.flutterSpeedVersusAlt();
+plot(qf, h, 'r');
+
+plane.fuelLevel = 1;
+disp(params);
+[h Uf qf] = wing.flutterSpeedVersusAlt();
+plot(qf, h, 'g');
+legend('fuel level = 0%', 'fuel level = 30%', 'fuel level = 100%');
+
+% Predkosc minimalna (zakladamy alpha max = 12 deg)
+clear;
+params = WingParams();
+plane = PlaneParams();
+wing = WingFlutter(params);
+wing.isGravity = 'on';
+%figure; 
+hold on;
+h = 0:100:11000;
+Ustall = zeros(size(h));
+Qstall = zeros(size(h));
+
+for loadLevel = [0 0.5 1]
+    plane.fuelLevel = loadLevel;
+    plane.payloadLevel = loadLevel;
+    
+    for i = 1:length(h)    % [m]
+        wing.atmosphere.h = h(i);
+        Ustall(i) = sqrt(2 * (plane.totalMass/2 * wing.g) ./(wing.atmosphere.rho*wing.params.S*wing.params.alphaMax*wing.params.CLalpha));
+        Qstall(i) = 0.5*wing.atmosphere.rho*Ustall(i)^2;
+    end
+    
+    plot(Qstall, h);
+end
+
+xlabel('Dynamic Pressure q [Pa]');
+ylabel('Altitude [m]');
+title('Stall pressure and flutter pressure versus altitude')
+legend('Load level = 0', 'Load level = 50%', 'Load level = 100%');
+grid
+
+
+
 %% Linia pierwiastkowa wzgledem predkosci dla roznych wysokosci
 clear
 figure

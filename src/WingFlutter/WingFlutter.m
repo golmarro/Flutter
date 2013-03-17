@@ -410,21 +410,25 @@ classdef WingFlutter < handle
             Uf = (right+left)/2;
         end
         
-        function flutterSpeedVersusAlt(this, alt)
+        function [alt, Uf, qf] = flutterSpeedVersusAlt(this, alt)
             if ~exist('alt','var')
                 alt = 0:1000:11000;
             end
             Uf = zeros(1, length(alt));
+            qf = zeros(1, length(alt));
             lastU = 30;
             for i = 1:length(alt)
                 this.atmosphere.h = alt(i);
                 Uf(i) = this.getFlutterSpeed(lastU);
+                qf(i) = 0.5*this.atmosphere.rho*Uf(i)^2;
                 lastU = Uf(i);
             end
-            plot(Uf*3.6, alt, this.lineFormat);
-            ylabel('Altitude [m]');
-            xlabel('Flutter speed [km/h]')
-            title('Flutter speed versus altitude');
+            if nargout == 0
+                plot(Uf*3.6, alt, this.lineFormat);
+                ylabel('Altitude [m]');
+                xlabel('Flutter speed [km/h]')
+                title('Flutter speed versus altitude');
+            end
         end
         
         function val = get.actuator(this)
