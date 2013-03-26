@@ -37,3 +37,75 @@ Wymagania wspó³czesnego lotnictwa zmuszaj¹ konstruktorów do minimalizowania masy
 
 Skutecznoœæ takiego podejœcia zosta³a udowodniona (\ref{WaszakRobust}, \ref{WaszakFlutter} TODO - jeszcze jakieœ Ÿród³a).
 
+
+
+
+\chapter{Podstawy matematyczne}
+
+\section{LTI}
+
+\section{Macierz transmitancji}
+Dowolny model liniowy o skoñczonej liczbie wymiarów mo¿na przedstawiæ w postaci macierzy transmitancji \(G(s)\), któr¹ w sposób bezpoœredni otrzymujemy z opisu w przestrzeni stanów:
+
+\begin{equation}
+G(s) = C(sI - A)^{-1} B + D
+\end{equation}
+
+\section{Charakterystyka czêstotliwoœciowa uk³adów MIMO}
+W przypadku systemów jednowymiarowych, analiza w dziedzinie czêstotliwoœci sprowadza siê do okreœlenia wzmocnienia i przesuniêcia fazowego odpowiedzi uk³adu na sinusoidalne wymuszenie. Charakterystykê czêstotliwoœciow¹ uk³adu otrzymujemy bezpoœrednio podstawiaj¹c \( s = j \omega \)do transmitancji operatorowej.
+
+Gdy mamy do czynienia z systemem wielowymiarowym, na charakter odpowiedzi czêstotliwoœciowej maj¹ wp³yw wzglêdne wielkoœci i przesuniêcia fazowe poszczególnych sk³adników wektora wejœciowego. Sygna³ wejœciowy mo¿emy  przedstawiæ nastêpuj¹co: 
+
+\begin{equation}
+u(t) = \tilde{u}e^{j \omega t},
+\end{equation}
+
+gdzie \(\tilde{u}\) to ustalony wektor wartoœci zespolonych, zwany w skrócie \emph{kierunkiem} sygna³u wejœciowego. Poniewa¿ pozwalamy, aby wektor \( \tilde{u} \) by³ zespolony, poszczególne sk³adowe wektora \( u(t) \) mog¹ byæ w dowolnej fazie wzglêdem pozosta³ych.
+
+Odpowiedzi¹ uk³adu \( G(s) \) na tak skonstruowane wejœcie, bêdzie 
+
+\begin{equation}
+y(t) = \tilde{y} e^{j \omega t},
+\end{equation}
+
+gdzie \( \tilde{y} = G(j \omega) \tilde{u} \). 
+
+Jak wynika z powy¿szego rozumowania, analiza uk³adów wielowymiarowych jest dodatkowo utrudniona z tego  wzglêdu, ¿e na wzmocnienie uk³adu wp³ywa nie tylko czêstotliwoœæ sygna³u wejœciowego, ale równie¿ wielkoœæ i faza jego poszczególnych sk³adowych, czyli kierunek.
+
+Bardzo czêsto chcielibyœmy znaæ odpowiedŸ na pytanie - dla jakiego ograniczonego sygna³u wejœciowego dla danej czêstotliwoœci otrzymamy najwiêksze wzmocnienie uk³adu? W skrócie chcielibyœmy znaæ najgorszy przypadek. Z pomoc¹ w tej sytuacji przychodzi narzêdzie matematyczne zwane dekompozycj¹ SVD.
+
+\section{Dekompozycja macierzy wed³ug wartoœci osobliwych}
+% Ewewntualnie krótszy tytu³ {Dekompozycja SVD}
+Bardzo ciekawym narzêdziem do analizy systemów wielowymiarowych (MIMO) w dziedzinie czêstotliwoœci jest dekompozycja macierzy wed³ug wartoœci osobliwych (dekompozycja SVD, od ang. Singular Value Decompozition)
+
+Definicja
+Dowolnej macierzy \(A\) rzêdu k, mo¿emy przypisaæ k dodatnich wartoœci oznaczanymi jako \( \sigma_i(A) \) lub w skrócie \( \sigma_i\). S¹ to wartoœci osobliwe macierzy \(A\) obliczane jako dodatni pierwiastek z wartoœci w³asnej \(A^HA\) , lub \(AA^H\), to jest
+\begin{equation}
+\sigma_i(A) = \sqrt{\lambda_i(A^HA)} > 0, i = 1...k,
+\end{equation}
+gdzie \( \lambda_i(\cdot) \) oznacza i-t¹ niezerow¹ wartoœæ w³asn¹. Przyjê³o siê szeregowaæ wartoœci osobliwe malej¹co
+\begin{equation}
+\labda_{\max} = \lambda_1 \geq \lambda_2 \geq ... \geq \lambda_k = \lambda_{\min}
+\end{equation}
+
+Dla pewnej czêstotliwoœci \( \omega \) (macierz odpowiedzi czêstotliwoœciowej ??) otrzymujemy podstawiaj¹c \( s = j \omega \)  \( G(s) \). Dokonuj¹c dekompozycji SVD macierzy \( G(j \omega) \) otrzymamy:
+
+\begin{equation}
+G(j \omega)= U \Sigma V',
+\end{equation}
+
+lub po przekszta³ceniu: 
+
+\begin{equation}
+G(j \omega) V = U \Sigma,
+\end{equation}
+
+gdzie \( \Sigma \) to diagonalna macierz zawieraj¹ca na swojej przek¹tnej kolejne wartoœci osobliwe. Dla dowolnego \(i = 1...n\) zachodzi zale¿noœæ:
+
+\begin{equation}
+u_i \cdot \sigma_i = G(j \omega) \cdot v_i,
+\end{equation}
+
+gdzie \( u_i \) to i-ty wektor macierzy \(U\), a \(v_i\) - i-ty wektor macierzy V. Wektory \( u_i i v_i \) nale¿y interpretowaæ jako kierunki odpowiednio sygna³u wyjœciowego i wejœciowego, natomiast \( \sigma_i \) jest wzmocnieniem uk³adu. W szczególnoœci, dla \( i = 1 \) otrzymamy maksymalne wzmocnienie uk³adu i sygna³ wymuszaj¹cy prowadz¹cy do tego wzmocnienia, czyli w skrócie \emph{najgorszy przypadek}.
+
+(TODO przyk³ad - jakiœ ³adny wykres sigma_max i postaci sygna³u wejœciowego i wyjœciowego)

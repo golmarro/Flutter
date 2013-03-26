@@ -3,3 +3,5 @@ stability and control derivatives - pochodne stabilnoœciowe i sterowania
 root mean square (RMS) - œrednia kwadratowa
 open-loop - otwarta pêtla (sprzê¿enia zwrotnego) / uk³ad otwarty
 closed-loop - zamkniêta pêtla (sprzê¿enia zwrotnego) / uk³ad zamkniêty
+SVD - Singular Value Decomposition - Rozk³ad (macierzy) ze wzglêdu na wartoœci osobliwe.
+          - rozk³ad wed³ug wartoœci szczególnych, rozk³ad SVD, dekompozycja na wartoœci singularne
