@@ -5,3 +5,10 @@ open-loop - otwarta pêtla (sprzê¿enia zwrotnego) / uk³ad otwarty
 closed-loop - zamkniêta pêtla (sprzê¿enia zwrotnego) / uk³ad zamkniêty
 SVD - Singular Value Decomposition - Rozk³ad (macierzy) ze wzglêdu na wartoœci osobliwe.
           - rozk³ad wed³ug wartoœci szczególnych, rozk³ad SVD, dekompozycja na wartoœci singularne
+singular value - wartoœæ osobliwa, wartoœæ szczególna
+
+wektor zespolony czy wektor wartoœci zespolonych
+
+kierunek maksymalnego wzmocnienia - u1
+
+sygna³ turbulencji (eta)

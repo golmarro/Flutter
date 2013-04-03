@@ -92,7 +92,7 @@ K.OutputNames = sys.InputNames(1);
 
 analysis = LinearAnalysis(K);
 analysis.resetDefaultConditions();
-analysis.turbulenceAnalysis();
+analysis.turbulenceAnalysis(1);
 U1 = analysis.U0;
 
 analysis.lineColor = 'r';

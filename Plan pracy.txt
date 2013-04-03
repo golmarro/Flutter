@@ -10,21 +10,73 @@ flutteru.
 
 ----------------------------------------------------------
 
-Rozdzia³ 1. Wsêp
+Cel i zakres pracy
+Zakres zadania - system t³umienia flutteru z wykorzystaniem technik robust control
+Struktura pracy
+
+Rozdzia³ 1. Wstêp
 1. Ogólny opis zjawiska flutteru. 
 2. OdpowiedŸ na pytanie dlaczego warto stosowaæ aktywne t³umienie zamiast 
-pasywnych rozwi¹zañ.
+   pasywnych rozwi¹zañ.
+3. Obiekt sterowania
+   Rozpatrywany obiekt - samolot bezza³ogowy Predator...
+   Model skrzyd³a oparty o BACT, ale odpowiednio przeskalowany
+   W fazie 1. Skrzyd³o
+   W fazie 2. Samolot, model uwzglêdniaj¹cy elastycznoœæ skrzyde³
+4. Odpornoœæ i niepewnoœæ - dlaczego robust control jest odpowiednie dla 
+   tej klasy problemów?
+   Niepewnoœæ uk³adów liniowych - szczególnie du¿a w lotnictwie
+   Model nominalny, obiekt rzeczywisty.
+   Odpornoœæ (odporna stabilnoœæ, odporne w³aœciwoœci dynamiczne)
+   
 
-Rozdzia³ 2. Opis modelu skrzyd³a
-Dwa stopnie swobody (skrêcanie, zginanie), model si³owników, model turbulencji.
+Rozdzia³ 2. Podstawy matematyczne
+1. Uk³ady liniowe stacjonarne (równania stanu, macierz transmitancji)
+   Model niestacjonarny czy rodzina modeli stacjonarnych.
+2. Niepewnoœæ modelu
+   Pochodzenie niepewnoœci (tabelka), strukturalna niestrukturalna
+   3.1 Niepewnoœæ strukturalna
+   3.2 Niepewnoœæ parametryczna (rodzina wielomianów)
+3. Opis niepewnoœci
+   Addytywna, multiplikatywna...??
+4. Metody analizy uk³adów wielowymiarowych
+   2.1 Wartoœæ osobliwa macierzy
+   2.2 Dekompozycja macierzy wed³ug wartoœci osobliwych
+   2.3 Norma Hinf
+   2.4 Strukturalna wartoœæ osobliwa
+5. Metody syntezy odpornych regulatorów
+   5.1 Regulator Hinf
+   5.2 Metoda strukturalnej wartoœci osobliwej
 
-Rozdzia³ 3. Opis modelu samolotu
+Rozdzia³ 3. Model skrzyd³a
+   Model bazuje na [BACT]
+   co w tym rozdziale? (wyprowadzenie modelu i analiza)
+   1. Model matematyczny 
+      Wejœcia, wyjœcia, stany. Dwa stopnie swobody (skrêcanie, zginanie), model si³owników, model turbulencji.
+	   1.1 Równania strukturalne ??
+	   1.2 Aerodynamika quasi-stacjonarna
+	   1.3 Elementy wykonwacze
+	   1.4 Turbulencja
+	   1.5 Pe³ny model w przestrzeni stanów
+   2. Niepewnoœæ modelu skrzyd³a
+       2.1 Wartoœci liczbowe - parametry (zakres zmiennoœci parametrów)
+	   2.2 Niepewnoœæ parametryczna
+	   2.3 Niepewnoœæ multiplikatywna?
+   3. Analiza modelu
+      3.1 Zakres prêdkoœci (minimalna, krytyczna flutteru)
+	      Zale¿y g³ównie od ciœnienia dynamicznego, ale dla czytelnoœci pos³ugujemy 
+		  siê prêdkoœci¹ na wys. nominalnej H = 5000 m
+	  3.2 Postacie ruchu (z wektorów w³asnych macierzy stanu) postaæ typowa dla flutteru
+	  3.3 Linia pierwiastkowa (wzglêdem prêdkoœci dla ró¿nej masy)
+   
+
+Rozdzia³ 4. Model samolotu
 Model sztywny. Postacie ruchu (szybkie, fugoidalne, holendrowanie).
 Model pó³sztywny. Postacie ruchu (inne postacie flutteru? symetryczne/asymetryczne)
 Porównanie modeli (sztywny, pó³sztywny).
 Porównanie modeli szkrzyd³a (sztywno zamocowanego i swobodnego)
 
-Rozdzia³ 4. Aktywne t³umienie flutteru skrzyd³a.
+Rozdzia³ 5. Aktywne t³umienie flutteru skrzyd³a.
 Warunki pracy - zakres zmiennoœci parametrów.
 Wymagania / za³o¿enia projektowe.
 Klasyczne podejœcie.
@@ -35,16 +87,16 @@ Odporny system sterowania.
 Porównanie ró¿nych regulatorów dla skrzyd³a sztywno zamocowanego.
 Sprawdzenie efektywnoœci dla skrzyd³a swobodnego
 
-Rozdzia³ 5. System sterowania (CAS - control augmentation system)
+Rozdzia³ 6. System sterowania (CAS - control augmentation system)
 Wymagania projektowe.
 Kilka klasycznych regulatorów SISO.
 Analiza skutecznoœci
 
-Rozdzia³ 6. Po³¹czenie dwóch regulatorów.
+Rozdzia³ 7. Po³¹czenie dwóch regulatorów.
 Po³¹czenie CAS z rozdzia³u 5. i regulator z rozdz. 4.
 Analiza stabilnoœci i efektywnoœci
 
-Rozdzia³ 7. Kompleksowa synteza regulatora.
+Rozdzia³ 8. Kompleksowa synteza regulatora.
 
 ----------------------------------------------------------
 Za³¹cznik A. 

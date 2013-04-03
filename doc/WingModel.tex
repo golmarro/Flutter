@@ -1,7 +1,7 @@
 \chapter{Model skrzyd³a}
 W poni¿szym rozdziale zosta³ zawarty opis modelu matematycznego skrzyd³a podlegaj¹cego zjawisku flutteru.
 
-Model matematyczny (TODO pó³?)sztywnego skrzyd³a o dwóch stopniach swobody zosta³ opracowany w \ref{WaszakModel}. Zwiêz³y opis modelu zawarto w tabeli \ref{TabModelSkrzydla}. Na model sk³ada siê dynamika strukturalna, aerodynamika quasi-stacjonarna, dynamika elementu wykonawczego oraz prosty model turbulencji.
+Model matematyczny (TODO pó³?)sztywnego skrzyd³a o dwóch stopniach swobody zosta³ opracowany w \cite{WaszakModel}. Zwiêz³y opis modelu zawarto w tabeli \ref{TabModelSkrzydla}. Na model sk³ada siê dynamika strukturalna, aerodynamika quasi-stacjonarna, dynamika elementu wykonawczego oraz prosty model turbulencji.
 
 \begin{center}
 \begin{tabular}[hbt]{|r|r|r|r|}
@@ -74,7 +74,7 @@ M = qS\bar{c}C_M = qS\bar{c} \left[ C_{M_0} +C_{M_\alpha} \alpha + C_{M_\delta} 
 %\caption{Wspó³czynniki aerodynamiczne modelu skrzyd³a.}
 %\end{table}
 
-Jak wspomniano w \ref{WaszakModel}, model aerodynamiki oparty na wspó³czynnikach jest raczej uproszczonym podejœciem, ale w zupe³noœci wystarczaj¹cy aby uchwyciæ najwa¿niejsze cechy zjawiska flutteru.
+Jak wspomniano w \cite{WaszakModel}, model aerodynamiki oparty na wspó³czynnikach jest raczej uproszczonym podejœciem, ale w zupe³noœci wystarczaj¹cy aby uchwyciæ najwa¿niejsze cechy zjawiska flutteru.
 
 Niestacjonarny charakter modelu aerodynamiki wynika z uwzglêdnienia wspó³czynników wzglêdem pochodnych (np. \( C_{L_{\dot\alpha}} \). Poni¿sze wyra¿enie pozwala wyznaczyæ k¹t natarcia \ref{EqKatNatarcia}.
 
@@ -84,7 +84,7 @@ Niestacjonarny charakter modelu aerodynamiki wynika z uwzglêdnienia wspó³czynnik
 \end{equation}
 
 \section{Model elementów wykonawczych}
-Parametry si³ownika zosta³y równie¿ zaczerpniête z \ref{WaszakModel}. Model drugiego rzêdu przedstawia równanie~\ref{EqSilownik}.
+Parametry si³ownika zosta³y równie¿ zaczerpniête z \cite{WaszakModel}. Model drugiego rzêdu przedstawia równanie~\ref{EqSilownik}.
 
 \begin{equation}
 \frac{\delta(s)}{\delta_c(s)} = \frac{k\omega^2}{s^2 + 2\zeta\omega s + \omega^2}
@@ -116,7 +116,7 @@ Istniej¹ dwie praktyczne analityczne reprezentacje widmowej gêstoœci mocy u¿ywan
 \frac{w_g(s)}{\eta_g(s)} = A \frac{s + B}{\left( s + B \right) ^2}
 \label{EqDryden}
 \end{equation}
-Wartoœci kolejnych parametrów zosta³y zaczerpniête z~\ref{WaszakModel} i zosta³y zawarte w tabeli~\ref{TabTurbParams}.
+Wartoœci kolejnych parametrów zosta³y zaczerpniête z~\cite{WaszakModel} i zosta³y zawarte w tabeli~\ref{TabTurbParams}.
 
 % TODO parametry turbulencji
 

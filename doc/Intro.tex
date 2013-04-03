@@ -4,11 +4,14 @@
 \fancyhead[RE]{\slshape \rightmark} 
 
 \section{Zjawisko flutteru}
-Flutter jest niebezpiecznym zjawiskiem spotykanym w elastycznych strukturach poddanych si³om aerodynamicznym. Flutter wystêpuje jako rezultat interakcji miêdzy si³ami aerodynamicznymi, sztywnoœci oraz bezw³adnoœci. 
+Flutter jest niebezpiecznym zjawiskiem spotykanym w elastycznych strukturach poddanych si³om aerodynamicznym. Flutter wystêpuje jako rezultat interakcji miêdzy si³ami aerodynamicznymi, sprê¿ystoœci oraz bezw³adnoœci. 
 
-W miarê wzrostu prêdkoœci op³ywu powietrza, t³umienie strukturalne mo¿e byæ niewystarczaj¹ce aby rozproszyæ energiê dostarczan¹ z zewn¹trz. Jest to rodzaj drgañ samowzbudnych, czyli wymuszonych nieoscylacyjn¹ si³¹ zewnêtrzn¹, sterowan¹ przez sam uk³ad \ref{DUL}. Szybko narastaj¹ca amplituda oscylacji mo¿e w krótkim czasie doprowadziæ do zniszczenia konstrukcji.
+W miarê wzrostu prêdkoœci op³ywu powietrza, t³umienie strukturalne mo¿e byæ niewystarczaj¹ce aby rozproszyæ energiê dostarczan¹ z zewn¹trz. Jest to rodzaj drgañ samowzbudnych, czyli wymuszonych nieoscylacyjn¹ si³¹ zewnêtrzn¹. Szybko narastaj¹ca amplituda oscylacji mo¿e w krótkim czasie doprowadziæ do zniszczenia konstrukcji.
 
-Klasyczny typ flutteru, nazywany giêtno-skrêtnym, przedstawiono na rys.~\ref{RysKlasycznyFlutter}. Jest to wêdrówka profilu w pewnej reprezentacyjnej odleg³oœci od nasady skrzyd³a. Najistotniejsz¹ cech¹ klasycznego flutteru jest opóŸnienie zginania wzglêdem skrêcania, które wynosi w przybli¿eniu \(90^\circ\).
+Klasyczny typ flutteru, nazywany giêtno-skrêtnym, przedstawiono na rys.~\ref{RysKlasycznyFlutter}. Jest to wêdrówka profilu w pewnej reprezentacyjnej odleg³oœci od nasady skrzyd³a. Zniekszta³cenia skrzyd³a zwyczajowo opisuje siê dwiema zmiennymi: \\* 
+\( h [m] \) - strza³ka ugiêcia skrzyd³a \\*
+\( theta [rad] \) - k¹t skrêcenia skrzyd³a. \\*
+Najistotniejsz¹ cech¹ klasycznego flutteru jest opóŸnienie zginania wzglêdem skrêcania, które wynosi w przybli¿eniu \(90^\circ\).
 
 \begin{figure}[hbt]
 \centering
@@ -17,9 +20,9 @@ Klasyczny typ flutteru, nazywany giêtno-skrêtnym, przedstawiono na rys.~\ref{Rys
 \label{RysKlasycznyFlutter}
 \end{figure}
 
-Tylko kombinacja dwóch postaci ruchu - skrêcania i zginania prowadzi do powstania flutteru. Ze wzrostem prêdkoœci czêstotliwoœci tych postaci zbiegaj¹ siê, aby objawiæ siê jako jedna niestabilna postaæ ruchu po przekroczeniu prêdkoœci krytycznej.
+Tylko kombinacja dwóch postaci ruchu - skrêcania i zginania prowadzi do powstania flutteru. Ze wzrostem prêdkoœci, czêstotliwoœci tych postaci zbiegaj¹ siê, aby objawiæ siê jako jedna niestabilna postaæ ruchu po przekroczeniu prêdkoœci krytycznej.
 
-Fundamentalny model opisuj¹cy zjawisko posiada dwa stopnie swobody - Rys.~\ref{RysPodstawowyModel}. Sprê¿yna 1 reprezentuje sztywnoœæ na zginanie, sprê¿yna 2 - sztywnoœæ na skrêcanie. Kszta³t profilu determinuje po³o¿enie œrodka aerodynamicznego (AC), natomiast po³o¿enie œrodka ciê¿koœci (CG) wynika z rozk³adu masy w skrzydle. Po³o¿enie œrodka si³ poprzecznych (EA) zale¿y od budowy skrzyd³a.
+Fundamentalny model opisuj¹cy zjawisko posiada dwa stopnie swobody (Rys.~\ref{RysPodstawowyModel}). Sprê¿yna 1 reprezentuje sztywnoœæ na zginanie, sprê¿yna 2 - sztywnoœæ na skrêcanie. Kszta³t profilu determinuje po³o¿enie œrodka aerodynamicznego (AC), natomiast po³o¿enie œrodka ciê¿koœci (CG) wynika z rozk³adu masy w skrzydle. Po³o¿enie œrodka si³ poprzecznych (EA) zale¿y od budowy skrzyd³a.
 
 \begin{figure}[hbt]
 \centering
@@ -33,16 +36,48 @@ Poza omówionym rodzajem flutteru wystêpuj¹ jeszcze inne (np. flutter panelowy, g
 \section{Aktywny system t³umienia flutteru}
 Podstawowym zadaniem projektanta jest uzyskanie takiej konstrukcji, w której flutter w ogóle nie wyst¹pi, lub prêdkoœæ przy której mo¿e wyst¹piæ bêdzie odpowiednio oddalona od maksymalnej prêdkoœci osi¹ganej przez samolot. Istnieje wiele sposobów radzenia sobie z tym problemem np. odpowiednie wywa¿enie skrzyd³a, zwiêkszenie sztywnoœci konstrukcji, specyficzna zmiana w³aœciwoœci aerodynamicznych. Te statyczne metody, chocia¿ bardzo skuteczne, maj¹ jednak wspóln¹ wadê - zawsze wi¹¿¹ siê ze wzrostem masy.
 
-Wymagania wspó³czesnego lotnictwa zmuszaj¹ konstruktorów do minimalizowania masy struktury samolotu dla osi¹gniêcia coraz wiêkszej efektywnoœci. Mniejsza masa przy zachowaniu smuk³oœci sylwetki prowadzi niechybnie do mo¿liwoœci wyst¹pienia flutteru, a statyczne metody jego zapobiegania nie s¹ odpowiedzi¹ na problem. Kluczowym kierunkiem wysoko wydajnych konstrukcji jest zastosowanie aktywnego t³umienia - czyli wykorzystania istniej¹cych powierzchni sterowych do zapewnienia dynamicznej stabilnoœci~\ref{WaszakRobust}.
+Wymagania wspó³czesnego lotnictwa zmuszaj¹ konstruktorów do minimalizowania masy struktury samolotu dla osi¹gniêcia coraz wiêkszej efektywnoœci. Mniejsza masa przy zachowaniu smuk³oœci sylwetki prowadzi niechybnie do mo¿liwoœci wyst¹pienia flutteru, a statyczne metody jego zapobiegania nie s¹ odpowiedzi¹ na problem. Kluczowym kierunkiem wysoko wydajnych konstrukcji jest zastosowanie \emph{systemu aktywnego t³umienia flutteru} - czyli wykorzystania istniej¹cych powierzchni sterowych do zapewnienia dynamicznej stabilnoœci~\cite{WaszakRobust}.
 
-Skutecznoœæ takiego podejœcia zosta³a udowodniona (\ref{WaszakRobust}, \ref{WaszakFlutter} TODO - jeszcze jakieœ Ÿród³a).
+Skutecznoœæ takiego podejœcia zosta³a udowodniona w wielu badaniach \cite{WaszakRobust}, \cite{WaszakFlutter} TODO - jeszcze jakieœ Ÿród³a).
 
+\section{Obiekt sterowania}
+Zadanie projektowe w niniejszej pracy dotyczy syntezy praw sterowania systemu aktywnego t³umienia flutteru dla koncepcyjnego samolotu bezza³ogowego o budowie i charakterystyce zbli¿onej do istniej¹cego samolotu MQ-1 Predator (Rys.~\ref{RysPredator}).
 
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{Predator.jpg}
+\caption{Obiekt sterowania - samolot bezza³ogowy MQ-1 Predator. ród³o: Wikipedia}
+\label{RysPredator}
+\end{figure}
+
+Najwa¿niejszym elementem obiektu jet skrzyd³o podlegaj¹ce flutterowi. Model strukturalny skrzyd³a zosta³ zaczerpniêty z projektu BACT, prowadzonego w NASA Langley \cite{WaszakModel}. Projekt zak³ada³ opracowanie wysoko wiarygodnego modelu skrzyd³a, którego zgodnoœæ z rzeczywistoœci¹ potwierdzono w trakcie licznych badañ w tunelu aerodynamicznym. Parametry modelu zosta³y odpowiednio przeskalowane, lub na nowo wyliczone tak, aby odpowiada³y rozpatrywanemu samolotowi Predator.
+
+Niniejsza praca zosta³a podzielona na dwie fazy:
+\begin{itemize}
+\item \emph{Faza 1.} Dotyczy t³umienia flutteru samego skrzyd³a o dwóch stopniach swobody.
+\item \emph{Faza 2.} Dotyczy t³umienia flutteru skrzyd³a samolotu w locie swobodnym.
+\end{itemize}
+W zwi¹zku z powy¿szym, w \emph{fazie 1.} rolê obiektu pe³ni model elastycznego skrzyd³a. W \emph{fazie 2.} obiektem sterowania jest model ca³ego samolotu w locie swobodnym, w którego sk³ad wchodzi model skrzyd³a z \emph{fazy 1.}.
+
+\section{Robust Control}
+
+TODO
+
+Czym jest robust control, pojêcie niepewnoœci. Model nominalny, model rzeczywisty. Odpornoœæ - odporna stabilnoœæ, odporna charakterystyka (osi¹gi, performance).
+
+Dlaczego robust control jest odpowiednie dla tej klasy problemów?
+
+Statki powietrzne z za³o¿enia pracuj¹ w bardzo zmiennym œrodowisku (du¿e zakresy prêdkoœci, wysokoœci lotu, zmiana masy). Do tego modele opisuj¹ce skomplikowane zjawiska aerodynamiczne musz¹ byæ czêsto powa¿nie uproszczone dla uzyskania odpowiedniej z³o¿onoœci obliczeniowej.
+
+Z tego powodu technika sterowania odpornego (robust control), wydaje siê byæ idealna do zastosowania w problemie t³umienia flutteru.
 
 
 \chapter{Podstawy matematyczne}
 
-\section{LTI}
+\section{Dynamiczny uk³ad liniowy stacjonarny}
+Uk³ad liniowy mo¿e byæ opisany w dziedzinie czasu za pomoc¹ równañ stanu, albo w dziedzinie czêstotliwoœci za pomoc¹ macierzy transmitancji operatorowych. Je¿eli wspó³czynniki równañ nie zale¿¹ od czasu mamy do czynienia z uk³adami stacjonarnymi.
+
+\section{Niepewnoœæ}
 
 \section{Macierz transmitancji}
 Dowolny model liniowy o skoñczonej liczbie wymiarów mo¿na przedstawiæ w postaci macierzy transmitancji \(G(s)\), któr¹ w sposób bezpoœredni otrzymujemy z opisu w przestrzeni stanów:
@@ -85,7 +120,7 @@ Dowolnej macierzy \(A\) rzêdu k, mo¿emy przypisaæ k dodatnich wartoœci oznaczany
 \end{equation}
 gdzie \( \lambda_i(\cdot) \) oznacza i-t¹ niezerow¹ wartoœæ w³asn¹. Przyjê³o siê szeregowaæ wartoœci osobliwe malej¹co
 \begin{equation}
-\labda_{\max} = \lambda_1 \geq \lambda_2 \geq ... \geq \lambda_k = \lambda_{\min}
+\lambda_{\max} = \lambda_1 \geq \lambda_2 \geq ... \geq \lambda_k = \lambda_{\min}
 \end{equation}
 
 Dla pewnej czêstotliwoœci \( \omega \) (macierz odpowiedzi czêstotliwoœciowej ??) otrzymujemy podstawiaj¹c \( s = j \omega \)  \( G(s) \). Dokonuj¹c dekompozycji SVD macierzy \( G(j \omega) \) otrzymamy:
@@ -106,6 +141,25 @@ gdzie \( \Sigma \) to diagonalna macierz zawieraj¹ca na swojej przek¹tnej kolejn
 u_i \cdot \sigma_i = G(j \omega) \cdot v_i,
 \end{equation}
 
-gdzie \( u_i \) to i-ty wektor macierzy \(U\), a \(v_i\) - i-ty wektor macierzy V. Wektory \( u_i i v_i \) nale¿y interpretowaæ jako kierunki odpowiednio sygna³u wyjœciowego i wejœciowego, natomiast \( \sigma_i \) jest wzmocnieniem uk³adu. W szczególnoœci, dla \( i = 1 \) otrzymamy maksymalne wzmocnienie uk³adu i sygna³ wymuszaj¹cy prowadz¹cy do tego wzmocnienia, czyli w skrócie \emph{najgorszy przypadek}.
+gdzie \( u_i \) to i-ty wektor macierzy \(U\), a \(v_i\) - i-ty wektor macierzy V. Wektory \( u_i i v_i \) nale¿y interpretowaæ jako kierunki odpowiednio sygna³u wyjœciowego i wejœciowego, natomiast \( \sigma_i \) jest wzmocnieniem uk³adu. W szczególnoœci, dla \( i = 1 \) otrzymamy maksymalne wzmocnienie uk³adu \(\sigma_{\max} = \sigma_1 \) oraz sygna³ wymuszaj¹cy prowadz¹cy do tego wzmocnienia, czyli w skrócie \emph{najgorszy przypadek}.
 
-(TODO przyk³ad - jakiœ ³adny wykres sigma_max i postaci sygna³u wejœciowego i wyjœciowego)
+Wybrane w³asnoœci wartoœci osobliwej macierzy:
+\begin{itemize}
+\item \( \sigma(\alpha M) = \left| \alpha \right| \sigma(M) \)
+\item \( \sigma_{\max}(M_1 + M_2) \leq \sigma_{\max}(M_1) + \sigma_{\max}(M_2) \)
+\item \( \sigma_{\max}(M_1 \cdot M_2) \leq \sigma_{\max}(M_1) \cdot \sigma_{\max}(M_2) \)
+
+\end{itemize}
+
+(TODO przyk³ad - jakiœ ³adny wykres sigma max i postaci sygna³u wejœciowego i wyjœciowego)
+
+% rozwi¹zanie - wy³¹czenie bookmarków (hyperrref), albo:
+% \latexorpdf{math}{non math}
+% \section{Norma \( H_{\infty} \)}
+\section{Norma Hinf}
+
+Jak wynika z analizy na temat dekompozycji SVD, najwiêksza wartoœæ osobliwa (TODO: charakterystyki czêstotliwoœciowej??) okreœla wzmocnienie w najgorszym przypadku dla danej czêstotliwoœci. Norma \( H_{\infty} \) zdefiniowana w nastêpuj¹cy sposób:
+\begin{equation}
+H_\infty (G(s)) = \sup_{\omega} \sigma_{\max}(G(j\omega))
+\end{equation}
+mo¿na zdefiniowaæ jako maksymalne wzmocnienie w dowolnym kierunku i dla dowolnej czêstotliwoœci.

@@ -248,68 +248,18 @@ These systems are called multivariable systems.
 
 \clearpage
 \addcontentsline{toc}{chapter}{Za³¹czniki}
-\chapter{Wyci¹g z dokumentu ADS-33}
 
 \chapter{Wykorzystane narzêdzia}
-Ca³oœæ projektu zosta³a wykonana przy u¿yciu oprogramowania Flightlab i Matlab. Wybór Flightlaba by³ narzucony z powodu posiadanego modelu zaimplementowanego w tym œrodowisku. Matlab zosta³ wybrany przez swój uniwersalny charakter i wygodne œrodowisko. Decyduj¹c¹ zalet¹ jest zestaw narzêdzi do projektowania systemów sterowania oraz mo¿liwoœæ automatyzacji badañ poprzez pisanie skryptów. Simulink jako uniwersalne œrodowisko do symulacji uk³adów fizycznych okaza³ siê idealnym narzêdziem do implementacji systemu sterowania. Weryfikacja za³o¿eñ projektowych nie by³aby mo¿liwa, gdyby nie sieciowe po³¹czenie pracy Flightlaba i Simulinka za pomoc¹ techniki opisanej w \cite{FlightSim}. Tabela \ref{TabNarzedzia} przedstawia zakres zadañ wykonanych z u¿yciem poszczególnych narzêdzi.
+Ca³oœæ projektu zosta³a wykonana przy u¿yciu oprogramowania Matlab, który zosta³ wybrany ze wzglêdu na swój uniwersalny charakter i wygodne œrodowisko. Decyduj¹c¹ zalet¹ jest zestaw narzêdzi do projektowania odpornych systemów sterowania (Robust Control Toolbox). Simulink jako uniwersalne œrodowisko do symulacji uk³adów fizycznych okaza³ siê idealnym narzêdziem do implementacji pe³nego modelu samolotu. 
 
-\chapter{Model liniowy Eriki}
-\label{chap:ModelEriki}
 
 
 
 
 \chapter{Skrypty, dane i modele}
 
-\subsubsection*{ModeleZawis.mat}
-Zapisane wszystkie modele liniowe obliczone w zawisie.
-
-\subsubsection*{ModeleLotPoziomy.mat}
-Zapisane wszystkie modele liniowe obliczone w locie poziomym w ró¿nych kierunkach lotu.
-
-\subsubsection*{RegulatorPI.mat}
-Zapisane macierze wzmocnieñ regulatora PI obliczone za pomoc¹ metody LQR.
-
 \subsubsection*{AnalizaUkladuOtwartego.m}
 Skrypt s³u¿¹cy do analizy obiektu bez systemu sterowania, a przede wszystkim do wyznaczenia postaci ruchu.
 
-\subsubsection*{RegulatorPI.m}
-Skrypt zawieraj¹cy wszelkie obliczenia zwi¹zane z prawami sterowania.
-
-\subsubsection*{BadaniaHH.m}
-Skrypt wykorzystywany do analizy uk³adu Heading Hold.
-
-\subsubsection*{CzestoscGraniczna.m}
-Funkcja s³u¿¹ca do wyznaczenia czêstoœci granicznej i opóŸnienia fazy dla podanego obiektu jednowymiarowego na podstawie wykresu Bodego.
-
-\subsubsection*{DostrajanieLQR.m}
-Skrypt s³u¿¹cy do analizy wp³ywu macierzy wagowej Q na zachowanie poszczególnych parametrów w³aœciwoœci lotnych.
-
-\subsubsection*{WeryfikacjaCharOdp.m}
-Skrypt s³u¿¹cy do badania charakteru odpowiedzi uk³adu zamkniêtego z modelem nieliniowym. Wykorzystuje model AnalizaNieliniowa.mdl.
-
-\subsubsection*{WeryfikacjaUtrzymaniePozycji.m}
-Skrypt s³u¿¹cy do weryfikacji kryteriów utrzymania pozycji i kierunku na podstawie symulacji z udzia³em modelu nieliniowego. Wykorzystuje model AnalizaNieliniowa.mdl
-
-\subsubsection*{WeryfikacjaCzestoscGraniczna.m}
-Skrypt s³u¿¹cy do weryfikacji kryteriów odpowiedzi krótko-okresowych. Dla 11 modeli liniowych oblicza czêstoœci graniczne i opóŸnienia fazowe.
-
-\subsubsection*{WeryfikacjaStatecznoœæ.m}
-Skrypt s³u¿¹cy do wyznaczenia mapy biegunów dla 11 modeli liniowych w celu weryfikacji kryterium statecznoœci.
-
-\subsubsection*{WeryfikacjaParamSzybkosci.m}
-Skrypt s³u¿¹cy do przeprowadzenia szeregu symulacji z udzia³em modelu nieliniowego (AnalizaNieliniowa.mdl) w celu wyznaczenia parametru szybkoœci dla trzech kana³ów sterowania.
-
-\subsubsection*{WeryfikacjaMocSterowania.m}
-Skrypt generuj¹cy przebiegi czasowe dla weryfikacji maksymalnych osi¹galnych k¹tów orientacji przestrzennej i prêdkoœci odchylania.
-
-\subsubsection*{WeryfikacjaTC.m}
-Skrypt s³u¿¹cy do weryfikacji kryterium koordynacji zakrêtu poprzez symulacjê z udzia³em modelu nieliniowego. 
-
-\subsubsection*{AnalizaLiniowa.mdl}
-Model uk³adu zamkniêtego z udzia³em modelu liniowego o oœmiu stopniach swobody.
-
-\subsubsection*{AnalizaNieliniowa.mdl}
-Zaimplementowany pe³ny system zaprojektowany w niniejszej pracy. Model s³u¿y do analizy systemu z udzia³em modelu nieliniowego poprzez wykorzystanie po³¹czenia sieciowego z oprogramowaniem Flightlab.
 
 \end{document}

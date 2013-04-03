@@ -36,21 +36,30 @@ Poziom paliwa [\%] & \(\bar{c_{cg}}\) [\%] & m [kg] & \(I_{\theta}\) [kg] & \(\o
 Poniewa¿ ze wzrostem iloœci paliwa w skrzydle, po³o¿enie œrodka ciê¿koœci przesuwa siê do ty³u, prêdkoœæ krytyczna flutteru maleje, co mo¿na zaobserwowaæ na wykresie~\ref{RysPredkosci}.
 
 \section{Za³o¿enia projektowe}
-Podstawowym celem aktywnego systemu t³umienia flutteru jest zwiêkszenie \( V_k \), przy uwzglêdnieniu limitów uk³adu wykonawczego.
+Podstawowym celem aktywnego systemu t³umienia flutteru jest zwiêkszenie prêdkoœci krytycznej flutteru \( V_k \), przy uwzglêdnieniu ograniczeñ uk³adu wykonawczego.
 
-Definicja prêdkoœci krytycznej jest œciœle zwi¹zana ze stabilnoœci¹, ale jest to kryterium niewystarczaj¹ce. Nale¿a³oby zaostrzyæ tê definicjê, tak aby nawet w zakresie stabilnej pracy nie dosz³o do przekroczenia dopuszczalnych naprê¿eñ. Za odpowiednik dopuszczalnych naprê¿enia przyjêto statyczne zniekszta³cenia \( h\) i \(\theta\) dla lotu z maksymalnym przeci¹¿eniem \(g = 6\).
+Definicja prêdkoœci krytycznej jest œciœle zwi¹zana ze stabilnoœci¹, ale jest to kryterium niewystarczaj¹ce. Nale¿a³oby zaostrzyæ tê definicjê, poniewa¿ nawet w zakresie stabilnej pracy mo¿e dojœæ do przekroczenia dopuszczalnych naprê¿eñ. 
 
-Poza tym nale¿y uwzglêdniæ ograniczone mo¿liwoœci elementów wykonawczych, a wiêc "wysi³ek" sterowania. Maksymalne wychylenia lotek wynosz¹ \(\pm 45^\circ\). System t³umienia flutteru nie mo¿e jednak wykorzystaæ ca³ego zakresu, musi zostawiæ miejsce na realizowanie poleceñ pilota lub systemu CAS. Dlatego dopuszczalne wartoœci sygna³u steruj¹cego zosta³y arbitralnie wybrane na poziomie \(30\%\delta_c\).
+Zgodnie z kryteriami konstrukcyjnymi JAR-23 \cite{JAR23}, dla samolotu Kategorii Normalnej obowi¹zuje wspó³czynnik obci¹¿eñ dopuszczalnych w locie n = 3,8. W tym miejscu uprzedzono rozdzia³ XX, aby przytoczyæ maksymalne wartoœci zniekszta³ceñ p³ata wynikaj¹ce nie z modelu samego skrzyd³a, ale z modelu ca³ego samolotu. Podczas manewru ze wspó³czynnikiem obci¹¿eñ n = 3,8 i maksymaln¹ mas¹ startow¹, zniekszta³cenia p³ata wynios¹ odpowiednio:
+
+\begin{equation}
+h_{\max} = 0,32 m \newline 
+\theta_{\max} = 3,56 ^\circ
+\end{equation}
+
+Te wartoœci przyjêto jako nieprzekraczalne dla projektowanego systemu. (Niszcz¹ce naprê¿enia odpowiadaj¹ zazwyczaj 1,5 razy wiêkszym zniekszta³ceniom, gdy¿ tyle wynosi konstrukcyjny zapas bezpieczeñstwa, dlatego jednorazowe przekroczenie naprê¿eñ dopuszczalnych nie powinno doprowadziæ do zniszczenia samolotu).
+
+Poza tym nale¿y uwzglêdniæ ograniczone mo¿liwoœci elementów wykonawczych, a wiêc "wysi³ek" sterowania. Maksymalne wychylenia lotek wynosz¹ \( \delta_{\max} = \pm 45^\circ\). System t³umienia flutteru nie mo¿e jednak wykorzystaæ ca³ego zakresu, musi zostawiæ miejsce na realizowanie poleceñ pilota lub systemu sterowania. Dlatego dopuszczalne wartoœci sygna³u steruj¹cego zosta³y arbitralnie wybrane na poziomie \(30\%\delta_{\max}\).
 
 Poni¿ej w zwiêz³ej formie podsumowano za³o¿enia projektowe.
 \begin{enumerate}
 \item Maksymalne rozszerzenie zakresu stabilnej pracy, spe³niaj¹cej dodatkowe kryteria:
-\item Sygna³ steruj¹cy \(|\delta_c| < 0,3\delta_{max} \)
-\item Obci¹¿enia \(|h(t)| < h_{max}\) i \(|\theta(t)| < \theta_{max}\)
+\item Sygna³ steruj¹cy \(|\delta_c| < 0,3\delta_{\max} \)
+\item Obci¹¿enia \(|h(t)| < h_{\max}\) i \(|\theta(t)| < \theta_{\max}\)
 \end{enumerate}
-dla dowolnego sygna³u wejœciowego: \\*
-\(|\delta_p(t)| < 0,7\delta_{max}\) i \(\eta(t) = 0\), lub \\*
-\( \delta_p(t) = 0 \) i \(\eta(t) = bialy szum \) TODO
+dla dowolnego sygna³u wejœciowego spe³niaj¹cego warunki: \\*
+\( |\delta_p(t)| < 0,7\delta_{max}\)\\*
+\( \eta(t) = bialy szum \) TODO
 
 Kryteria w takiej formie mog¹ zostaæ bezpoœrednio prze³o¿one na pojêcia zwi¹zane z robust control. Pierwsze kryterium nazywa siê odporn¹ stabilnoœci¹, pozosta³e dwa - odpornymi osi¹gami. Odporne osi¹gi mo¿na zwiêŸle przedstawiæ wykorzystuj¹c normê \(H_{\infty}\). \\*
 \(|\delta_c|_{\infty} < 0,3 \delta_{max} \) ????
@@ -80,7 +89,7 @@ Z podstawowej analizy uk³adu otwartego mo¿na siê szybko zorientowaæ, ¿e potrzebn
 
 Standardowo u¿ywanymi przyrz¹dami pomiarowymi w praktycznych systemach t³umienia flutteru s¹ przyspieszeniomierze. Odpowiednie kombinacje liniowe sygna³ów z dwóch przyspieszeniomierzy umieszczonych na krawêdziach skrzyd³a (na wysokoœci profilu odniesienia) odpowiadaj¹ \( \ddot{h(t)} \) i \( \ddot{\theta(t)} \).
 
-Zgodnie z [\ref{Vivek}] w przypadku jednowymiarowego regulatora najlepsze efekty uzyskujemy poprzez wykorzystanie do sterowania sygna³u prêdkoœci k¹towej skrêcania. \( \dot{\theta(t)} \) uzyskamy bezpoœrednio poprzez ca³kowanie odpowiedniej kombinacji linowej sygna³ów wyjœciowych przyspieszeniomierzy. Problemem przyspieszeniomierzy jest jednak wystêpowanie sta³ego, lub wolnozmiennego b³êdu, który zosta³by wzmocniony przez element ca³kuj¹cy. Do pozbycia siê go zastosowano filtr washout (TODO) w postaci \( s/(s+a) \), co razem z elementem ca³kuj¹cym daje lag compensator (TODO) \( a/(s+a) \).
+Zgodnie z \cite{Vivek} w przypadku jednowymiarowego regulatora najlepsze efekty uzyskujemy poprzez wykorzystanie do sterowania sygna³u prêdkoœci k¹towej skrêcania. \( \dot{\theta(t)} \) uzyskamy bezpoœrednio poprzez ca³kowanie odpowiedniej kombinacji linowej sygna³ów wyjœciowych przyspieszeniomierzy. Problemem przyspieszeniomierzy jest jednak wystêpowanie sta³ego, lub wolnozmiennego b³êdu, który zosta³by wzmocniony przez element ca³kuj¹cy. Do pozbycia siê go zastosowano filtr washout (TODO) w postaci \( s/(s+a) \), co razem z elementem ca³kuj¹cym daje lag compensator (TODO) \( a/(s+a) \).
 
 Filtr washout dobrano tak, aby mia³ minimalny wp³yw na sygna³ pomiarowy w okolicach czêstotliwoœci flutteru \( f_f = 6,67 Hz \) - czêstotliwoœæ kompensatora jest o rz¹d wielkoœci mniejsza od \( f_f \). \(f_w = 0,667 Hz, \omega_w = 4.19 rad/s \).
 
