@@ -1,4 +1,4 @@
-function [Kclassic, descr] = ClassicSISOController(sys)
+function [Kclassic, descr] = ClassicSisoController(sys)
     % Classi SISO controller for Wing
     if ~exist('sys','var')
         wing = WingFlutter;
@@ -17,7 +17,7 @@ function [Kclassic, descr] = ClassicSISOController(sys)
     Kclassic = -K*Fw;
     Kclassic.InputNames = sys.OutputNames(9);
     Kclassic.OutputNames = sys.InputNames(1);
-    descr = 'SISO (theta_dot)';
+    descr = 'SISO (ddot \theta)';
 
 end
 

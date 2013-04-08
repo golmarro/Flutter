@@ -38,7 +38,7 @@ Rozdzia³ 2. Podstawy matematyczne
    3.1 Niepewnoœæ strukturalna
    3.2 Niepewnoœæ parametryczna (rodzina wielomianów)
 3. Opis niepewnoœci
-   Addytywna, multiplikatywna...??
+   Addytywna, multiplikatywna (bezwzglêdna, wzglêdna)
 4. Metody analizy uk³adów wielowymiarowych
    2.1 Wartoœæ osobliwa macierzy
    2.2 Dekompozycja macierzy wed³ug wartoœci osobliwych
@@ -46,28 +46,32 @@ Rozdzia³ 2. Podstawy matematyczne
    2.4 Strukturalna wartoœæ osobliwa
 5. Metody syntezy odpornych regulatorów
    5.1 Regulator Hinf
-   5.2 Metoda strukturalnej wartoœci osobliwej
+   5.2 Warunek odpornej stabilnoœci (przyk³ad - Wahad³o)
+   5.3 Metoda strukturalnej wartoœci osobliwej
 
 Rozdzia³ 3. Model skrzyd³a
    Model bazuje na [BACT]
    co w tym rozdziale? (wyprowadzenie modelu i analiza)
    1. Model matematyczny 
+      Wyt³umaczyæ profil referencyjny
       Wejœcia, wyjœcia, stany. Dwa stopnie swobody (skrêcanie, zginanie), model si³owników, model turbulencji.
 	   1.1 Równania strukturalne ??
 	   1.2 Aerodynamika quasi-stacjonarna
 	   1.3 Elementy wykonwacze
 	   1.4 Turbulencja
 	   1.5 Pe³ny model w przestrzeni stanów
-   2. Niepewnoœæ modelu skrzyd³a
-       2.1 Wartoœci liczbowe - parametry (zakres zmiennoœci parametrów)
-	   2.2 Niepewnoœæ parametryczna
-	   2.3 Niepewnoœæ multiplikatywna?
-   3. Analiza modelu
-      3.1 Zakres prêdkoœci (minimalna, krytyczna flutteru)
+	   1.6 Wartoœci liczbowe - parametry (zakres zmiennoœci parametrów)
+   2. Analiza modelu
+      Przebiegi czasowe (sanity test)
+      2.1 Zakres prêdkoœci (minimalna, krytyczna flutteru)
 	      Zale¿y g³ównie od ciœnienia dynamicznego, ale dla czytelnoœci pos³ugujemy 
 		  siê prêdkoœci¹ na wys. nominalnej H = 5000 m
-	  3.2 Postacie ruchu (z wektorów w³asnych macierzy stanu) postaæ typowa dla flutteru
-	  3.3 Linia pierwiastkowa (wzglêdem prêdkoœci dla ró¿nej masy)
+      (2.2 Czêstotliwoœæ flutteru)
+	  2.3 Linia pierwiastkowa (wzglêdem prêdkoœci dla ró¿nej masy)
+	  (2.4 Postacie ruchu (z wektorów w³asnych macierzy stanu) postaæ typowa dla flutteru)
+   3. Niepewnoœæ modelu skrzyd³a
+	  3.1 Niepewnoœæ parametryczna
+	  3.2 Niepewnoœæ multiplikatywna?
    
 
 Rozdzia³ 4. Model samolotu

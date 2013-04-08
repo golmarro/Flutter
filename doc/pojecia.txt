@@ -11,4 +11,63 @@ wektor zespolony czy wektor wartoœci zespolonych
 
 kierunek maksymalnego wzmocnienia - u1
 
+identyfikacja obiektu - opracowanie modelu mat. - okreœlenie struktury + estymacja parametrów
+
 sygna³ turbulencji (eta)
+
+obiekt - fizyczny uk³ad dynamiczny
+model uk³adu - model matematyczny obiektu
+
+uk³ad liniowy stacjonarny z niepewnoœci¹
+model (matematyczny) uk³adu (z niepewnoœci¹)
+model z niepewnoœci¹ strukturaln¹/niestrukturaln¹
+uk³ad o niepewnych parametrach
+
+odporna stabilnoœæ (krzepka) - stabilnoœæ rodziny macierzy stanu / stabilnoœæ rodziny wielomianów char. / stab. rodziny modeli uk³adu
+odporne sterowanie (robust performance) - zachowanie po¿¹danych w³aœciwoœci dynamicznych mimo zmieniaj¹cych siê parametrów obiektu
+
+metody badania odpornej stabilnoœci
+
+rodzina macierzy stanu, rodzina wielomianów, rodzina modeli
+
+niepewnoœæ modelu matematycznego - ró¿nica miêdzy modlem a rzeczywistym obiektem
+unmodeled dynamics - niemodelowna dynamika (zazwyczaj wysokoczêstotliwoœciowa)
+
+uk³ad o niepewnych parametrach - uk³¹dy których modele zawieraj¹ niepewnoœæ strukturalnych
+
+postaæ modelu matematycznego uk³adu liniowego stacjonarnego z niepewnoœci¹ strukturaln¹ / niestrukturaln¹
+
+additive uncertainty - addytywna reprezentacja niepewnoœci (bezwzglêdna)
+
+multiplicative uncertainty - multiplikatywna reprezentacja niepewnoœci (wzglêdna niepewnoœæ)  (I + w(s)*Delta(s))G(s)
+multiplicative error - b³¹d wzglêdny w(s) * Delta(s)
+
+
+transmitancja w³aœciwa - rz¹d licznika <= rz¹d mianowanika - G(inf) - ograniczona - nie "przwiduje" przysz³oœci
+
+uk³ad regulacji automatycznej
+
+uk³ad dynamiczny drugiego rzêdu:
+              K
+G(s) = ---------------------
+        s2 + 2 w ksi s + w2
+
+K - wspó³czynnik wzmocnienia
+w - pulsacja drgañ w³asnych (niet³umionych)
+ksi - wzglêdny wspó³czynnik t³umienia
+
+
+model nominalny - model odniesienia - model odpowiada nominalnym wartoœciom niepewnych parametrów
+
+   n - szum pomiarowy            d - szum przetwarzania / zaburzenia
+---------------------+
+                     |
+   d    +------+     |
+------->|      |     V      y
+   u    |      |---->o-------> 
+------->|      |
+        +------+
+
+Zbiór spektralny [Bus³owicz] - zbiór spektralny rodziny wielomianów S[W]
+nazywamy zbiór zer wszystkich wielomianów nale¿¹cych do tej rodziny
+S[W] jest ograniczony i domkniêty

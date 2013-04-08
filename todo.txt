@@ -1,8 +1,7 @@
 -------------- [  NOW  ] --------------
-* WingSim - dynamika silownika
-* WingFlutter - turbulencje (mamy wg/ni - trzeba to wprowadzic do modelu SS)
+* legenda - wybieranie danych do opisu (ControlSignalRmsAnalysis - poprawne podpisy)
 
-* WingControl - pierwsza przymiarka, klasyczne podejscie, sciagnac z BACT control)
+
 
 -------------- [SOME DAY] --------------
 * Skreacanie lotki w WingVis.m

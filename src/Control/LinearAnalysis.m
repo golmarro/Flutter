@@ -191,10 +191,11 @@ classdef LinearAnalysis < handle
             maxDelta_c = zeros(size(U));
             
             for i = 1:length(U)
-                this.U0 = U(i);
-                [~, y, rms] = this.controlSignalAnalysis();
-                deltaRms(i) = rms(end);
-                maxDelta_c(i) = max(abs(y(:,this.out_delta_c)));
+                this.U0 = U(i);                
+                [delta, t] = step(this.CL(this.out_delta_c,this.in_delta_p) * 0.7 * this.deltaMax, this.deltaStepTime);
+                delta_dot = (delta - [delta(1); delta(1:end-1)]) ./ (t - [t(2:end); t(end) + t(end) - t(end-1) ]);
+                deltaRms(i) = this.rmsCalc(delta_dot);
+                maxDelta_c(i) = max(abs(delta));
             end
             
             subplot(2,1,1); hold on;
@@ -202,16 +203,20 @@ classdef LinearAnalysis < handle
             xlabel('Speed U_0 [m/s]')
             ylabel('RMS of dot \delta_c [rad]');
             title('Control effort due to pilot command on \delta_p (0.7 \delta_{max})');
-            plot([Ufol Ufol],[0 max(deltaRms)], 'k:');
-            plot([Ufcl Ufcl],[0 max(deltaRms)], 'r:');
+            handle = plot([Ufol Ufol],[0 max(deltaRms)], 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([Ufcl Ufcl],[0 max(deltaRms)], 'r:');
+            hasbehavior(handle,'legend',false);
             
             subplot(2,1,2); hold on;
             plot(U, maxDelta_c*180/pi, this.lineFormat);
             xlabel('Speed U_0 [m/s]')
             ylabel('max |\delta_c(t)| [deg]');
-            title('Max aileron deflection due to pilo command on \delta_p (0.7 \delta_{max})');
-            plot([Ufol Ufol],[0 max(maxDelta_c*180/pi)], 'k:');
-            plot([Ufcl Ufcl],[0 max(maxDelta_c*180/pi)], 'r:');
+            title('Max aileron deflection due to pilot command on \delta_p (0.7 \delta_{max})');
+            handle = plot([Ufol Ufol],[0 max(maxDelta_c*180/pi)], 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([Ufcl Ufcl],[0 max(maxDelta_c*180/pi)], 'r:');
+            hasbehavior(handle,'legend',false);
         end
         
         function  [t, y, rms] = turbulenceAnalysis(this, finalTime)
@@ -255,16 +260,19 @@ classdef LinearAnalysis < handle
             deltaRms = zeros(size(U));
             for i = 1:length(U)
                 this.U0 = U(i);
-                y = lsim(this.CL(this.out_delta_c,this.in_turb), eta, t);
-                deltaRms(i) = this.rmsCalc(y);
+                [delta, t] = lsim(this.CL(this.out_delta_c,this.in_turb), eta, t);
+                delta_dot = (delta - [delta(1); delta(1:end-1)]) ./ (t - [t(2:end); t(end) + t(end) - t(end-1) ]);
+                deltaRms(i) = this.rmsCalc(delta_dot);
             end
             
             plot(U, deltaRms, this.lineFormat);
             hold on;
-            plot([Ufol Ufol],[0 max(deltaRms)], 'k:');
-            plot([Ufcl Ufcl],[0 max(deltaRms)], 'r:');
-            xlabel('Speed [m/s]'); ylabel('RMS of \delta_c signal [rad/s]')
-            title('RMS of \delta_c signal due to turbulence for different speed');
+            handle = plot([Ufol Ufol],[0 max(deltaRms)], 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([Ufcl Ufcl],[0 max(deltaRms)], 'r:');
+            hasbehavior(handle,'legend',false);
+            xlabel('Speed [m/s]'); ylabel('RMS of d \delta_c / dt signal [rad/s]')
+            title('RMS of d \delta_c / dt signal due to turbulence for different speed');
         end
         
         function turbulenceRmsAnalysisTune(this, finalTime)
@@ -303,10 +311,14 @@ classdef LinearAnalysis < handle
             
             plot(U, delta_c_Hinf, this.lineFormat);
             hold on;
-            plot([Ufol Ufol],[0 max(delta_c_Hinf)], 'k:');
-            plot([Ufcl Ufcl],[0 max(delta_c_Hinf)], 'r:');
-            plot([U(1) U(end)], [this.deltaMax this.deltaMax], 'k:');
-            plot([U(1) U(end)], [this.deltaMax this.deltaMax]*this.deltaPercent, 'k:');
+            handle = plot([Ufol Ufol],[0 max(delta_c_Hinf)], 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([Ufcl Ufcl],[0 max(delta_c_Hinf)], 'r:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([U(1) U(end)], [this.deltaMax this.deltaMax], 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([U(1) U(end)], [this.deltaMax this.deltaMax]*this.deltaPercent, 'k:');
+            hasbehavior(handle,'legend',false);
             xlabel('Speed [m/s]'); ylabel('||G_{\eta \delta}||_\infty [rad]')
             title('H_\infty norm of \delta_c signal due to turbulence for different speeds');
         end

@@ -151,7 +151,7 @@ classdef WingVis < handle
         end
         
         function simulate(this,t,x)
-            fprintf('Simulation\n\tTime scale: %f\n\tMovement scale: %f\n',...
+            fprintf('Simulation\n\tTime scale: %f\n\tMovement scale: %f',...
                 this.timeScale, this.scale);
             time = 0;
             timesUpdated = 0;
