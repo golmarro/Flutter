@@ -5,7 +5,8 @@
 \usepackage{subfigure}
 \usepackage{fancyhdr}
 \usepackage{psfrag}
-\usepackage{theorem}
+%\usepackage{theorem}
+\usepackage{amsthm}  % newtheorem
 \usepackage{longtable}
 \usepackage[isu]{caption}
 \usepackage[toc,page]{appendix}
@@ -45,6 +46,10 @@
 
 \renewcommand{\theequation}{\arabic{chapter}.\arabic{equation}}
 \renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+
+\newtheorem{definition}{Definicja}
+\newtheorem{theorem}{Twierdzenie}
+\newtheorem{example}{Przyk³ad}
 
 \author{Rafa³ Golcz}
 \title{Projektowanie odpornych (robust) systemów sterowania}
@@ -143,10 +148,9 @@ Oœwiadczam ponadto, ¿e niniejsza wersja pracy jest identyczna z za³¹czon¹ wersj¹
 
 \abstracttitle{Streszczenie}
 
-Celem pracy jest analiza i porównanie technik sterowania odpornego (robust control). W praktyce model matematyczny nigdy nie jest na tyle dok³adny, by w pe³ni odzwierciedlaæ rzeczywiste zjawiska zachodz¹ce w obiekcie regulacji. W rezultacie mamy do czynienia z pojêciem niepewnoœci. Robust control to zbiór technik, pozwalaj¹cych projektowaæ uk³ady regulacji z uwzglêdnieniem ograniczonej wiedzy co do obiektu tak, aby zagwarantowaæ stabilnoœæ i jakoœæ
-regulacji pomimo wystêpowania niepewnoœci.
+%Celem pracy jest analiza i porównanie technik sterowania odpornego (robust control). W praktyce model matematyczny nigdy nie jest na tyle dok³adny, by w pe³ni odzwierciedlaæ rzeczywiste zjawiska zachodz¹ce w obiekcie regulacji. W rezultacie mamy do czynienia z pojêciem niepewnoœci. Robust control to zbiór technik, pozwalaj¹cych projektowaæ uk³ady regulacji z uwzglêdnieniem ograniczonej wiedzy co do obiektu tak, aby zagwarantowaæ stabilnoœæ i jakoœæ regulacji pomimo wystêpowania niepewnoœci.
 
-Praktyczna czêœæ pracy polega na opracowaniu odpornego regulatora dla obiektu lataj¹cego - wirop³ata typu quadrocopter, spe³niaj¹cego rolê Systemu Wspomaganie Statecznoœci i Sterowania (SCAS). Za³o¿enia projektowe dotycz¹ce zachowania uk³adu zamkniêtego zostan¹ postawione na podstawie podobnych rozwi¹zañ oraz uwarunkowañ fizycznych i sprzêtowych. Realizacja zadania wymaga opracowania modelu symulacyjnego obiektu wnikaj¹cego w charakterystykê uk³adu napêdowego i naturê zaburzeñ zewnêtrznych towarzysz¹cych lotom atmosferycznym. Na podstawie modelu zostanie opracowany kontroler, którego skutecznoœæ zostanie zbadana na drodze standardowej analizy w dziedzinie czasu i czêstotliwoœci oraz na podstawie symulacji w czasie rzeczywistym z udzia³em pilota.
+%Praktyczna czêœæ pracy polega na opracowaniu odpornego regulatora dla obiektu lataj¹cego - wirop³ata typu quadrocopter, spe³niaj¹cego rolê Systemu Wspomaganie Statecznoœci i Sterowania (SCAS). Za³o¿enia projektowe dotycz¹ce zachowania uk³adu zamkniêtego zostan¹ postawione na podstawie podobnych rozwi¹zañ oraz uwarunkowañ fizycznych i sprzêtowych. Realizacja zadania wymaga opracowania modelu symulacyjnego obiektu wnikaj¹cego w charakterystykê uk³adu napêdowego i naturê zaburzeñ zewnêtrznych towarzysz¹cych lotom atmosferycznym. Na podstawie modelu zostanie opracowany kontroler, którego skutecznoœæ zostanie zbadana na drodze standardowej analizy w dziedzinie czasu i czêstotliwoœci oraz na podstawie symulacji w czasie rzeczywistym z udzia³em pilota.
 %%----------------------------------------------------------------------
 \vfill \vspace{.2in}
 
@@ -189,13 +193,13 @@ AC & -- & œrodek aerodynamiczny / œrodek parcia (Aerodynamic Center)\\
 SSP & -- & œrodek si³ poprzecznych (Elastic Axis)\\
 \end{tabular}
 
-\chapter *{Spis pojêæ}
-\addcontentsline{toc}{section}{Spis pojêæ}
-\begin{tabular}{l c p{11cm}}
-sterowanie odporne (Robust Control) & -- &  \\
-niepewnoœæ (uncertainty) & -- &  \\
-niepewnoœæ strukturalna (parametryczna)
-\end{tabular}
+%\chapter *{Spis pojêæ}
+%\addcontentsline{toc}{section}{Spis pojêæ}
+%\begin{tabular}{l c p{11cm}}
+%sterowanie odporne (Robust Control) & -- &  \\
+%niepewnoœæ (uncertainty) & -- &  \\
+%niepewnoœæ strukturalna (parametryczna)
+%\end{tabular}
 
 \chapter *{Wstêp}
 \addcontentsline{toc}{section}{Wstêp}
@@ -222,11 +226,23 @@ longer single-input and single-output (SISO) but multi-input and multi-output
 (MIMO) systems with a high interrelationship (coupling) between these chan nels. The number of (state) variables in a system could be very large as well.
 These systems are called multivariable systems.
 
-\chapter *{Cel i zakres pracy}
-\addcontentsline{toc}{section}{Cel i zakres pracy}
+% Scalony cel i zakres ze wstêpem
+%\chapter *{Cel i zakres pracy}
+%\addcontentsline{toc}{section}{Cel i zakres pracy}
 
-\subsection*{Zakres zadania}
-\subsubsection{Struktura pracy}
+\section*{Zakres zadania}
+TODO\\*
+Projekt praw sterowania dla systemu t³umienia flutteru w oparciu o techniki Robust Control.
+
+Dwie fazy:
+\begin{itemize}
+\item \emph{Faza 1.} Projekt systemu t³umienia flutteru skrzyd³a o dwóch stopniach swobody.
+\item \emph{Faza 2.} Po³¹czenie systemu sterowania z systemu t³umienia flutteru skrzyd³a samolotu w locie swobodnym.
+\end{itemize}
+Faza 1. jako punkt wyjœcia do po³¹czenie modelu skrzyd³a z modelem sztywnego samolotu w locie swobodnym.
+
+\section*{Struktura pracy}
+TODO\\*
 
 \input{Intro.tex}
 

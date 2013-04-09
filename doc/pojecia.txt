@@ -44,6 +44,10 @@ multiplicative error - b³¹d wzglêdny w(s) * Delta(s)
 
 
 transmitancja w³aœciwa - rz¹d licznika <= rz¹d mianowanika - G(inf) - ograniczona - nie "przwiduje" przysz³oœci
+transmitancja operatorowa - G(s)
+macierz transmitancji
+transmitancja widmowa - G(jw) - otrzymujemy bezpoœrednio z transmitancji operatorowej podstawiaj¹c s = jw
+charakterystyki czêstotliwoœciowe - ró¿ne postaci wykresów (zale¿noœci) transmitancji widmowej jako funkcji od omega
 
 uk³ad regulacji automatycznej
 

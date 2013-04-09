@@ -77,17 +77,24 @@ Z tego powodu technika sterowania odpornego (robust control), wydaje siê byæ ide
 \section{Dynamiczny uk³ad liniowy stacjonarny}
 Uk³ad liniowy mo¿e byæ opisany w dziedzinie czasu za pomoc¹ równañ stanu, albo w dziedzinie czêstotliwoœci za pomoc¹ macierzy transmitancji operatorowych. Je¿eli wspó³czynniki równañ nie zale¿¹ od czasu mamy do czynienia z uk³adami stacjonarnymi.
 
+%TODO:Dowolny model liniowy o skoñczonej liczbie wymiarów mo¿na przedstawiæ w postaci macierzy transmitancji \(G(s)\), któr¹ w sposób bezpoœredni otrzymujemy z opisu w przestrzeni stanów:
+
+%\begin{equation}
+%G(s) = C(sI - A)^{-1} B + D
+%\end{equation}
+
+Chocia¿ z punktu widzenia charakteru zjawisk fizycznych, obiekt pracuj¹cy w zmiennym œrodowisku jest obiektem niestacjonarnym, to jednak zazwyczaj opisuje siê go jako rodzina modeli stacjonarnych. Jest to o tyle s³uszne za³o¿enie, o ile zmiennoœæ parametrów jest du¿o wolniejsza od dynamiki obiektu.
+
 \section{Niepewnoœæ}
+TODO\\*
+ród³a niepewnoœci (zamierzone, niezamierzone, linearyzacja, redukcja liczby stanów, pomijani dynamiki wy¿szego rzêdu, zmienne parametry pracy) 
+\subsection{Niepewnoœæ strukturalna (parametryczna)}
+\subsection{Niepewnoœæ niestrukturalna}
+\subsubsection{Model multiplikatywny (wzglêdny) niepewnoœci}
+\subsubsection{Model addytywny (bezwzglêdny) niepewnoœci}
 
-\section{Macierz transmitancji}
-Dowolny model liniowy o skoñczonej liczbie wymiarów mo¿na przedstawiæ w postaci macierzy transmitancji \(G(s)\), któr¹ w sposób bezpoœredni otrzymujemy z opisu w przestrzeni stanów:
-
-\begin{equation}
-G(s) = C(sI - A)^{-1} B + D
-\end{equation}
-
-\section{Charakterystyka czêstotliwoœciowa uk³adów MIMO}
-W przypadku systemów jednowymiarowych, analiza w dziedzinie czêstotliwoœci sprowadza siê do okreœlenia wzmocnienia i przesuniêcia fazowego odpowiedzi uk³adu na sinusoidalne wymuszenie. Charakterystykê czêstotliwoœciow¹ uk³adu otrzymujemy bezpoœrednio podstawiaj¹c \( s = j \omega \)do transmitancji operatorowej.
+\section{Metody analizy uk³adów wielowymiarowych}
+W przypadku systemów jednowymiarowych, analiza w dziedzinie czêstotliwoœci sprowadza siê do okreœlenia wzmocnienia i przesuniêcia fazowego odpowiedzi uk³adu na sinusoidalne wymuszenie. Charakterystykê czêstotliwoœciow¹ opisan¹ transmitancj¹ widmow¹ \(G(j \omega) \) uk³adu otrzymujemy bezpoœrednio podstawiaj¹c \( s = j \omega \) do transmitancji operatorowej.
 
 Gdy mamy do czynienia z systemem wielowymiarowym, na charakter odpowiedzi czêstotliwoœciowej maj¹ wp³yw wzglêdne wielkoœci i przesuniêcia fazowe poszczególnych sk³adników wektora wejœciowego. Sygna³ wejœciowy mo¿emy  przedstawiæ nastêpuj¹co: 
 
@@ -107,59 +114,144 @@ gdzie \( \tilde{y} = G(j \omega) \tilde{u} \).
 
 Jak wynika z powy¿szego rozumowania, analiza uk³adów wielowymiarowych jest dodatkowo utrudniona z tego  wzglêdu, ¿e na wzmocnienie uk³adu wp³ywa nie tylko czêstotliwoœæ sygna³u wejœciowego, ale równie¿ wielkoœæ i faza jego poszczególnych sk³adowych, czyli kierunek.
 
-Bardzo czêsto chcielibyœmy znaæ odpowiedŸ na pytanie - dla jakiego ograniczonego sygna³u wejœciowego dla danej czêstotliwoœci otrzymamy najwiêksze wzmocnienie uk³adu? W skrócie chcielibyœmy znaæ najgorszy przypadek. Z pomoc¹ w tej sytuacji przychodzi narzêdzie matematyczne zwane dekompozycj¹ SVD.
+Bardzo czêsto chcielibyœmy znaæ odpowiedŸ na pytanie - dla jakiego ograniczonego sygna³u wejœciowego dla danej czêstotliwoœci otrzymamy najwiêksze wzmocnienie uk³adu? Innymi s³owy chcielibyœmy znaæ najgorszy przypadek. Z pomoc¹ w tej sytuacji przychodzi narzêdzie matematyczne zwane dekompozycj¹ macierzy wed³ug wartoœci osobliwej.
 
-\section{Dekompozycja macierzy wed³ug wartoœci osobliwych}
+\subsection{Wartoœci osobliwe macierzy}
+
+\begin{definition}
+\cite{Handbook} Dowolnej macierzy \(A\) rzêdu k, mo¿emy przypisaæ k dodatnich wartoœci oznaczanymi jako \( \sigma_i(A) \) lub w skrócie \( \sigma_i\). S¹ to wartoœci osobliwe macierzy \(A\) obliczane jako dodatni pierwiastek z wartoœci w³asnej \(A^HA\) , lub \(AA^H\), to jest
+\begin{equation}
+\sigma_i(A) = \sqrt{\sigma_i(A^HA)} > 0, i = 1...k,
+\end{equation}
+gdzie \( \lambda_i(\cdot) \) oznacza i-t¹ niezerow¹ wartoœæ w³asn¹. 
+\end{definition}
+Wartoœci osobliwe przyjê³o siê szeregowaæ malej¹co:
+\begin{equation}
+\sigma_{\max} = \sigma_1 \geq \sigma_2 \geq ... \geq \sigma_k = \sigma_{\min}
+\nonumber
+\end{equation}
+
+Wybrane w³asnoœci wartoœci osobliwej macierzy:
+\begin{enumerate}
+\item \( \sigma(\alpha M) = \left| \alpha \right| \sigma(M) \)
+\item \( \sigma_{\max}(M_1 + M_2) \leq \sigma_{\max}(M_1) + \sigma_{\max}(M_2) \)
+\item \( \sigma_{\max}(M_1 \cdot M_2) \leq \sigma_{\max}(M_1) \cdot \sigma_{\max}(M_2) \)
+\item \( \sigma_{\max}(M) = \max_{|x| = 1}\| Mx \|_2 = \| M \|_2 \)
+\item \( \sigma_{\min}(M) = \min_{|x| = 1}\| Mx \|_2 \)
+\end{enumerate}
+
+Z w³asnoœci 4. wynika, ¿e \( \sigma_{\max} \) macierzy transmitancji widmowych dla pewnej czêstotliwoœci \( \omega_0 \) okreœla maksymalne wzmocnienie uk³adu dla dowolnego (co do kierunku) sygna³u wejœciowego o jednostkowej d³ugoœci.
+
+\subsection{Dekompozycja macierzy wed³ug wartoœci osobliwych}
 % Ewewntualnie krótszy tytu³ {Dekompozycja SVD}
 Bardzo ciekawym narzêdziem do analizy systemów wielowymiarowych (MIMO) w dziedzinie czêstotliwoœci jest dekompozycja macierzy wed³ug wartoœci osobliwych (dekompozycja SVD, od ang. Singular Value Decompozition)
 
-Definicja
-Dowolnej macierzy \(A\) rzêdu k, mo¿emy przypisaæ k dodatnich wartoœci oznaczanymi jako \( \sigma_i(A) \) lub w skrócie \( \sigma_i\). S¹ to wartoœci osobliwe macierzy \(A\) obliczane jako dodatni pierwiastek z wartoœci w³asnej \(A^HA\) , lub \(AA^H\), to jest
-\begin{equation}
-\sigma_i(A) = \sqrt{\lambda_i(A^HA)} > 0, i = 1...k,
-\end{equation}
-gdzie \( \lambda_i(\cdot) \) oznacza i-t¹ niezerow¹ wartoœæ w³asn¹. Przyjê³o siê szeregowaæ wartoœci osobliwe malej¹co
-\begin{equation}
-\lambda_{\max} = \lambda_1 \geq \lambda_2 \geq ... \geq \lambda_k = \lambda_{\min}
-\end{equation}
-
-Dla pewnej czêstotliwoœci \( \omega \) (macierz odpowiedzi czêstotliwoœciowej ??) otrzymujemy podstawiaj¹c \( s = j \omega \)  \( G(s) \). Dokonuj¹c dekompozycji SVD macierzy \( G(j \omega) \) otrzymamy:
+Dla dowolnej czêstotliwoœci \( \omega_0 \) wartoœæ transmitancji widmowej \( G(j \omega_0) \) jest pewn¹ macierz¹ liczb zespolonych. Dokonuj¹c dekompozycji SVD macierzy \( G(j \omega_0) \) otrzymamy:
 
 \begin{equation}
-G(j \omega)= U \Sigma V',
+G(j \omega_0)= U \Sigma V^T,
 \end{equation}
 
 lub po przekszta³ceniu: 
 
 \begin{equation}
-G(j \omega) V = U \Sigma,
+G(j \omega_0) V = U \Sigma,
 \end{equation}
 
-gdzie \( \Sigma \) to diagonalna macierz zawieraj¹ca na swojej przek¹tnej kolejne wartoœci osobliwe. Dla dowolnego \(i = 1...n\) zachodzi zale¿noœæ:
+gdzie \( \Sigma \) to diagonalna macierz zawieraj¹ca na swojej przek¹tnej kolejne wartoœci osobliwe. Pionowe wektory macierzy \(U\) i \(V\) s¹ wzglêdem siebie ortonormalne.
+
+Dla dowolnego \(i = 1...n\) zachodzi zale¿noœæ:
 
 \begin{equation}
-u_i \cdot \sigma_i = G(j \omega) \cdot v_i,
+u_i \cdot \sigma_i = G(j \omega_0) \cdot v_i,
 \end{equation}
 
 gdzie \( u_i \) to i-ty wektor macierzy \(U\), a \(v_i\) - i-ty wektor macierzy V. Wektory \( u_i i v_i \) nale¿y interpretowaæ jako kierunki odpowiednio sygna³u wyjœciowego i wejœciowego, natomiast \( \sigma_i \) jest wzmocnieniem uk³adu. W szczególnoœci, dla \( i = 1 \) otrzymamy maksymalne wzmocnienie uk³adu \(\sigma_{\max} = \sigma_1 \) oraz sygna³ wymuszaj¹cy prowadz¹cy do tego wzmocnienia, czyli w skrócie \emph{najgorszy przypadek}.
 
-Wybrane w³asnoœci wartoœci osobliwej macierzy:
-\begin{itemize}
-\item \( \sigma(\alpha M) = \left| \alpha \right| \sigma(M) \)
-\item \( \sigma_{\max}(M_1 + M_2) \leq \sigma_{\max}(M_1) + \sigma_{\max}(M_2) \)
-\item \( \sigma_{\max}(M_1 \cdot M_2) \leq \sigma_{\max}(M_1) \cdot \sigma_{\max}(M_2) \)
+\subsubsection{Przyk³ad - F18}
+Model poprzecznej dynamiki samolotu F18 posiada trzy sygna³y wejœciowe: \(\delta_a\) - wychylenie lotki, \(\delta_r\) - wychylenie steru kierunku, \(\delta_s\) - wychylenie steru wysokoœci; dwa sygna³y wyjœciowe: \(p\) - prêdkoœæ k¹towa przychylania [deg/s], \(\beta\) - k¹t œlizgu [deg]; oraz osiem stanów. Macierze opisuj¹ce model w przestrzeni stanów zosta³y zaczerpniête z \cite{MacLean} i znajduj¹ siê w za³¹czniku \ref{F18Zalacznik}.
 
-\end{itemize}
+Obliczaj¹c najwiêksz¹ wartoœæ osobliw¹ transmitancji widmowej modelu dla pewnego przedzia³u \(\omega\), otrzymujemy maksymalne mo¿liwe wzmocnienie uk³adu po wszystkich kierunkach sygna³u wejœciowego (czarna linia - rys. \ref{RysSvdF18}). Dodatkowo wykorzystuj¹c dekompozycjê SVD, otrzymamy wzglêdny udzia³ poszczególnych sk³adowych sygna³u wejœciowego i wyjœciowego.
 
-(TODO przyk³ad - jakiœ ³adny wykres sigma max i postaci sygna³u wejœciowego i wyjœciowego)
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{SvdF18.eps}
+\caption{Analiza SVD modelu poprzecznej dynamiki samolotu F18.}
+\label{RysSvdF18}
+\end{figure}
+
+
+Z takiej analizy wynika, ¿e w sygnale wyjœciowym, niezale¿nie od czêstotliwoœci, dominuje prêdkoœæ przechylania \(q\). Natomiast g³ówne sk³adniki sygna³u wejœciowego, generuj¹ce du¿e wzmocnienie uk³adu, to lotki i ster wysokoœci. Tylko w pewnym w¹skim przedziale pulsacji (w okolicy 1 rad/s) to ster kierunki ma najbardziej destabilizuj¹ce w³aœciwoœci.
+
+Nale¿y zwróciæ uwagê na to, ¿e norma wektora jest silnie uzale¿niona od jednostek elementów sk³adowych. Subiektywnie niewielka wartoœæ sygna³u mo¿e okazaæ siê obiektywnie dominuj¹ca, dlatego do wiarygodnej analizy za pomoc¹ tego narzêdzia niezbêdna jest normalizacja sygna³ów, lub u¿ycie funkcji wagowych. W powy¿szym przyk³adzie, chocia¿ to sygna³ \(q\) przewa¿a nad \(\beta\) z punktu widzenia wymagañ odnoœnie w³aœciwoœci lotnych, to na t³umieniu bocznego poœlizgu powinien siê skupiæ projektant uk³adu regulacji \( \beta \).
 
 % rozwi¹zanie - wy³¹czenie bookmarków (hyperrref), albo:
 % \latexorpdf{math}{non math}
 % \section{Norma \( H_{\infty} \)}
-\section{Norma Hinf}
+\subsection{Norma Hinf}
 
-Jak wynika z analizy na temat dekompozycji SVD, najwiêksza wartoœæ osobliwa (TODO: charakterystyki czêstotliwoœciowej??) okreœla wzmocnienie w najgorszym przypadku dla danej czêstotliwoœci. Norma \( H_{\infty} \) zdefiniowana w nastêpuj¹cy sposób:
+Jak wynika z analizy na temat dekompozycji SVD, najwiêksza wartoœæ osobliwa transmitancji widmowej okreœla wzmocnienie w najgorszym przypadku dla danej czêstotliwoœci. Normê \( H_{\infty} \) zdefiniowan¹ w nastêpuj¹cy sposób:
 \begin{equation}
 H_\infty (G(s)) = \sup_{\omega} \sigma_{\max}(G(j\omega))
 \end{equation}
-mo¿na zdefiniowaæ jako maksymalne wzmocnienie w dowolnym kierunku i dla dowolnej czêstotliwoœci.
+mo¿na zinterpretowaæ jako maksymalne wzmocnienie w dowolnym kierunku i dla dowolnej czêstotliwoœci.
+
+\section{Metody syntezy odpornych regulatorów}
+TODO: Cecha podejœcia Robust Control - uwzglêdnienie niepewnoœci podczas syntezy regulatora
+
+\subsection{Regulator Hinf}
+
+\subsection{Warunek odpornej stabilnoœci}
+
+Warunek na odporn¹ stabilnoœæ uk³adu z modelem wzglêdnej niepewnoœci na wyjœciu mo¿na wyprowadziæ z teorii ma³ych wzmocnieñ (Small Gain Theorem) \cite{Handbook}.
+
+\begin{theorem}
+Warunkiem \bf{wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
+\begin{equation}
+\mathcal{G}_p = \{ G_p(s) : G_p(s) = (I + w_o(s)\Delta(s))G_n(s), \|\Delta(s)\|_\infty \leq 1 \}
+\end{equation}
+jest spe³nienie zale¿noœci:
+\begin{equation}
+\| w_o(s)G(s)K(s)(I + G(s)K(s))^{-1} \|_\infty < 1
+\label{MultStability}
+\end{equation}
+\end{theorem}
+
+Nale¿y zaznaczyæ, ¿e warunek wystarczaj¹cy (\ref{MultStability}), mo¿e byæ zbyt zachowawczy i nie zostanie spe³niony nawet dla odpornie stabilnego uk³adu.
+
+\subsubsection{Przyk³ad - uk³ad masa-sprê¿yna-t³umik}
+Masa \( m \), której ruchowi towarzyszy tarcie lepkie o wspó³czynniku t³umienia \( c \), jest zamocowana na sprê¿ynie o sztywnoœci \( k \). Parametry uk³adu s¹ niepewne, a ich wartoœci nominalne i zakresy zmiennoœci wynosz¹:
+\begin{align}
+m &= 3 \pm 60 \%,\\
+c &= 1 \pm 60 \%,\\
+k &= 2 \pm 40 \%.
+\end{align}
+Sygna³em wejœciowym jest si³a przy³o¿ona do masy \( f(x) \), sygna³em wyjœciowym - po³o¿enie masy \( x(t) \).
+
+W pierwszym podejœciu zaprojektowano regulator \( H_\infty \), przy czym waga dotycz¹ca sygna³u steruj¹cego \( w_u(s) = 0,01 \), natomiast waga b³êdu sterowania \( e(t) \) wynosi:
+\begin{equation}
+w_p(s) = 0,95 \frac{s^2 + 1,8s + 10}{s^2 + 8s + 0,01}.
+\nonumber
+\end{equation}
+
+
+Kryteria jakoœciowe zdefiniowane funkcjami wagowymi \( w_u(s) \) i \( w_p(s) \) zosta³y spe³nione (\(\gamma < 1 \)), ale uk³ad zamkniêty okaza³ siê niestabilny dla pewnych wartoœci parametrów \( m, c\) i \(k\).
+
+W kolejnym etapie uwzglêdniono zmiennoœæ parametrów w postaci wzglêdnego modelu niepewnoœci. Wagê \( w_o(s) \) dobrano tak, aby powsta³a rodzina modeli objê³a rodzinê obiektów \( \mathcal{G}_r \subset \mathcal{G}_p \) (rys. \ref{MsdUncert}).
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{MsdUncert.eps}
+\caption{Dobór funkcji wagowej modelu niepewnoœci.}
+\label{MsdUncert}
+\end{figure}
+
+Okazuje siê, ¿e chocia¿ kryteria jakoœciowe (w tym kryterium odpornoœci) nie zosta³y spe³nione (\( \gamma = 2,56 \)), uk³ad zamkniêty jest odpornie stabilny. Samo uwzglêdnienie niepewnoœci pozwoli³o osi¹gn¹æ odporn¹ stabilnoœæ. Na rys.~(\ref{Msd2}) porównano transmitancje widmowe uk³adu zamkniêtego \( G(s)K(s)(I+G(s)K(s))^{-1} \) dwóch regulatorów, które dla spe³nienia warunku wystarczaj¹cego kryterium stabilnoœci, powinny byæ mniejsze od \( 1/w_o(s) \) dla ka¿dego \( \omega \geq 0 \).
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{Msd2.eps}
+\caption{Chocia¿ warunek wystarczaj¹cy nie zosta³ spe³niony, regulator 2. jest odpornie stabilny.}
+\label{Msd2}
+\end{figure}
+

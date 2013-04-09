@@ -35,13 +35,13 @@ Rozdzia³ 2. Podstawy matematyczne
    Model niestacjonarny czy rodzina modeli stacjonarnych.
 2. Niepewnoœæ modelu
    Pochodzenie niepewnoœci (tabelka), strukturalna niestrukturalna
-   3.1 Niepewnoœæ strukturalna
-   3.2 Niepewnoœæ parametryczna (rodzina wielomianów)
-3. Opis niepewnoœci
-   Addytywna, multiplikatywna (bezwzglêdna, wzglêdna)
+   3.1 Niepewnoœæ strukturalna - parametryczna (rodzina wielomianów)
+   3.2 Niepewnoœæ niestrukturalna
+   3.2.1 multiplikatywna (wzglêdna)
+   3.2.2 Addytywna (bezwzglêdna)
 4. Metody analizy uk³adów wielowymiarowych
    2.1 Wartoœæ osobliwa macierzy
-   2.2 Dekompozycja macierzy wed³ug wartoœci osobliwych
+   2.2 Dekompozycja macierzy wed³ug wartoœci osobliwych (przyk³ad - F18)
    2.3 Norma Hinf
    2.4 Strukturalna wartoœæ osobliwa
 5. Metody syntezy odpornych regulatorów
