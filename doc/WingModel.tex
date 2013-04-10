@@ -4,7 +4,7 @@ W poni¿szym rozdziale zosta³ zawarty opis oraz analiza modelu matematycznego skr
 \section{Model matematyczny}
 (TODO wyjaœniæ dlaczego stosujemy profil referencyjny, jego po³o¿enie wzd³u¿ skrzyd³a)
 
-Jak wspomniano we wstêpie, model matematyczny elastycznego skrzyd³a o dwóch stopniach swobody zosta³ zaczerpniêty z \cite{WaszakModel}. Na model sk³ada siê dynamika strukturalna, aerodynamika quasi-stacjonarna, dynamika elementu wykonawczego oraz prosty model turbulencji.
+Model matematyczny elastycznego skrzyd³a o dwóch stopniach swobody zosta³ zaczerpniêty z \cite{WaszakModel}. Na model sk³ada siê dynamika strukturalna, aerodynamika quasi-stacjonarna, dynamika elementu wykonawczego oraz prosty model turbulencji.
 
 Postaæ odpowiednio wektora stanu, wejœciowego i wyjœciowego:
 \begin{align*}
@@ -22,7 +22,7 @@ Znaczenie poszczególnych symboli wyjaœniono w tabeli~\ref{TabModelSkrzydla}.
 \hline
 symbol & opis & jedn. \\
 \hline
-\( h \) & przemieszczenie pionowe skrzyd³a & [m] \\
+\( h \) & przemieszczenie pionowe profilu ref. & [m] \\
 \( \theta \) & skrêcenie skrzyd³a & [rad] \\
 \( \delta_c \) & wartoœæ zadana wychylenia lotki  & [rad] \\
 \( \delta \) & wychylenie lotki & [rad] \\
@@ -51,7 +51,9 @@ Uk³ad równañ \ref{EqModelStruktury} opisuje drgania skrêtne i giêtne skrzyd³a~\c
 \label{EqModelStruktury}
 \end{equation}
 
-Wyra¿enia \( m \), \(I_\theta\) to masy uogólnione postaci ruchu giêtnego i skrêtnego. Wyra¿enie \( s_{h\theta} \) to wspó³czynnik sprzê¿enia miêdzy dwoma stopniami swobody. \( K_h \), \(K_\theta\) to odpowiednio sztywnoœæ na zginanie i skrêcanie (TODO jak to siê nazywa: przetransponowane/uogólnione do profilu odniesienia?). Wreszcie \(Q_h\) i \(Q_theta\) to uogólnione si³y dzia³aj¹ce na obiekt.
+Wyra¿enia \( m \), \(I_\theta\) to masy uogólnione postaci ruchu giêtnego i skrêtnego. Wyra¿enie \( s_{h\theta} \) to wspó³czynnik sprzê¿enia miêdzy dwoma stopniami swobody. \( K_h \), \(K_\theta\) to odpowiednio sztywnoœæ na zginanie i skrêcanie. Wreszcie \(Q_h\) i \(Q_\theta\) to uogólnione si³y dzia³aj¹ce na obiekt.
+
+%\( K_h \), \(K_\theta\) to odpowiednio sztywnoœæ na zginanie i skrêcanie (TODO jak to siê nazywa: przetransponowane/uogólnione do profilu odniesienia?)
 
 Jak siê okazuje wspó³czynnik sprzê¿enia drgañ giêtnych i skrêtnych \( s_{h\theta} \), którego wartoœæ wynika z po³o¿enia CG skrzyd³a wzglêdem SSP, ma decyduj¹ce znaczenie na to kiedy i czy w ogóle wyst¹pi zjawisko flutteru.
 
@@ -59,33 +61,50 @@ Jak siê okazuje wspó³czynnik sprzê¿enia drgañ giêtnych i skrêtnych \( s_{h\theta
 s_{h\theta} = m \cdot x_{cg}
 \end{equation}
 
-\subsubsection{Model aerodynamiki quasi-statycznej}
-Standardow¹ metod¹ szacowania si³ aerodynamicznych jest u¿ycie pochodnych stabilnoœciowych i sterowania (TODO dobrze przet³umaczyæ: stability and control derivatives). Si³y aerodynamiczne mog¹ zostaæ przedstawione jako funkcje liniowe k¹ta natarcia \( \alpha \), wychylenia powierzchni sterowych \(\delta\) oraz ich pochodnych wzglêdem czasu (równania (\ref{EqSilyAero})). Wartoœci wspó³czynników aerodynamicznych zosta³y zawarte w tabeli~\ref{TabWspAero}
+\subsubsection{Model aerodynamiki quasi-stacjonarnej}
+Standardow¹ metod¹ szacowania si³ aerodynamicznych jest u¿ycie pochodnych stabilnoœciowych i sterowania (stability and control derivatives). Si³y aerodynamiczne mog¹ zostaæ przedstawione jako funkcje liniowe k¹ta natarcia \( \alpha \), wychylenia powierzchni sterowych \(\delta\) oraz ich pochodnych wzglêdem czasu (\ref{EqSilyAero}). Wartoœci wspó³czynników aerodynamicznych zosta³y zawarte w tabeli~\ref{TabWspAero}
 
 \begin{equation}
 \label{EqSilyAero}
 \begin{split}
 L = & qSC_L = \\
  & qS \left[ C_{L_0} +C_{L_\alpha} \alpha + C_{L_\delta} \delta 
-+ \frac{\bar{c}}{2U_0} \left(C_{L_{\dot{alpha}}} \dot{\alpha} 
++ \frac{\bar{c}}{2U_0} \left(C_{L_{\dot{\alpha}}} \dot{\alpha} 
 + C_{L_q} \dot{\theta} + C_{L_{\dot{\delta}}} \dot\delta \right) \right]
 \\
 M = & qS\bar{c}C_M = \\
- & qS\bar{c} \left[ C_{M_0} +C_{M_\alpha} \alpha + C_{M_\delta} \delta + \frac{\bar{c}}{2U_0} (C_{M_{\dot{alpha}}} \dot{\alpha} + C_{M_q} \dot{\theta} + C_{M_{\dot{\delta}}} \dot\delta) \right]
+ & qS\bar{c} \left[ C_{M_0} +C_{M_\alpha} \alpha + C_{M_\delta} \delta + \frac{\bar{c}}{2U_0} (C_{M_{\dot{\alpha}}} \dot{\alpha} + C_{M_q} \dot{\theta} + C_{M_{\dot{\delta}}} \dot\delta) \right]
 \end{split}
 \end{equation}
 
-%TODO - skopiowaæ z dokumentu BACT?
 \begin{table}[hbt]
 \centering
 \begin{tabular}{|c|c|c|c|}
-
+\hline
+Symbol & opis & Wartoœæ & Jedn. \\
+\hline
+\( C_{L_0} \) & wsp. si³y noœnej dla \(\alpha = 0\) & 0 & \( [-] \) \\
+\( C_{M_0} \) & wsp. momentu dla \(\alpha = 0\) & 0 & \( [-] \) \\
+\( C_{L_\alpha} \) & wsp. si³y noœnej wzglêdem k¹ta natarcia & 4,584 & \( [1/rad] \) \\
+\( C_{M_\alpha} \) & wsp. momentu wzgl. k¹ta natarcia & 1,49 & \( [1/rad] \) \\
+\( C_{L_{\dot{\alpha}}} \) & wsp. si³y noœnej wzgl. pochodnej k¹ta natarcia & -3,1064 & \( [1/rad] \) \\
+\( C_{L_q} \) & wsp. si³y noœnej wzgl. prêdkoœci pochylania & 2,5625 & \( [1/rad] \) \\
+\( C_{M_{\dot{\alpha}}} \) & wsp. momentu wzgl. pochodnej k¹ta natarcia & -2,6506 & \( [1/rad] \) \\
+\( C_{M_q} \) & wsp. si³y noœnej wzgl. prêdkoœci pochylania & -0,4035 & \( [1/rad] \) \\
+\( C_{L_\delta} \) & wsp. si³y noœnej wzgl. k¹ta wychylenia lotki& 0,63 & \( [1/rad] \) \\
+\( C_{L_{\dot{\delta}}} \) & wsp. si³y noœnej wzgl. pochodnej k¹ta wychylenia lotki & 0 & \( [1/rad] \) \\
+\( C_{M_\delta} \) & wsp. momentu wzgl. k¹ta wychylenia lotki& -0,0246 & \( [1/rad] \) \\
+\( C_{M_{\dot{\delta}}} \) & wsp. momentu wzgl. pochodnej k¹ta wychylenia lotki& 0 & \( [1/rad] \) \\
+\( x_{ac} \) & po³o¿enie AC wzglêdem SSP & 0,0938 & \( [m] \) \\
+\( S \) & powierzchnia p³ata & 5,25 & \( [m^2] \) \\
+\( \bar{c} \) & œrednia ciêciwa aerodynamiczna & 0,75 & \( [m] \) \\
+\hline
 \end{tabular}
 \caption{Wspó³czynniki aerodynamiczne modelu skrzyd³a.}
 \label{TabWspAero}
 \end{table}
 
-Jak wspomniano w \cite{WaszakModel}, model aerodynamiki oparty na wspó³czynnikach jest raczej uproszczonym podejœciem, ale w zupe³noœci wystarczaj¹cy aby uchwyciæ najwa¿niejsze cechy zjawiska flutteru.
+Model aerodynamiki oparty na wspó³czynnikach jest raczej uproszczonym podejœciem, ale w zupe³noœci wystarczaj¹cy aby uchwyciæ najwa¿niejsze cechy zjawiska flutteru~\cite{WaszakModel}.
 
 Niestacjonarny charakter modelu aerodynamiki wynika z uwzglêdnienia wspó³czynników wzglêdem pochodnych (np. \( C_{L_{\dot\alpha}} \) ). 
 
@@ -180,7 +199,6 @@ Symbol & Opis & Wartoœæ & Jednostki \\
 \( \zeta_h \) & wsp. t³umienia zginania & 0,0014 & \( [-]\) \\
 \( \zeta_\theta \) & wsp. t³umienia skrêcania & 0,001 & \( [-]\) \\
 \( \bar{x_{cg}} \) & wzglêdne po³o¿enie CG & 1 - 4,125 & \( [\%] \) \\
-\(  \) & & & \( [] \) \\
 \hline
 \end{tabular}
 \caption{Zakres wartoœci parametrów modelu}
@@ -205,7 +223,7 @@ Rys. \ref{RysOdpSkokowa} przedstawia odpowiedŸ modelu skrzyd³a dla sygna³u skoko
 \end{figure}
 
 \subsubsection{Analiza prêdkoœci lotu}
-Dolnym ograniczeniem prêdkoœci lotu jest prêdkoœæ przeci¹¿enia \(V_{min}\), dla której skrzyd³o jest w stanie wytworzyæ  si³ê noœn¹ wystarczaj¹c¹ do lotu poziomego.
+Dolnym ograniczeniem prêdkoœci lotu jest prêdkoœæ \(V_{min}\), dla której skrzyd³o jest w stanie wytworzyæ  si³ê noœn¹ wystarczaj¹c¹ do lotu poziomego.
 
 Zak³ada siê, ¿e jedynym górnym ograniczeniem jest prêdkoœæ krytyczna flutteru \(V_k\). Wyznaczenie prêdkoœci krytycznej polega na odnalezieniu minimalnej prêdkoœci, dla której uk³ad przestaje byæ stabilny. Wp³yw na tê prêdkoœæ ma zarówno wysokoœæ lotu, jak i (poœrednio) poziom paliwa w skrzyd³ach (rys~\ref{RysPredkosci}).
 
@@ -235,12 +253,12 @@ Gdy uk³ad staje siê niestabilny - linia pierwiastkowa wkracza na dodatni¹ pó³p³a
 
 
 \section{Niepewnoœæ modelu skrzyd³a}
-Jak wynika z tabeli \ref{TabParametrySkrzydla} zakres zmiennoœci parametrów jest du¿y. Istnieje zatem ryzyko, ¿e rodzina modeli \( \mathcal{G}_r \) mo¿e zbyt obszerna, aby jeden liniowy regulator zapewni³ stabilnoœæ w ca³ym obszarze pracy. 
+Jak wynika z tabeli \ref{TabParametrySkrzydla} zakres zmiennoœci parametrów jest du¿y. Istnieje zatem ryzyko, ¿e rodzina modeli \( \mathcal{G}_r \) mo¿e byæ zbyt du¿a, aby jeden liniowy regulator zapewni³ stabilnoœæ w ca³ym obszarze pracy. 
 
 Celem tego rozdzia³u jest ujêcie ca³ej rodziny modeli \( \mathcal{G}_r \) w jednym (niepewnym) modelu \( G_p(s) \).
 
 \subsubsection{Wybór modelu niepewnoœci}
-Zakres zmiennoœci parametrów modelu mo¿na wprost prze³o¿yæ na niepewnoœæ parametryczn¹. Nale¿y zwróciæ jednak uwagê na siln¹ korelacjê niektórych parametrów (np. wynikaj¹cych ze wzrostu masy paliwa). Wykorzystanie parametrycznego modelu niepewnoœci mog³oby okazaæ siê zbyt zachowawcze i w rezultacie uniemo¿liwiæ syntezê regulatora. Np sytuacja, w której moment bezw³adnoœci skrzyd³a \( I_\theta \) osi¹ga swoje maksimum, a jednoczeœnie masa \( m \) - minimum, jest nieosi¹galna.
+Zakres zmiennoœci parametrów modelu mo¿na wprost prze³o¿yæ na niepewnoœæ parametryczn¹. Nale¿y zwróciæ jednak uwagê na siln¹ korelacjê niektórych parametrów (np. wynikaj¹cych ze wzrostu masy paliwa). Wykorzystanie parametrycznego modelu niepewnoœci mog³oby okazaæ siê zbyt zachowawcze i w rezultacie uniemo¿liwiæ syntezê regulatora. Np. sytuacja, w której moment bezw³adnoœci skrzyd³a \( I_\theta \) osi¹ga swoje maksimum, a jednoczeœnie masa \( m \) - minimum, jest nieosi¹galna.
 
 Wobec tego postanowiono wykorzystaæ model niestrukturalny niepewnoœci, który mo¿e obj¹æ niepewnoœæ parametryczn¹ i dodatkowo zapewniæ wiêksz¹ stabilnoœæ obliczeñ \cite{RobustMatlab}.
 

@@ -47,7 +47,15 @@ transmitancja w³aœciwa - rz¹d licznika <= rz¹d mianowanika - G(inf) - ograniczon
 transmitancja operatorowa - G(s)
 macierz transmitancji
 transmitancja widmowa - G(jw) - otrzymujemy bezpoœrednio z transmitancji operatorowej podstawiaj¹c s = jw
-charakterystyki czêstotliwoœciowe - ró¿ne postaci wykresów (zale¿noœci) transmitancji widmowej jako funkcji od omega
+charakterystyki czêstotliwoœciowe - ró¿ne postaci wykresów (zale¿noœci) transmitancji widmowej jako funkcji pulsacji
+charakterystyka amplitudowo-fazowa - wykres Nyquista
+(logarytmiczna) char. amplitudowa i char fazowa
+modu³ transmitancji widmowej |G(jw)| - wzmocnienie uk³adu
+argument (faza) transmitancji widmowej |G(jw)| - faza odpowiedzi uk³adu??
+
+
+char. skokowa - odpowiedŸ skokowa
+char. impulsowa - odpowiedŸ impulsowa
 
 uk³ad regulacji automatycznej
 

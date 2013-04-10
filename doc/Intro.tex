@@ -75,7 +75,10 @@ Z tego powodu technika sterowania odpornego (robust control), wydaje siê byæ ide
 \chapter{Podstawy matematyczne}
 
 \section{Dynamiczny uk³ad liniowy stacjonarny}
-Uk³ad liniowy mo¿e byæ opisany w dziedzinie czasu za pomoc¹ równañ stanu, albo w dziedzinie czêstotliwoœci za pomoc¹ macierzy transmitancji operatorowych. Je¿eli wspó³czynniki równañ nie zale¿¹ od czasu mamy do czynienia z uk³adami stacjonarnymi.
+Obiekt, czyli fizyczny uk³ad dynamiczny mo¿e byæ opisany w dziedzinie czasu za pomoc¹ równañ stanu, albo w dziedzinie czêstotliwoœci za pomoc¹ macierzy transmitancji operatorowych. 
+
+
+Je¿eli wspó³czynniki równañ nie zale¿¹ od czasu mamy do czynienia z uk³adami stacjonarnymi.
 
 %TODO:Dowolny model liniowy o skoñczonej liczbie wymiarów mo¿na przedstawiæ w postaci macierzy transmitancji \(G(s)\), któr¹ w sposób bezpoœredni otrzymujemy z opisu w przestrzeni stanów:
 
@@ -84,14 +87,6 @@ Uk³ad liniowy mo¿e byæ opisany w dziedzinie czasu za pomoc¹ równañ stanu, albo w
 %\end{equation}
 
 Chocia¿ z punktu widzenia charakteru zjawisk fizycznych, obiekt pracuj¹cy w zmiennym œrodowisku jest obiektem niestacjonarnym, to jednak zazwyczaj opisuje siê go jako rodzina modeli stacjonarnych. Jest to o tyle s³uszne za³o¿enie, o ile zmiennoœæ parametrów jest du¿o wolniejsza od dynamiki obiektu.
-
-\section{Niepewnoœæ}
-TODO\\*
-ród³a niepewnoœci (zamierzone, niezamierzone, linearyzacja, redukcja liczby stanów, pomijani dynamiki wy¿szego rzêdu, zmienne parametry pracy) 
-\subsection{Niepewnoœæ strukturalna (parametryczna)}
-\subsection{Niepewnoœæ niestrukturalna}
-\subsubsection{Model multiplikatywny (wzglêdny) niepewnoœci}
-\subsubsection{Model addytywny (bezwzglêdny) niepewnoœci}
 
 \section{Metody analizy uk³adów wielowymiarowych}
 W przypadku systemów jednowymiarowych, analiza w dziedzinie czêstotliwoœci sprowadza siê do okreœlenia wzmocnienia i przesuniêcia fazowego odpowiedzi uk³adu na sinusoidalne wymuszenie. Charakterystykê czêstotliwoœciow¹ opisan¹ transmitancj¹ widmow¹ \(G(j \omega) \) uk³adu otrzymujemy bezpoœrednio podstawiaj¹c \( s = j \omega \) do transmitancji operatorowej.
@@ -132,15 +127,18 @@ Wartoœci osobliwe przyjê³o siê szeregowaæ malej¹co:
 \end{equation}
 
 Wybrane w³asnoœci wartoœci osobliwej macierzy:
-\begin{enumerate}
-\item \( \sigma(\alpha M) = \left| \alpha \right| \sigma(M) \)
-\item \( \sigma_{\max}(M_1 + M_2) \leq \sigma_{\max}(M_1) + \sigma_{\max}(M_2) \)
-\item \( \sigma_{\max}(M_1 \cdot M_2) \leq \sigma_{\max}(M_1) \cdot \sigma_{\max}(M_2) \)
-\item \( \sigma_{\max}(M) = \max_{|x| = 1}\| Mx \|_2 = \| M \|_2 \)
-\item \( \sigma_{\min}(M) = \min_{|x| = 1}\| Mx \|_2 \)
-\end{enumerate}
+\begin{align}
+& \sigma(\alpha M) = \left| \alpha \right| \sigma(M) \\
+& \sigma_{\max}(M_1 + M_2) \leq \sigma_{\max}(M_1) + \sigma_{\max}(M_2) 
+\label{WlSigmaPlus}\\
+& \sigma_{\max}(M_1 \cdot M_2) \leq \sigma_{\max}(M_1) \cdot \sigma_{\max}(M_2) 
+\label{WlSigmaMnozenie} \\
+& \sigma_{\max}(M) = \max_{|x| = 1}\| Mx \|_2 = \| M \|_2 
+\label{WlSigmaMax} \\
+& \sigma_{\min}(M) = \min_{|x| = 1}\| Mx \|_2
+\end{align}
 
-Z w³asnoœci 4. wynika, ¿e \( \sigma_{\max} \) macierzy transmitancji widmowych dla pewnej czêstotliwoœci \( \omega_0 \) okreœla maksymalne wzmocnienie uk³adu dla dowolnego (co do kierunku) sygna³u wejœciowego o jednostkowej d³ugoœci.
+Z w³asnoœci \eqref{WlSigmaMax} wynika, ¿e \( \sigma_{\max} \) macierzy transmitancji widmowych dla pewnej czêstotliwoœci \( \omega_0 \) okreœla maksymalne wzmocnienie uk³adu dla dowolnego (co do kierunku) sygna³u wejœciowego o jednostkowej d³ugoœci.
 
 \subsection{Dekompozycja macierzy wed³ug wartoœci osobliwych}
 % Ewewntualnie krótszy tytu³ {Dekompozycja SVD}
@@ -196,6 +194,103 @@ H_\infty (G(s)) = \sup_{\omega} \sigma_{\max}(G(j\omega))
 \end{equation}
 mo¿na zinterpretowaæ jako maksymalne wzmocnienie w dowolnym kierunku i dla dowolnej czêstotliwoœci.
 
+\section{Niepewnoœæ}
+
+Analiza, lub synteza uk³adów regulacji opiera siê na modelu matematycznym obiektu fizycznego. Model matematyczny zawsze jest tylko przybli¿eniem rzeczywistoœci. Ró¿nica miêdzy modelem a rzeczywistym obiektem jest nazywana niepewnoœci¹ modelu matematycznego.
+
+Typowe Ÿród³a niepewnoœci mo¿na podzieliæ na zamierzone i niezamierzone. Do pierwszej grupy nale¿y np. œwiadome pominiêcie skomplikowanych zjawisk fizycznych (tzw. niemodelowana dynamika), linearyzacja uk³adu lub efekt redukcji rzêdu uk³adu. Do niezamierzonych Ÿróde³ mo¿na zaliczyæ b³¹d pomiarowy przy identyfikacji obiektu lub zmiana (zaburzenie) parametrów pracy ze wzglêdu na zmianê czynników zewnêtrznych jak temperatura czy wilgotnoœæ.
+
+Skoro obiekt rzeczywisty mo¿e w pewnym zakresie zmieniaæ swoje w³aœciwoœci dynamiczne, mo¿emy mówiæ o pewnej rodzinie (zbiorze) obiektów \( \mathcal{G}_r \). Gdybyœmy w dowolnym punkcie pracy byli w stanie wyznaczyæ model \( G_r \) obiektu, to model ten nale¿a³by do zbioru \( \mathcal{G}_r \).
+
+Chocia¿ nazwa mo¿e byæ mylna, w dziedzinie sterowania odpornego niepewnoœæ jest nasz¹ {\bf wiedz¹} na temat mo¿liwych odchyleñ obiektu rzeczywistego od za³o¿onego modelu nominalnego. Je¿eli przy opisie obiektu uwzglêdnimy tê wiedzê (czyli niepewnoœæ), otrzymamy {\bf model uk³adu z niepewnoœci¹}~\cite{}. Taki model definiuje pewn¹ rodzinê modeli, któr¹ w niniejszej pracy oznaczono jako \( \mathcal{G}_p \).
+
+Problem opracowania modelu z niepewnoœci¹ mo¿na sformu³owaæ nastêpuj¹co:\\
+{ \it Dla znanej rodziny obiektów \( \mathcal{G}_r \) znajdŸ tak¹ rodzinê modeli \( \mathcal{G}_p \) opisan¹ pewnym modelem niepewnoœci \(G_p(s)\), aby zbiór \( \mathcal{G}_r \) by³ zawarty w zbiorze \( \mathcal{G}_p \):
+}
+\begin{equation}
+\mathcal{G}_r \subset \mathcal{G}_p
+\label{GrInGp}
+\end{equation}
+
+Powy¿sz¹ zale¿noœæ ilustruje Rys.~\ref{RysZbiory}.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth * 3/4]{ZbioryObiektow.png}
+\caption{Interpretacja niepewnoœci.}
+\label{RysZbiory}
+\end{figure}
+
+\subsection{Niepewnoœæ strukturalna (parametryczna)}
+\subsection{Niepewnoœæ niestrukturalna}
+
+\subsubsection{Model wzglêdnej (multiplikatywnej) niepewnoœci na wejœciu}
+\begin{equation}
+G_p(s) = G_n(s)(I + w_i(s) \Delta(s))
+\label{NiepWzglIn}
+\end{equation}
+\subsubsection{Model wzglêdnej (multiplikatywnej) niepewnoœci na wyjœciu}
+\begin{equation}
+G_p(s) = (I + w_o(s) \Delta(s))G_n(s)
+\label{NiepWzglOut}
+\end{equation}
+\subsubsection{Model bezwzglêdnej (addytywnej) niepewnoœci}
+\begin{equation}
+G_p(s) = G_n(s) + w_a(s) \Delta(s)
+\label{NiepBezwzgl}
+\end{equation}
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{ModeleNiepewnosci.png}
+\caption{Modele niestrukturalnej niepewnoœci, a) wzglêdnej na wejœciu, b) wzglêdnej na wyjœciu, c) bezwzglêdnej}
+\label{RysModeleNiep}
+\end{figure}
+
+
+Dowolny z modeli niepewnoœci niestrukturalnej mo¿na przedstawiæ z pomoc¹ innego, dlatego ka¿dy z modeli mo¿e byæ stosowany wymiennie (TODO Ÿród³o). Z tego powodu w dalszej czêœci pracy bêdzie stosowany tylko jeden, a konkretnie model niepewnoœci wzglêdnej na wyjœciu uk³adu.
+
+\subsection{Metoda doboru funkcji wagowej}
+
+Z postaci modelu niepewnoœci \eqref{NiepWzglIn}, \eqref{NiepWzglOut}, \eqref{NiepBezwzgl} wynika, ¿e do okreœlenia niepewnoœci wymagane jest okreœlenie modelu nominalnego \(G_n\) i funkcji wagowej, która odzwierciedla nasz¹ wiedzê na temat górnej granicy charakterystyki czêstotliwoœciowej obiektu. O ile wybór \(G_n\) nie stanowi problemu (mo¿e to byæ postaæ odpowiadaj¹ca wartoœciom œrednim parametrów obiektu), o tyle wybranie funkcji wagowej wymaga wyjaœnienia.
+
+Poniewa¿ z punktu widzenia odpornej stabilnoœci, kluczowe znaczenie ma norma \( H_\infty \) rozpatrywanego uk³adu (a co za tym idzie - maksymalna wartoœæ osobliwa transmitancji widmowej), interesuje nas znalezienie zbioru \( \mathcal{G}_p\), takiego ¿e
+\begin{equation}
+\begin{split}
+\forall{G_r \in \mathcal{G}_r} \quad \exists{G_p:} \quad \\ \sigma_{\max}(G_p(j\omega)) \geq \sigma_{\max}(G_r(j\omega)) \quad \forall \omega
+\end{split}
+\label{GrInGp2}
+\end{equation}
+
+Oczywiœcie znalezienie dowolnego zbioru, który spe³nia zale¿noœæ~(\ref{GrInGp2}) jest trywialne, ale nam zale¿y na znalezieniu mo¿liwie najmniejszego, który spe³nia tê zale¿noœæ.
+
+Je¿eli do opisu niepewnoœci wykorzystamy model wzglêdny na wyjœciu uk³adu, (\ref{GrInGp2}) sprowadza siê do:
+
+\begin{equation}
+\begin{split}
+\forall G_r \in \mathcal{G}_r \quad \exists G_p: \\
+\sigma_{\max}(G_p(j\omega)) = \sigma_{\max}\left[(I + w_o(j\omega)\Delta(j\omega))G_n(j\omega)\right] \geq \sigma_{\max}(G_r(j\omega))
+\quad \forall \omega
+\end{split}
+\label{SigmaNiepWzgledna}
+\end{equation}
+
+Wykorzystuj¹c w³asnoœci wartoœci osobliwej macierzy (\ref{WlSigmaPlus}), (\ref{WlSigmaMnozenie}), otrzymujemy zale¿noœæ na funkcjê wagow¹ \( w_o(s) \), któr¹ nale¿y spe³niæ (\ref{ZaleznoscWo}).
+
+\begin{equation}
+\sigma_{\max}(w_o(j\omega)) \geq 
+\frac{\sigma_{\max}(G_r(j\omega)) - \sigma_{\max}(G_n(j \omega))}
+{\sigma_{\max}(G_n(j \omega))} \quad \forall \omega
+\label{ZaleznoscWo}
+\end{equation}
+
+Zazwyczaj mamy do czynienia z nieskoñczonym zbiorem \(\mathcal{G}_r\), dlatego w praktycznych zastosowaniach, przez \(\mathcal{G}_r\) bêdziemy rozumieæ {\bf reprezentatywny} zbiór uk³adów.
+
+
+%\subsubsection{Model multiplikatywny (wzglêdny) niepewnoœci}
+%\subsubsection{Model addytywny (bezwzglêdny) niepewnoœci}
+
+
 \section{Metody syntezy odpornych regulatorów}
 TODO: Cecha podejœcia Robust Control - uwzglêdnienie niepewnoœci podczas syntezy regulatora
 
@@ -203,10 +298,10 @@ TODO: Cecha podejœcia Robust Control - uwzglêdnienie niepewnoœci podczas syntezy
 
 \subsection{Warunek odpornej stabilnoœci}
 
-Warunek na odporn¹ stabilnoœæ uk³adu z modelem wzglêdnej niepewnoœci na wyjœciu mo¿na wyprowadziæ z teorii ma³ych wzmocnieñ (Small Gain Theorem) \cite{Handbook}.
+Warunek odpornej stabilnoœci uk³adu z modelem wzglêdnej niepewnoœci na wyjœciu mo¿na wyprowadziæ z teorii ma³ych wzmocnieñ (Small Gain Theorem)~\cite{Handbook}.
 
 \begin{theorem}
-Warunkiem \bf{wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
+Warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
 \begin{equation}
 \mathcal{G}_p = \{ G_p(s) : G_p(s) = (I + w_o(s)\Delta(s))G_n(s), \|\Delta(s)\|_\infty \leq 1 \}
 \end{equation}
@@ -246,7 +341,7 @@ W kolejnym etapie uwzglêdniono zmiennoœæ parametrów w postaci wzglêdnego modelu 
 \label{MsdUncert}
 \end{figure}
 
-Okazuje siê, ¿e chocia¿ kryteria jakoœciowe (w tym kryterium odpornoœci) nie zosta³y spe³nione (\( \gamma = 2,56 \)), uk³ad zamkniêty jest odpornie stabilny. Samo uwzglêdnienie niepewnoœci pozwoli³o osi¹gn¹æ odporn¹ stabilnoœæ. Na rys.~(\ref{Msd2}) porównano transmitancje widmowe uk³adu zamkniêtego \( G(s)K(s)(I+G(s)K(s))^{-1} \) dwóch regulatorów, które dla spe³nienia warunku wystarczaj¹cego kryterium stabilnoœci, powinny byæ mniejsze od \( 1/w_o(s) \) dla ka¿dego \( \omega \geq 0 \).
+Okazuje siê, ¿e chocia¿ kryteria jakoœciowe (w tym kryterium odpornoœci) nie zosta³y spe³nione (\( \gamma = 2,56 \)), uk³ad zamkniêty jest odpornie stabilny. Samo uwzglêdnienie niepewnoœci pozwoli³o osi¹gn¹æ odporn¹ stabilnoœæ. Na rys.~(\ref{Msd2}) porównano transmitancje widmowe uk³adu zamkniêtego \( G(s)K(s)(I+G(s)K(s))^{-1} \) dwóch regulatorów, które dla spe³nienia warunku wystarczaj¹cego kryterium stabilnoœci, powinny byæ mniejsze od \( 1/w_o(j\omega) \) dla ka¿dego \( \omega \geq 0 \).
 
 \begin{figure}[hbt]
 \centering
