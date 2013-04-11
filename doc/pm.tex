@@ -65,7 +65,7 @@
 \Large{Wydzia³ Elektroniki i Technik Informacyjnych\\}
 \large{Zak³ad Automatyki i Informatyki Stosowanej}}
 \hfill
-\includegraphics[width=1cm]{EITIlogo.jpeg}
+\includegraphics[width=2.6cm]{EITIlogo.jpeg}
 \rule[.1in]{\textwidth}{.2pt}
 
 \vspace{0.9in}
@@ -80,8 +80,9 @@
     \vspace{.5in}
 
 \end{center}
-\vspace{1in} \hfill
-\parbox{3in}{ nr albumu: 200883\\
+\vspace{1in} 
+\hfill
+\parbox{3.4in}{ nr albumu: 200883\\
               kierunek: Systemy Informacyjno-Decyzyjne\\}
 \vfill
 
@@ -92,7 +93,7 @@ dr in¿. Adam WoŸniak
 }
 \vspace{0.6in}
 \begin{center}
-Warszawa, wrzesieñ 2011
+Warszawa, (miesi¹c) 2013
 \end{center}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% STRONA  DRUGA
 \clearpage
@@ -125,7 +126,7 @@ Oœwiadczam ponadto, ¿e niniejsza wersja pracy jest identyczna z za³¹czon¹ wersj¹
 }
 \vspace{9cm}
 \begin{description}
-\item[S£OWA KLUCZOWE:] robust control, system sterowania, odporne systemy sterowania, quadrocopter.
+\item[S£OWA KLUCZOWE:] robust control, system sterowania, odporne systemy sterowania, flutter.
 \end{description}
 \clearpage
 
@@ -204,27 +205,22 @@ SSP & -- & œrodek si³ poprzecznych (Elastic Axis)\\
 \chapter *{Wstêp}
 \addcontentsline{toc}{section}{Wstêp}
 
-Ka¿dy zaawansowany projekt systemu sterowania opiera siê na modelu matematycznym obiektu. Rozbie¿noœæ miêdzy opisem, a rzeczywistoœci¹ jest nieunikniona i wynika zazwyczaj z dwóch podstawowych powodów:
-\begin{itemize}
-\item niektóre zjawiska fizyczne s¹ zbyt skomplikowane, lub nawet bli¿ej nieznane, aby móc je uwzglêdniæ;
-\item prawdziwe parametry pracy lub œrodowisko, w którym obiekt bêdzie pracowa³ mog¹ siê zmieniaæ.
-\end{itemize}
-Chocia¿ niedok³adnoœæ opisu zazwyczaj wynika z ograniczeñ wiedzy lub mo¿liwoœci pomiarowych, bardzo czêsto mo¿e byæ wprowadzona œwiadomie. Ograniczony czas lub koszty badañ zmuszaj¹ projektantów do budowy uproszczonych modeli.
-Niezale¿nie od pochodzenia owa niedok³adnoœæ opisu, czyli rozbie¿noœæ miêdzy obiektem rzeczywistym, a modelem matematycznym, nosi nazwê \emph niepewnoœci modelu \emph (model uncertainty).
-	Odpornoœæ jest to cecha uk³adu regulacji, 
-W takim razie projektowanie odpornych systemów sterowania dotyczy metod
-projektowych uwzglêdniaj¹cych apriori niepewnoœæ modelu. Skala tej niepewnoœci musi byæ wobec
-tego w pewien sposób mierzalna i opisywalna.
-W³aœciwie ka¿da metoda projektowa mo¿e w pewnym stopniu uwzglêdniaæ niepewnoœæ modelu.
-Jednak czêsto w literaturze
+TODO\\
+* Rozbie¿noœæ miêdzy obiektem a modelem nieunikniona\\
+* Klasyczne miary odpornoœci (margines stabilnoœci) nie zdaj¹ rezultatu w przypadku uk³adów MIMO\\
+* Szczególne znaczenie w lotnictwie, gdzie zakres pracy obiektu jest bardzo szeroki, a z³o¿onoœæ równañ opisuj¹cych zjawiska fizyczne - du¿a
+%Ka¿dy zaawansowany projekt systemu sterowania opiera siê na modelu matematycznym obiektu. Rozbie¿noœæ miêdzy opisem, a rzeczywistoœci¹ jest nieunikniona i wynika zazwyczaj z dwóch podstawowych powodów:
+%\begin{itemize}
+%\item niektóre zjawiska fizyczne s¹ zbyt skomplikowane, lub nawet bli¿ej nieznane, aby móc je uwzglêdniæ;
+%\item prawdziwe parametry pracy lub œrodowisko, w którym obiekt bêdzie pracowa³ mog¹ siê zmieniaæ.
+%\end{itemize}
+%Chocia¿ niedok³adnoœæ opisu zazwyczaj wynika z ograniczeñ wiedzy lub mo¿liwoœci pomiarowych, bardzo czêsto mo¿e byæ wprowadzona œwiadomie. Ograniczony czas lub koszty badañ zmuszaj¹ projektantów do budowy uproszczonych modeli.
+%Niezale¿nie od pochodzenia owa niedok³adnoœæ opisu, czyli rozbie¿noœæ miêdzy obiektem rzeczywistym, a modelem matematycznym, nosi nazwê \emph niepewnoœci modelu \emph (model uncertainty).
+%Odpornoœæ jest to cecha uk³adu regulacji, w takim razie projektowanie odpornych systemów sterowania dotyczy metod projektowych uwzglêdniaj¹cych apriori niepewnoœæ modelu. Skala tej niepewnoœci musi byæ wobec tego w pewien sposób mierzalna i opisywalna. W³aœciwie ka¿da metoda projektowa mo¿e w pewnym stopniu uwzglêdniaæ niepewnoœæ modelu.
 
-Metod projektowania odpornych regulatorów maj¹ szczególne znaczenie w zastosowaniu do wielowymiarowych obiektów, poniewa¿ tutaj zawodz¹ standardowe miary odpornoœci sprawdzone w zastosowaniu do obiektów jednowymiarowych.
+%Metod projektowania odpornych regulatorów maj¹ szczególne znaczenie w zastosowaniu do wielowymiarowych obiektów, poniewa¿ tutaj zawodz¹ standardowe miary odpornoœci sprawdzone w zastosowaniu do obiektów jednowymiarowych.
 
-Due to the increasing complexity of physical systems under control and
-rising demands on system properties, most industrial control systems are no
-longer single-input and single-output (SISO) but multi-input and multi-output
-(MIMO) systems with a high interrelationship (coupling) between these chan nels. The number of (state) variables in a system could be very large as well.
-These systems are called multivariable systems.
+%Due to the increasing complexity of physical systems under control and rising demands on system properties, most industrial control systems are no longer single-input and single-output (SISO) but multi-input and multi-output (MIMO) systems with a high interrelationship (coupling) between these chan nels. The number of (state) variables in a system could be very large as well. These systems are called multivariable systems.
 
 % Scalony cel i zakres ze wstêpem
 %\chapter *{Cel i zakres pracy}
@@ -252,6 +248,8 @@ TODO\\*
 
 \input{WingCtrl.tex}
 
+\input{PlaneControl.tex}
+
 \input{bib.tex}
 
 \appendix
@@ -267,10 +265,10 @@ Ca³oœæ projektu zosta³a wykonana przy u¿yciu oprogramowania Matlab, który zosta³
 
 
 
-\chapter{Skrypty, dane i modele}
+%\chapter{Skrypty, dane i modele}
 
-\subsubsection*{AnalizaUkladuOtwartego.m}
-Skrypt s³u¿¹cy do analizy obiektu bez systemu sterowania, a przede wszystkim do wyznaczenia postaci ruchu.
+%\subsubsection*{AnalizaUkladuOtwartego.m}
+%Skrypt s³u¿¹cy do analizy obiektu bez systemu sterowania, a przede wszystkim do wyznaczenia postaci ruchu.
 
 
 \end{document}

@@ -252,18 +252,17 @@ Gdy uk³ad staje siê niestabilny - linia pierwiastkowa wkracza na dodatni¹ pó³p³a
 
 
 
-\section{Niepewnoœæ modelu skrzyd³a}
+\section{Modelu skrzyd³a z niepewnoœci¹}
 Jak wynika z tabeli \ref{TabParametrySkrzydla} zakres zmiennoœci parametrów jest du¿y. Istnieje zatem ryzyko, ¿e rodzina modeli \( \mathcal{G}_r \) mo¿e byæ zbyt du¿a, aby jeden liniowy regulator zapewni³ stabilnoœæ w ca³ym obszarze pracy. 
 
 Celem tego rozdzia³u jest ujêcie ca³ej rodziny modeli \( \mathcal{G}_r \) w jednym (niepewnym) modelu \( G_p(s) \).
 
-\subsubsection{Wybór modelu niepewnoœci}
+\subsection{Wybór modelu niepewnoœci}
 Zakres zmiennoœci parametrów modelu mo¿na wprost prze³o¿yæ na niepewnoœæ parametryczn¹. Nale¿y zwróciæ jednak uwagê na siln¹ korelacjê niektórych parametrów (np. wynikaj¹cych ze wzrostu masy paliwa). Wykorzystanie parametrycznego modelu niepewnoœci mog³oby okazaæ siê zbyt zachowawcze i w rezultacie uniemo¿liwiæ syntezê regulatora. Np. sytuacja, w której moment bezw³adnoœci skrzyd³a \( I_\theta \) osi¹ga swoje maksimum, a jednoczeœnie masa \( m \) - minimum, jest nieosi¹galna.
 
 Wobec tego postanowiono wykorzystaæ model niestrukturalny niepewnoœci, który mo¿e obj¹æ niepewnoœæ parametryczn¹ i dodatkowo zapewniæ wiêksz¹ stabilnoœæ obliczeñ \cite{RobustMatlab}.
 
-\subsection{Multiplikatywna niepewnoœæ niestrukturalna}
-% (TODO: multiplikatywna - czy to dobre t³umaczenie?)
+\subsection{Niepewnoœæ wzglêdna na wyjœciu}
 Model nominalny \( G_n(s) \) zosta³ wybrany intuicyjnie dla prêdkoœci lotu równej prêdkoœci krytycznej \( U_0 = V_k \), oraz poziomu paliwa i wysokoœci lotu odpowiadaj¹cych wartoœciom œrednim (\(H = 5500 m, f_l = 50\%\)).
 
 Po dodaniu modelu niepewnoœæ niestrukturalnej do modelu nominalnego otrzymamy model niepewny (zaburzony) \( G_p(s) \) (\ref{NiepewnoscNiestr}).

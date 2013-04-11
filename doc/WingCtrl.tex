@@ -51,39 +51,39 @@ Poni¿ej w zwiêz³ej formie podsumowano za³o¿enia projektowe.
 \end{enumerate}
 dla dowolnego sygna³u wejœciowego spe³niaj¹cego warunki: \\*
 \( |\delta_p(t)| < 0,7\delta_{max}\)\\*
-\( \eta(t) = bialy szum \) TODO
+\( \eta(t) =  \) TODO - sygna³ turbulencji
 
 Kryteria w takiej formie mog¹ zostaæ bezpoœrednio prze³o¿one na pojêcia zwi¹zane z robust control. Pierwsze kryterium nazywa siê odporn¹ stabilnoœci¹, pozosta³e dwa - odpornymi osi¹gami. Odporne osi¹gi mo¿na zwiêŸle przedstawiæ wykorzystuj¹c normê \(H_{\infty}\). \\*
-\(|\delta_c|_{\infty} < 0,3 \delta_{max} \) ????
+%\(|\delta_c|_{\infty} < 0,3 \delta_{max} \) ????
 
 \section{Kryteria porównawcze}
 Oprócz za³o¿eñ projektowych, które regulator musi spe³niæ potrzebny bêdzie równie¿ zestaw kryteriów, które u³atwi¹ obiektywn¹ ocenê jakoœci regulacji.
 
-Podstawowe kryterium pozwala odpowiedzieæ na pytanie "Jaki jest zysk?", czyli o ile procentowo zdo³aliœmy zwiêkszyæ prêdkoœæ krytyczn¹ uk³adu \( \frac{U_{fcl}}{U_{fol}} \), dla nominalnych warunków pracy (patrz Tabela~(TODO nominalne warunki pracy).
+Podstawowe kryterium pozwala odpowiedzieæ na pytanie "Jaki jest zysk?", czyli o ile procentowo zdo³aliœmy zwiêkszyæ prêdkoœæ krytyczn¹ uk³adu \( \frac{U_{fcl}}{U_{fol}} \).
 
-Kolejne kryteria odpowiadaj¹ na pytanie "Jakim kosztem?", czyli jak du¿y sygna³ steruj¹cy jest potrzebny aby zapewniæ stabilnoœæ uk³adu.
-
-Drugie kryterium okreœla iloœciowi wysi³ek sterowania wzglêdem turbulencji liczony jako œrednia kwadratowa sygna³u wyjœciowego regulatora \(\delta_c(t)\) dla ustalonego przebiegu prêdkoœci pionowej turbulencji \( w_g(t) \):
+Kolejne kryteria odpowiadaj¹ na pytanie "Jakim kosztem?", czyli jak du¿y sygna³ steruj¹cy jest potrzebny aby zapewniæ stabilnoœæ uk³adu. Kryterium okreœla iloœciowo wysi³ek sterowania w przep³ywie turbulentnym, liczony jako œrednia kwadratowa sygna³u wyjœciowego regulatora \(\delta_c(t)\) dla okreœlonego przebiegu prêdkoœci pionowej turbulencji \( w_g(t) \):
 
 \begin{equation}
 \Delta_{turb} = \sqrt{\frac{1}{T}}\int{\left[\delta_c(t) \right]^2} dt
 \label{EqWysilekSterowania}
 \end{equation}
 
-Kolejne kryterium dotyczy wysi³ku sterowania ze wzglêdu na zewnêtrzny sygna³ steruj¹cy \( \delta_p(t) \) w postaci skoku jednostkowego o wartoœci 70\% maksymalnego wychylenia powierzchni sterowej \( ( \delta_p = 0,7 \cdot \delta_{max} ) \).
+Trzecie kryterium dotyczy wysi³ku sterowania ze wzglêdu na zewnêtrzny sygna³ steruj¹cy \( \delta_p(t) \) w postaci skoku jednostkowego o wartoœci 70\% maksymalnego wychylenia powierzchni sterowej \( ( \delta_p = 0,7 \cdot \delta_{max} ) \).
 
 Poza tym wa¿n¹ miar¹ jakoœci jest wartoœæ maksymalna modu³u sygna³u steruj¹cego \( \max( \left| \delta_c(t) \right| ) \).
 
-\section{Klasyczne podejœcie}
+\section{Klasyczny regulator}
 Zaprojektowanie jednowymiarowego regulatora przy wykorzystaniu klasycznych technik syntezy prawa sterowania pozwala szybko uzyskaæ wyniki stanowi¹ce punkt odniesienia do dalszych prac.
 
-Z podstawowej analizy uk³adu otwartego mo¿na siê szybko zorientowaæ, ¿e potrzebne jest dodatnie sprzê¿enie zwrotne (wynika to z przyjêtej konwekcji znaków i chocia¿ jest to niestandardowa konwencja, autor postanowi³ zastosowaæ j¹ dla uproszczenia analizy porównawczej).
+Z podstawowej analizy uk³adu otwartego mo¿na wywnioskowaæ, ¿e potrzebne jest dodatnie sprzê¿enie zwrotne (wynika to z przyjêtej konwekcji znaków i chocia¿ jest to niestandardowa konwencja, autor postanowi³ zastosowaæ j¹ dla uproszczenia analizy porównawczej).
 
-Standardowo u¿ywanymi przyrz¹dami pomiarowymi w praktycznych systemach t³umienia flutteru s¹ przyspieszeniomierze. Odpowiednie kombinacje liniowe sygna³ów z dwóch przyspieszeniomierzy umieszczonych na krawêdziach skrzyd³a (na wysokoœci profilu odniesienia) odpowiadaj¹ \( \ddot{h(t)} \) i \( \ddot{\theta(t)} \).
+Standardowo u¿ywanymi przyrz¹dami pomiarowymi w praktycznych systemach t³umienia flutteru s¹ przyspieszeniomierze. Odpowiednie kombinacje liniowe sygna³ów z dwóch przyspieszeniomierzy umieszczonych na krawêdziach skrzyd³a (na wysokoœci profilu odniesienia) odpowiadaj¹ \( \ddot{h}(t) \) i \( \ddot{\theta}(t) \).
 
-Zgodnie z \cite{Vivek} w przypadku jednowymiarowego regulatora najlepsze efekty uzyskujemy poprzez wykorzystanie do sterowania sygna³u prêdkoœci k¹towej skrêcania. \( \dot{\theta(t)} \) uzyskamy bezpoœrednio poprzez ca³kowanie odpowiedniej kombinacji linowej sygna³ów wyjœciowych przyspieszeniomierzy. Problemem przyspieszeniomierzy jest jednak wystêpowanie sta³ego, lub wolnozmiennego b³êdu, który zosta³by wzmocniony przez element ca³kuj¹cy. Do pozbycia siê go zastosowano filtr washout (TODO) w postaci \( s/(s+a) \), co razem z elementem ca³kuj¹cym daje lag compensator (TODO) \( a/(s+a) \).
+Zgodnie z \cite{Vivek} w przypadku jednowymiarowego regulatora najlepsze efekty uzyskujemy poprzez wykorzystanie do sterowania sygna³u prêdkoœci k¹towej skrêcania. \( \dot{\theta}(t) \) uzyskamy bezpoœrednio poprzez ca³kowanie odpowiedniej kombinacji linowej sygna³ów wyjœciowych przyspieszeniomierzy. Problemem przyspieszeniomierzy jest jednak wystêpowanie sta³ego, lub wolnozmiennego b³êdu, który zosta³by wzmocniony przez element ca³kuj¹cy. Do pozbycia siê go zastosowano filtr washout (TODO polska nazwa?) w postaci \( s/(s+a) \), co razem z elementem ca³kuj¹cym daje kompensator opóŸniaj¹cy fazê \( a/(s+a) \).
 
-Filtr washout dobrano tak, aby mia³ minimalny wp³yw na sygna³ pomiarowy w okolicach czêstotliwoœci flutteru \( f_f = 6,67 Hz \) - czêstotliwoœæ kompensatora jest o rz¹d wielkoœci mniejsza od \( f_f \). \(f_w = 0,667 Hz, \omega_w = 4.19 rad/s \).
+Filtr washout dobrano tak, aby mia³ minimalny wp³yw na sygna³ pomiarowy w okolicach czêstotliwoœci flutteru \( f_f = 6,67 Hz \). Czêstotliwoœæ kompensatora jest o rz¹d wielkoœci mniejsza od \( f_f \).
+
+%\(f_w = 0,667 Hz, \omega_w = 4.19 rad/s \).
 
 \begin{equation}
 F_w(s) = \frac{4,19}{s + 4,19}
@@ -102,7 +102,7 @@ Poniewa¿ uk³ad otwarty posiada dwa niestabilne pierwiastki, wykres Nyquista odpo
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth]{WingCtrlNyquist2.eps}
-\caption{Charakterystyka amlitudowo-fazowa uk³adu otwartego, zbli¿enie okolic punktu (-1,0) po prawej.}
+\caption{Charakterystyka amlitudowo-fazowa uk³adu otwartego, zbli¿enie okolic punktu (-1,0).}
 \label{RysWingCtrlNyquist}
 \end{figure}
 %Do dodania jakoœ obok z lewej:
@@ -110,4 +110,24 @@ Poniewa¿ uk³ad otwarty posiada dwa niestabilne pierwiastki, wykres Nyquista odpo
 
 Wstêpna analiza pokaza³a, ¿e klasyczny regulator o postaci \( K_c(s) = -0,2 \frac{4,19}{s + 4,19} \) mo¿e zapewniæ stabilnoœæ uk³adu do \(149 \% U_{fol}\). Pe³na analiza uk³adu zamkniêtego zosta³a umieszczona w dalszej czêœci rozdzia³u.
 
-\section{Regulator LQG}
+\section{Regulator Hinf}
+TODO. Prace trwaj¹, poni¿ej kilka przyk³adowych rysunków.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{WingCtrlKryt1.eps}
+\caption{Porównanie kryterium "wysi³ek sterowania wzglêdem sygna³u od pilota" dla ró¿nych prêdkoœci. Pionowa czarna linia przerywana - prêdkoœæ flutteru uk³adu otwartego. Pionowa czerwona linia - prêdkoœæ flutteru uk³adu zamkniêtego }
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{WingCtrlPrzebiegiCzasowe1.eps}
+\caption{Przebiegi czasowe dla skokowego sygna³u od pilota}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{WingCtrlPrzebiegiCzasowe2.eps}
+\caption{Przebiegi czasowe dla przyk³adowego sygna³u turbulencji}
+\end{figure}
+

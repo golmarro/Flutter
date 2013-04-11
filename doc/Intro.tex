@@ -75,18 +75,25 @@ Z tego powodu technika sterowania odpornego (robust control), wydaje siê byæ ide
 \chapter{Podstawy matematyczne}
 
 \section{Dynamiczny uk³ad liniowy stacjonarny}
-Obiekt, czyli fizyczny uk³ad dynamiczny mo¿e byæ opisany w dziedzinie czasu za pomoc¹ równañ stanu, albo w dziedzinie czêstotliwoœci za pomoc¹ macierzy transmitancji operatorowych. 
+Obiekt, czyli fizyczny uk³ad dynamiczny mo¿e byæ opisany w dziedzinie czasu za pomoc¹ równañ stanu, albo w dziedzinie czêstotliwoœci za pomoc¹ macierzy transmitancji operatorowych. W niniejszej pracy s¹ u¿ywane prawie wy³¹cznie modele liniowe w standardowej postaci \eqref{ModelSS}.
 
+\begin{equation}
+\begin{split}
+\dot{x}(t) &= A  x(t) + B  y(t)\\
+y &= C  x(t) + D  y(t)
+\end{split}
+\label{ModelSS}
+\end{equation}
 
-Je¿eli wspó³czynniki równañ nie zale¿¹ od czasu mamy do czynienia z uk³adami stacjonarnymi.
+Dowolny model liniowy o skoñczonej liczbie wymiarów mo¿na przedstawiæ w postaci macierzy transmitancji \(G(s)\), któr¹ w sposób bezpoœredni otrzymujemy z opisu w przestrzeni stanów:
 
-%TODO:Dowolny model liniowy o skoñczonej liczbie wymiarów mo¿na przedstawiæ w postaci macierzy transmitancji \(G(s)\), któr¹ w sposób bezpoœredni otrzymujemy z opisu w przestrzeni stanów:
+\begin{equation}
+G(s) = C(sI - A)^{-1} B + D
+\end{equation}
 
-%\begin{equation}
-%G(s) = C(sI - A)^{-1} B + D
-%\end{equation}
+W niniejszej pracy uk³ad bêdzie oznaczany wielk¹ liter¹ niezale¿nie od postaci opisu matematycznego (np. \( G_r \)). Czasami dla podkreœlenia, ¿e mamy do czynienia z macierz¹ transmitancji zostanie zapisany w pe³nej formie \( G_r(s) \), lub odpowiednio \(G_r(j\omega)\) dla transmitancji widmowej.
 
-Chocia¿ z punktu widzenia charakteru zjawisk fizycznych, obiekt pracuj¹cy w zmiennym œrodowisku jest obiektem niestacjonarnym, to jednak zazwyczaj opisuje siê go jako rodzina modeli stacjonarnych. Jest to o tyle s³uszne za³o¿enie, o ile zmiennoœæ parametrów jest du¿o wolniejsza od dynamiki obiektu.
+Je¿eli wspó³czynniki równañ nie zale¿¹ od czasu mamy do czynienia z uk³adami stacjonarnymi. Chocia¿ z punktu widzenia charakteru zjawisk fizycznych, obiekt pracuj¹cy w zmiennym œrodowisku jest obiektem niestacjonarnym, to zazwyczaj opisuje siê go jako rodzina modeli stacjonarnych. Jest to o tyle s³uszne za³o¿enie, o ile zmiennoœæ parametrów jest du¿o wolniejsza od dynamiki obiektu.
 
 \section{Metody analizy uk³adów wielowymiarowych}
 W przypadku systemów jednowymiarowych, analiza w dziedzinie czêstotliwoœci sprowadza siê do okreœlenia wzmocnienia i przesuniêcia fazowego odpowiedzi uk³adu na sinusoidalne wymuszenie. Charakterystykê czêstotliwoœciow¹ opisan¹ transmitancj¹ widmow¹ \(G(j \omega) \) uk³adu otrzymujemy bezpoœrednio podstawiaj¹c \( s = j \omega \) do transmitancji operatorowej.
@@ -109,7 +116,7 @@ gdzie \( \tilde{y} = G(j \omega) \tilde{u} \).
 
 Jak wynika z powy¿szego rozumowania, analiza uk³adów wielowymiarowych jest dodatkowo utrudniona z tego  wzglêdu, ¿e na wzmocnienie uk³adu wp³ywa nie tylko czêstotliwoœæ sygna³u wejœciowego, ale równie¿ wielkoœæ i faza jego poszczególnych sk³adowych, czyli kierunek.
 
-Bardzo czêsto chcielibyœmy znaæ odpowiedŸ na pytanie - dla jakiego ograniczonego sygna³u wejœciowego dla danej czêstotliwoœci otrzymamy najwiêksze wzmocnienie uk³adu? Innymi s³owy chcielibyœmy znaæ najgorszy przypadek. Z pomoc¹ w tej sytuacji przychodzi narzêdzie matematyczne zwane dekompozycj¹ macierzy wed³ug wartoœci osobliwej.
+Bardzo czêsto chcielibyœmy znaæ odpowiedŸ na pytanie: dla jakiego ograniczonego sygna³u wejœciowego dla danej czêstotliwoœci otrzymamy najwiêksze wzmocnienie uk³adu? Innymi s³owy chcielibyœmy znaæ wzmocnienie w najgorszym przypadku. Z pomoc¹ w tej sytuacji przychodzi narzêdzie matematyczne zwane dekompozycj¹ macierzy wed³ug wartoœci osobliwej.
 
 \subsection{Wartoœci osobliwe macierzy}
 
@@ -118,13 +125,12 @@ Bardzo czêsto chcielibyœmy znaæ odpowiedŸ na pytanie - dla jakiego ograniczonego
 \begin{equation}
 \sigma_i(A) = \sqrt{\sigma_i(A^HA)} > 0, i = 1...k,
 \end{equation}
-gdzie \( \lambda_i(\cdot) \) oznacza i-t¹ niezerow¹ wartoœæ w³asn¹. 
-\end{definition}
-Wartoœci osobliwe przyjê³o siê szeregowaæ malej¹co:
+gdzie \( \lambda_i(\cdot) \) oznacza i-t¹ niezerow¹ wartoœæ w³asn¹. Wartoœci osobliwe przyjê³o siê szeregowaæ malej¹co:
 \begin{equation}
 \sigma_{\max} = \sigma_1 \geq \sigma_2 \geq ... \geq \sigma_k = \sigma_{\min}
 \nonumber
 \end{equation}
+\end{definition}
 
 Wybrane w³asnoœci wartoœci osobliwej macierzy:
 \begin{align}
@@ -138,7 +144,7 @@ Wybrane w³asnoœci wartoœci osobliwej macierzy:
 & \sigma_{\min}(M) = \min_{|x| = 1}\| Mx \|_2
 \end{align}
 
-Z w³asnoœci \eqref{WlSigmaMax} wynika, ¿e \( \sigma_{\max} \) macierzy transmitancji widmowych dla pewnej czêstotliwoœci \( \omega_0 \) okreœla maksymalne wzmocnienie uk³adu dla dowolnego (co do kierunku) sygna³u wejœciowego o jednostkowej d³ugoœci.
+Z w³asnoœci \eqref{WlSigmaMax} wynika, ¿e \( \sigma_{\max} \) macierzy transmitancji widmowych dla pewnej czêstotliwoœci \( \omega_0 \) okreœla maksymalne wzmocnienie uk³adu dla dowolnego (co do kierunku) sygna³u wejœciowego.
 
 \subsection{Dekompozycja macierzy wed³ug wartoœci osobliwych}
 % Ewewntualnie krótszy tytu³ {Dekompozycja SVD}
@@ -181,7 +187,9 @@ Obliczaj¹c najwiêksz¹ wartoœæ osobliw¹ transmitancji widmowej modelu dla pewnego
 
 Z takiej analizy wynika, ¿e w sygnale wyjœciowym, niezale¿nie od czêstotliwoœci, dominuje prêdkoœæ przechylania \(q\). Natomiast g³ówne sk³adniki sygna³u wejœciowego, generuj¹ce du¿e wzmocnienie uk³adu, to lotki i ster wysokoœci. Tylko w pewnym w¹skim przedziale pulsacji (w okolicy 1 rad/s) to ster kierunki ma najbardziej destabilizuj¹ce w³aœciwoœci.
 
-Nale¿y zwróciæ uwagê na to, ¿e norma wektora jest silnie uzale¿niona od jednostek elementów sk³adowych. Subiektywnie niewielka wartoœæ sygna³u mo¿e okazaæ siê obiektywnie dominuj¹ca, dlatego do wiarygodnej analizy za pomoc¹ tego narzêdzia niezbêdna jest normalizacja sygna³ów, lub u¿ycie funkcji wagowych. W powy¿szym przyk³adzie, chocia¿ to sygna³ \(q\) przewa¿a nad \(\beta\) z punktu widzenia wymagañ odnoœnie w³aœciwoœci lotnych, to na t³umieniu bocznego poœlizgu powinien siê skupiæ projektant uk³adu regulacji \( \beta \).
+Nale¿y zwróciæ uwagê na to, ¿e norma wektora jest silnie uzale¿niona od jednostek elementów sk³adowych. Subiektywnie niewielka wartoœæ sygna³u mo¿e okazaæ siê obiektywnie dominuj¹ca, dlatego do wiarygodnej analizy za pomoc¹ tego narzêdzia niezbêdna jest normalizacja sygna³ów, lub u¿ycie funkcji wagowych. 
+
+W powy¿szym przyk³adzie, spoœród elementów sygna³u wyjœciowego, to wartoœæ \(q\) przewa¿a nad \(\beta\). Jednak subiektywna ocena, mo¿e byæ uzale¿niona od wymagañ odnoœnie w³aœciwoœci lotnych.
 
 % rozwi¹zanie - wy³¹czenie bookmarków (hyperrref), albo:
 % \latexorpdf{math}{non math}
@@ -192,7 +200,7 @@ Jak wynika z analizy na temat dekompozycji SVD, najwiêksza wartoœæ osobliwa tran
 \begin{equation}
 H_\infty (G(s)) = \sup_{\omega} \sigma_{\max}(G(j\omega))
 \end{equation}
-mo¿na zinterpretowaæ jako maksymalne wzmocnienie w dowolnym kierunku i dla dowolnej czêstotliwoœci.
+mo¿na zinterpretowaæ jako maksymalne wzmocnienie w dowolnym kierunku i dla dowolnej czêstotliwoœci. Norma ma szczególne zastosowanie do badania odpornej stabilnoœci uk³adu (Small Gain Theorem).
 
 \section{Niepewnoœæ}
 
@@ -202,7 +210,7 @@ Typowe Ÿród³a niepewnoœci mo¿na podzieliæ na zamierzone i niezamierzone. Do pier
 
 Skoro obiekt rzeczywisty mo¿e w pewnym zakresie zmieniaæ swoje w³aœciwoœci dynamiczne, mo¿emy mówiæ o pewnej rodzinie (zbiorze) obiektów \( \mathcal{G}_r \). Gdybyœmy w dowolnym punkcie pracy byli w stanie wyznaczyæ model \( G_r \) obiektu, to model ten nale¿a³by do zbioru \( \mathcal{G}_r \).
 
-Chocia¿ nazwa mo¿e byæ mylna, w dziedzinie sterowania odpornego niepewnoœæ jest nasz¹ {\bf wiedz¹} na temat mo¿liwych odchyleñ obiektu rzeczywistego od za³o¿onego modelu nominalnego. Je¿eli przy opisie obiektu uwzglêdnimy tê wiedzê (czyli niepewnoœæ), otrzymamy {\bf model uk³adu z niepewnoœci¹}~\cite{}. Taki model definiuje pewn¹ rodzinê modeli, któr¹ w niniejszej pracy oznaczono jako \( \mathcal{G}_p \).
+Chocia¿ nazwa mo¿e byæ mylna, w dziedzinie sterowania odpornego niepewnoœæ jest nasz¹ {\bf wiedz¹} na temat mo¿liwych odchyleñ obiektu rzeczywistego od za³o¿onego modelu nominalnego. Je¿eli przy opisie obiektu uwzglêdnimy tê wiedzê (czyli niepewnoœæ), otrzymamy {\bf model uk³adu z niepewnoœci¹}~\cite{Buslowicz}. Taki model definiuje pewn¹ rodzinê modeli, któr¹ w niniejszej pracy oznaczono jako \( \mathcal{G}_p \).
 
 Problem opracowania modelu z niepewnoœci¹ mo¿na sformu³owaæ nastêpuj¹co:\\
 { \it Dla znanej rodziny obiektów \( \mathcal{G}_r \) znajdŸ tak¹ rodzinê modeli \( \mathcal{G}_p \) opisan¹ pewnym modelem niepewnoœci \(G_p(s)\), aby zbiór \( \mathcal{G}_r \) by³ zawarty w zbiorze \( \mathcal{G}_p \):
@@ -222,7 +230,31 @@ Powy¿sz¹ zale¿noœæ ilustruje Rys.~\ref{RysZbiory}.
 \end{figure}
 
 \subsection{Niepewnoœæ strukturalna (parametryczna)}
+Model niepewnoœci parametrycznej nadaje siê idealnie do sytuacji, gdy jesteœmy pewni co do struktury modelu (struktury równañ matematycznych), ale spodziewamy siê pewnej zmiennoœci wspó³czynników opisuj¹cych obiekt rzeczywisty. Np. dla modelu liniowego w przestrzeni stanów, uwzglêdniaj¹c wp³yw parametrów na postaæ macierzy, otrzymamy:
+
+\begin{equation}
+\begin{split}
+\dot{x}(t) &= A(q) \cdot x(t) + B(q) \cdot y(t),\\
+y &= C(q) \cdot x(t) + D(q) \cdot y(t),
+\end{split}
+\label{NiepParam}
+\end{equation}
+przy czym \( q \in Q \), gdzie \( q = [q_1, q_2, ... ,q_m]^T \) jest wektorem niepewnych parametrów, a elementy macierzy \( A(q), B(q), C(q), D(q) \) s¹ ci¹g³ymi funkcjami. Wektor \( q \) mo¿e przyjmowaæ wartoœci ze zbioru \( Q \), który zazwyczaj okreœla siê nastêpuj¹co:
+
+\begin{equation}
+Q = \{ q: \quad q_k \in [q_k^{-}, q_k^{+}], \quad q_k^{-} < q_k^{+}, \quad k = 1...m\}.
+\label{ZbiorQ}
+\end{equation}
+
+Analogicznie, model w dziedzinie czêstotliwoœci bêdzie mia³ postaæ nieskoñczonej rodziny macierzy transmitancji operatorowych:
+\begin{equation}
+\{ G(s,q), \quad q \in Q \},
+\end{equation}
+gdzie zbiór \( Q \) jest okreœlony identycznie jak poprzednio \eqref{ZbiorQ}.
+
 \subsection{Niepewnoœæ niestrukturalna}
+
+
 
 \subsubsection{Model wzglêdnej (multiplikatywnej) niepewnoœci na wejœciu}
 \begin{equation}
@@ -257,7 +289,8 @@ Z postaci modelu niepewnoœci \eqref{NiepWzglIn}, \eqref{NiepWzglOut}, \eqref{Nie
 Poniewa¿ z punktu widzenia odpornej stabilnoœci, kluczowe znaczenie ma norma \( H_\infty \) rozpatrywanego uk³adu (a co za tym idzie - maksymalna wartoœæ osobliwa transmitancji widmowej), interesuje nas znalezienie zbioru \( \mathcal{G}_p\), takiego ¿e
 \begin{equation}
 \begin{split}
-\forall{G_r \in \mathcal{G}_r} \quad \exists{G_p:} \quad \\ \sigma_{\max}(G_p(j\omega)) \geq \sigma_{\max}(G_r(j\omega)) \quad \forall \omega
+& \forall{G_r \in \mathcal{G}_r} \quad \exists{G_p:} \quad \\ 
+& \sigma_{\max}(G_p(j\omega)) \geq \sigma_{\max}(G_r(j\omega)) \quad \forall \omega
 \end{split}
 \label{GrInGp2}
 \end{equation}
@@ -268,13 +301,12 @@ Je¿eli do opisu niepewnoœci wykorzystamy model wzglêdny na wyjœciu uk³adu, (\ref
 
 \begin{equation}
 \begin{split}
-\forall G_r \in \mathcal{G}_r \quad \exists G_p: \\
-\sigma_{\max}(G_p(j\omega)) = \sigma_{\max}\left[(I + w_o(j\omega)\Delta(j\omega))G_n(j\omega)\right] \geq \sigma_{\max}(G_r(j\omega))
+& \forall G_r \in \mathcal{G}_r \quad \exists G_p: \\
+& \sigma_{\max}(G_p(j\omega)) = \sigma_{\max}\left[(I + w_o(j\omega)\Delta(j\omega))G_n(j\omega)\right] \geq \sigma_{\max}(G_r(j\omega))
 \quad \forall \omega
 \end{split}
 \label{SigmaNiepWzgledna}
 \end{equation}
-
 Wykorzystuj¹c w³asnoœci wartoœci osobliwej macierzy (\ref{WlSigmaPlus}), (\ref{WlSigmaMnozenie}), otrzymujemy zale¿noœæ na funkcjê wagow¹ \( w_o(s) \), któr¹ nale¿y spe³niæ (\ref{ZaleznoscWo}).
 
 \begin{equation}
