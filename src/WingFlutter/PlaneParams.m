@@ -63,7 +63,8 @@ classdef PlaneParams < handle
         
         function set.fuelLevel(this, val)
             this.fuelLevel = val;
-            this.setParams();
+            this.wingParams.fuelLevel = val;
+            %this.setParams();
         end
         function set.payloadLevel(this, val)
             this.payloadLevel = val;
@@ -77,9 +78,9 @@ classdef PlaneParams < handle
         
         function setParams(this)
             if ~isempty(this.wingParams)
-                this.wingParams.Xcg_p = this.wingXcg_p;
-                this.wingParams.mass = this.wingMass;
-                this.wingParams.Itheta_0 = this.wingItheta;
+                %this.wingParams.Xcg_p = this.wingXcg_p;
+                %this.wingParams.mass = this.wingMass;
+                %this.wingParams.Itheta_0 = this.wingItheta;
                 %this.wingParams.Xcg_p = this.wingXcg_p;
                 %this.wingParams.Xcg_p = this.wingXcg_p;
             end

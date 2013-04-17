@@ -21,12 +21,16 @@ classdef WingParams < handle
     
     properties(GetAccess = 'public', SetAccess = 'public')
         Xsp_p = 0.33         % [-] Shear center point position
-        Xcg_p = 0.01    % [-] Relatively to Xsp
+        emptyWingXcg_p      = 0.01  % [-] CG position of empty wing (relatively to SSP)
+        fuelXcg_p           = 0.06  % [-] CG of fuel (relatively to SSP)
+        % Xcg_p = 0.01    % [-] Relatively to Xsp
         Xac_p = 0.125       % [-] TODO 0.25 should be calculated from xac = - CMalpha / CLalpha
         Ycg_p = 0.35        % [-]
         Yac_p = 0.7         % [-]
         
         plane               % reference to plane configuration class (PlaneParams)
+        
+        fuelLevel = 0.5     % [-]
     end
     
     properties(Constant)
@@ -35,16 +39,20 @@ classdef WingParams < handle
         in_m = 0.0254;
         slug_kg = 14.5939029;
         alphaMax = 12*pi/180;
+        
+        fuelMaxMass         = 300   % [kg] about 400 liters of fuel
+        wingEmptyMass       = 90    % [kg] single wing
+        emptyWingItheta     = 7.56  % [kg*m2]
     end
 	
     properties(GetAccess = 'public', SetAccess = 'public')    
         g = 9.81;           % m/s2
         % Structural data
         
-        mass =             165;           % kg {reduced to AC: F = m*h_dotdot)
+        % mass =             165;           % kg {reduced to AC: F = m*h_dotdot)
         % Inertia approximation: m*C1^2/12
         %Itheta =        7.56;            % kg*m2
-        Itheta_0 =        11.34;            % kg*m2
+        % Itheta_0 =        11.34;            % kg*m2
         % Kphi =          870000;                  % [Nm/rad]
         Kh =            50000;                  % [Nm/rad]
         Ktheta =        36000;           % [Nm/rad]
@@ -91,13 +99,15 @@ classdef WingParams < handle
         CMalpha, CMalphadot, CMq, CMdelta
         Kphi
         shtheta
-        Itheta
+        Itheta      % kg * m2 - with respect to AC axis
+        Itheta_0    % kg * m2 - with respect to CG axis
         omegah, omegatheta
         dampphi, damptheta
+        mass        % kg static mass of wing dependant from fuel level
         m           % kg {reduced to AC: F = m*h_dotdot)
         S
         l        % AC position relatively to SSP
-        Xcg, Xac, Xsp, Ycg, Yac
+        Xcg_p, Xcg, Xac, Xsp, Ycg, Yac
         Iphi, Ipsi
     end
     
@@ -143,6 +153,9 @@ classdef WingParams < handle
         function val = get.Itheta(this)
             val = this.Itheta_0 + this.mass * this.Xcg^2;
         end
+        function val = get.Itheta_0(this)
+            val = this.emptyWingItheta * (1 + this.fuelLevel);
+        end
         function val = getS(this)
             val = (this.C1 + this.C2)/2*this.L;  %[m2]
         end
@@ -155,6 +168,9 @@ classdef WingParams < handle
         function val = get.m(this)
             val = this.Iphi / this.Yac^2 + (this.Ycg/this.Yac)^2 * this.mass;
         end
+        function val = get.mass(this)
+            val = this.wingEmptyMass + this.fuelLevel * this.fuelMaxMass /2;
+        end
         function val = get.Iphi(this)
             val = this.mass*this.L^2/12;
         end
@@ -163,7 +179,11 @@ classdef WingParams < handle
 		end
 		function val = get.Inertia(this)
 			val = [this.Itheta_0 0 0; 0 this.Iphi 0; 0 0 this.Ipsi];
-		end
+        end
+        function val = get.Xcg_p(this)
+            val = (this.emptyWingXcg_p * this.wingEmptyMass + this.fuelXcg_p * this.fuelMaxMass * this.fuelLevel/2)...
+                   / (this.wingEmptyMass + this.fuelMaxMass * this.fuelLevel/2);
+        end
         function val = get.Xcg(this)
             val = this.Xcg_p * this.c;
         end

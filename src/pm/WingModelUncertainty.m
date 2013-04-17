@@ -8,19 +8,19 @@ plane = PlaneParams(wing.params);
 
 % Sygnaly wejsciowe / wyjsciowe brane pod uwage (istotny z punktu widzenia zalozen
 % projektowych)
-%inSignal = [1 2];
-%outSignal = [1 2 8 9];
-inSignal = 2;       % delta_c
-outSignal = 8;      % theta_ddot
+inSignal = [1 2];           % delta_c turb
+outSignal = [1 2 8 9];      % h theta h_dd theta_dd
+inSignal = 1;       % delta_c
+outSignal = 9;      % theta_ddot
 
 % Typ wykresu
 % 1 - (Gi - Gn), Wu
 % 2 -  Gi, Gn, (I + Wu)Gn
-type = 1;
+type = 2;
 
 % Model nominalny
 Vk = wing.getFlutterSpeed;
-wing.U0 = Vk * 1.4;
+wing.U0 = Vk * 0.9;
 Gnom = wing.getLinearModel;
 Gnom = Gnom(outSignal,inSignal);
 
@@ -30,20 +30,26 @@ Garray = stack(1,Gnom);
 [sv_nom w] = sigma(Gnom);
 
 % Przygotowanie obrazu
-figure; 
-if(type == 1)
-    loglog(1,1);
-else
-    loglog(w, sv_nom(1,:), 'LineWidth', 2, 'Color','r');
-end
-hold on;
+% figure; 
+% if(type == 1)
+%     loglog(1,1);
+% else
+%     loglog(w, sv_nom(1,:), 'LineWidth', 2, 'Color','r');
+% end
+% hold on;
 
+%Hrange = [0 5500 11000];
+Hrange = 5500;
+fuelRange = [0, 0.5, 1];
+fuelRange = [0:0.2:1];
+%speedRange = [Vk*0.6 : 0.4*Vk : 1.4*Vk];
+speedRange = wing.U0;;
 
-for H = [0 5500 11000]
+for H = Hrange
     wing.atmosphere.h = H;
-    for fuel = [0, 0.5, 1]
+    for fuel = fuelRange
         plane.fuelLevel = fuel;
-        for speed = [Vk*0.6 : 0.4*Vk : 1.4*Vk]
+        for speed = speedRange
             % Pomin Gnom 
             if H == 5500 && fuel == 0.5 && speed == 1.4*Vk
                 continue
@@ -53,17 +59,59 @@ for H = [0 5500 11000]
             sys = wing.getLinearModel;
             sys = sys(outSignal,inSignal);
             
-            sv = sigma(sys - Gnom, w);
             if type == 1
+                sv = sigma(sys - Gnom, w);
                 loglog(w,sv(1,:)./sv_nom(1,:));
             else
-                loglog(w, sv(1,:));
+                %sv = sigma(sys, w);
+                %loglog(w, sv(1,:));
+                %sigma(sys, w);
+                %hold on;
             end
                 
             Garray = stack(1,Garray,sys);
         end
     end
 end
+
+%%
+
+% Output Multiplicative:    USYS = (I + W1*ULTIDYN*W2)*PNOM
+% ord W1 = 5
+% ord W2 = []
+[Wunc,Info] = ucover(Garray,Gnom,5,[],'OutputMult');
+
+%%
+
+% Get freq range
+w = logspace(1,2.2,100);
+%[svGnom w] = sigma(Gnom);
+
+for i = 1 : length(Garray)
+    %sigma(Garray(:,:,i),'k:');
+    sv = sigma(Garray(:,:,i),w);
+    semilogx(w, mag2db(sv), 'k:');
+    hold on;
+end
+svGnom = sigma(Gnom, w);
+svWo = sigma(Info.W1, w);
+semilogx(w, mag2db(svGnom + svWo .* svGnom), 'b');
+semilogx(w, mag2db(svGnom),'r')
+
+sigma(Wunc,'c:');
+
+%% Blad wzgledny
+for i = 1 : length(Garray)
+    sv = sigma(Garray(:,:,i) - Gnom, 1);
+    if(sv(1) > 0.00001)
+        sigma((Garray(:,:,i) - Gnom)/Gnom,'k:');
+        hold on;
+    else
+        fprintf('Gnom skipped\n');
+    end
+end
+sigma(Info.W1, 'b');
+
 %%
 %[W,Info] = ucover(Garray,Gnom,1);
 lineStyles = {'y','g','b','r'};
