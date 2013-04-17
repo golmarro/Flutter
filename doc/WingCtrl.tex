@@ -30,36 +30,54 @@ Poniewa¿ ze wzrostem iloœci paliwa w skrzydle, po³o¿enie œrodka ciê¿koœci przesu
 \section{Za³o¿enia projektowe}
 Podstawowym celem aktywnego systemu t³umienia flutteru jest zwiêkszenie prêdkoœci krytycznej flutteru \( V_k \), przy uwzglêdnieniu ograniczeñ uk³adu wykonawczego.
 
-Definicja prêdkoœci krytycznej jest œciœle zwi¹zana ze stabilnoœci¹, ale jest to kryterium niewystarczaj¹ce. Nale¿a³oby zaostrzyæ tê definicjê, poniewa¿ nawet w zakresie stabilnej pracy mo¿e dojœæ do przekroczenia dopuszczalnych naprê¿eñ. 
+Definicja prêdkoœci krytycznej jest œciœle zwi¹zana ze stabilnoœci¹, ale jest to kryterium niewystarczaj¹ce. Nale¿a³oby zaostrzyæ tê definicjê, poniewa¿ nawet w zakresie stabilnej pracy mo¿e dojœæ do przekroczenia dopuszczalnych naprê¿eñ konstrukcji. 
 
-Zgodnie z kryteriami konstrukcyjnymi JAR-23 \cite{JAR23}, dla samolotu Kategorii Normalnej obowi¹zuje wspó³czynnik obci¹¿eñ dopuszczalnych w locie n = 3,8. W tym miejscu uprzedzono rozdzia³ XX, aby przytoczyæ maksymalne wartoœci zniekszta³ceñ p³ata wynikaj¹ce nie z modelu samego skrzyd³a, ale z modelu ca³ego samolotu. Podczas manewru ze wspó³czynnikiem obci¹¿eñ n = 3,8 i maksymaln¹ mas¹ startow¹, zniekszta³cenia p³ata wynios¹ odpowiednio:
+Zgodnie z kryteriami konstrukcyjnymi JAR-23 \cite{JAR23}, dla samolotu Kategorii Normalnej obowi¹zuje wspó³czynnik obci¹¿eñ dopuszczalnych w locie n = 3,8. Maksymalne wartoœci zniekszta³ceñ p³ata wynikaj¹ nie z modelu samego skrzyd³a, ale z modelu ca³ego samolotu. Podczas manewru ze wspó³czynnikiem obci¹¿eñ n = 3,8 i maksymaln¹ mas¹ startow¹, zniekszta³cenia p³ata wynios¹ odpowiednio:
 
 \begin{equation}
-h_{\max} = 0,32 m \newline 
-\theta_{\max} = 3,56 ^\circ
+\begin{split}
+h_{\max} &= 0,32~m \\
+\theta_{\max} &= 3,56 ^\circ
+\end{split}
 \end{equation}
 
-Te wartoœci przyjêto jako nieprzekraczalne dla projektowanego systemu. (Niszcz¹ce naprê¿enia odpowiadaj¹ zazwyczaj 1,5 razy wiêkszym zniekszta³ceniom, gdy¿ tyle wynosi konstrukcyjny zapas bezpieczeñstwa, dlatego jednorazowe przekroczenie naprê¿eñ dopuszczalnych nie powinno doprowadziæ do zniszczenia samolotu).
+Prêdkoœæ, dla której mo¿e dojœæ do przekroczenia tych wartoœæ jest faktycznie dopuszczaln¹ prêdkoœci¹ lotu, mimo ¿e prêdkoœæ flatteru (czyli granica stabilnoœci uk³adu) mo¿e byæ wiêksza (Rys. \ref{ObszaryPracy}). (Niszcz¹ce naprê¿enia odpowiadaj¹ zazwyczaj 1,5 razy wiêkszym zniekszta³ceniom, gdy¿ tyle wynosi konstrukcyjny zapas bezpieczeñstwa, dlatego jednorazowe przekroczenie naprê¿eñ dopuszczalnych nie powinno doprowadziæ do zniszczenia samolotu).
 
-Poza tym nale¿y uwzglêdniæ ograniczone mo¿liwoœci elementów wykonawczych, a wiêc "wysi³ek" sterowania. Maksymalne wychylenia lotek wynosz¹ \( \delta_{\max} = \pm 45^\circ\). System t³umienia flutteru nie mo¿e jednak wykorzystaæ ca³ego zakresu, musi zostawiæ miejsce na realizowanie poleceñ pilota lub systemu sterowania. Dlatego dopuszczalne wartoœci sygna³u steruj¹cego zosta³y arbitralnie wybrane na poziomie \(30\%\delta_{\max}\).
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{ObszaryPracy.png}
+\caption{Zakresy pracy uk³adu zamkniêtego}
+\label{ObszaryPracy}
+\end{figure}
 
-Poni¿ej w zwiêz³ej formie podsumowano za³o¿enia projektowe.
-\begin{enumerate}
-\item Maksymalne rozszerzenie zakresu stabilnej pracy, spe³niaj¹cej dodatkowe kryteria:
-\item Sygna³ steruj¹cy \(|\delta_c| < 0,3\delta_{\max} \)
-\item Obci¹¿enia \(|h(t)| < h_{\max}\) i \(|\theta(t)| < \theta_{\max}\)
-\end{enumerate}
-dla dowolnego sygna³u wejœciowego spe³niaj¹cego warunki: \\*
-\( |\delta_p(t)| < 0,7\delta_{max}\)\\*
-\( \eta(t) =  \) TODO - sygna³ turbulencji
+Poza tym nale¿y uwzglêdniæ ograniczone mo¿liwoœci elementów wykonawczych. Maksymalne wychylenia lotek wynosz¹ \( \delta_{\max} = \pm 45^\circ\). System t³umienia flutteru nie mo¿e jednak wykorzystaæ ca³ego zakresu, musi zostawiæ miejsce na realizowanie poleceñ pilota lub systemu sterowania. Dlatego dopuszczalne wartoœci sygna³u steruj¹cego zosta³y arbitralnie wybrane na poziomie \(30\%\delta_{\max}\). Je¿eli dla nominalnego poziomu turbulencji, sygna³ steruj¹cy bêdzie przekracza³ tê wartoœæ, bêdziemy mówiæ o obszarze "ograniczonej manewrowoœci". Pilot powy¿ej pewnej prêdkoœci (zale¿nej od poziomu turbulencji) bêdzie musia³ ograniczyæ agresywnoœæ manewrów, aby nie dopuœciæ do osi¹gniêcia maksymalnych wartoœci wychyleñ powierzchni sterowych. Gdy dochodzi do nasycenia sygna³u steruj¹cego, otrzymujemy na chwilê uk³ad otwarty, który z natury jest niestabilny powy¿ej prêdkoœci flatteru \( V_{fol} \).
 
-Kryteria w takiej formie mog¹ zostaæ bezpoœrednio prze³o¿one na pojêcia zwi¹zane z robust control. Pierwsze kryterium nazywa siê odporn¹ stabilnoœci¹, pozosta³e dwa - odpornymi osi¹gami. Odporne osi¹gi mo¿na zwiêŸle przedstawiæ wykorzystuj¹c normê \(H_{\infty}\). \\*
+Podsumowuj¹c, celem projektu jest maksymalne rozszerzenie obszaru "pe³nej manewrowoœci", czyli zakresu prêdkoœci, w którym uk³ad zamkniêty jest stabilny i dodatkowo spe³nia warunki na:
+
+\begin{itemize}
+\item sygna³ steruj¹cy - \(|\delta_c| < 0,3\delta_{\max} \)
+\item maksymalne obci¹¿enia - \(|h(t)| < h_{\max}\) i \(|\theta(t)| < \theta_{\max}\)
+\end{itemize}
+dla dowolnego sygna³u wejœciowego:
+\begin{itemize}
+\item \( |\delta_p(t)| < 0,7\delta_{max}\)
+\item \( \eta(t) \) - w postaci bia³ego szumu
+\end{itemize}
+z uwzglêdnieniem zmiennych warunków lotu:
+\begin{itemize}
+\item wysokoœæ lotu \( h \in \left[0 ... 1100 \right] \) m.
+\item poziom paliwa \( f_l \in \left[0 ... 1 \right] \).
+\end{itemize}
+
+Kryteria w takiej formie mog¹ zostaæ bezpoœrednio prze³o¿one na pojêcia zwi¹zane z Robust Control. 
+
+%Pierwsze kryterium nazywa siê odporn¹ stabilnoœci¹, pozosta³e dwa - odpornymi osi¹gami. Odporne osi¹gi mo¿na zwiêŸle przedstawiæ wykorzystuj¹c normê \(H_{\infty}\). \\*
 %\(|\delta_c|_{\infty} < 0,3 \delta_{max} \) ????
 
 \section{Kryteria porównawcze}
 Oprócz za³o¿eñ projektowych, które regulator musi spe³niæ potrzebny bêdzie równie¿ zestaw kryteriów, które u³atwi¹ obiektywn¹ ocenê jakoœci regulacji.
 
-Podstawowe kryterium pozwala odpowiedzieæ na pytanie "Jaki jest zysk?", czyli o ile procentowo zdo³aliœmy zwiêkszyæ prêdkoœæ krytyczn¹ uk³adu \( \frac{U_{fcl}}{U_{fol}} \).
+Podstawowe kryterium pozwala odpowiedzieæ na pytanie "Jaki jest zysk?", czyli o ile procentowo zdo³aliœmy zwiêkszyæ prêdkoœæ krytyczn¹ uk³adu \( U_{fcl} / U_{fol} \) dla nominalnych warunków lotu.
 
 Kolejne kryteria odpowiadaj¹ na pytanie "Jakim kosztem?", czyli jak du¿y sygna³ steruj¹cy jest potrzebny aby zapewniæ stabilnoœæ uk³adu. Kryterium okreœla iloœciowo wysi³ek sterowania w przep³ywie turbulentnym, liczony jako œrednia kwadratowa sygna³u wyjœciowego regulatora \(\delta_c(t)\) dla okreœlonego przebiegu prêdkoœci pionowej turbulencji \( w_g(t) \):
 
@@ -70,7 +88,7 @@ Kolejne kryteria odpowiadaj¹ na pytanie "Jakim kosztem?", czyli jak du¿y sygna³ 
 
 Trzecie kryterium dotyczy wysi³ku sterowania ze wzglêdu na zewnêtrzny sygna³ steruj¹cy \( \delta_p(t) \) w postaci skoku jednostkowego o wartoœci 70\% maksymalnego wychylenia powierzchni sterowej \( ( \delta_p = 0,7 \cdot \delta_{max} ) \).
 
-Poza tym wa¿n¹ miar¹ jakoœci jest wartoœæ maksymalna modu³u sygna³u steruj¹cego \( \max( \left| \delta_c(t) \right| ) \).
+%Poza tym wa¿n¹ miar¹ jakoœci jest wartoœæ maksymalna modu³u sygna³u steruj¹cego \( \max( \left| \delta_c(t) \right| ) \).
 
 \section{Klasyczny regulator}
 Zaprojektowanie jednowymiarowego regulatora przy wykorzystaniu klasycznych technik syntezy prawa sterowania pozwala szybko uzyskaæ wyniki stanowi¹ce punkt odniesienia do dalszych prac.
@@ -79,7 +97,7 @@ Z podstawowej analizy uk³adu otwartego mo¿na wywnioskowaæ, ¿e potrzebne jest dod
 
 Standardowo u¿ywanymi przyrz¹dami pomiarowymi w praktycznych systemach t³umienia flutteru s¹ przyspieszeniomierze. Odpowiednie kombinacje liniowe sygna³ów z dwóch przyspieszeniomierzy umieszczonych na krawêdziach skrzyd³a (na wysokoœci profilu odniesienia) odpowiadaj¹ \( \ddot{h}(t) \) i \( \ddot{\theta}(t) \).
 
-Zgodnie z \cite{Vivek} w przypadku jednowymiarowego regulatora najlepsze efekty uzyskujemy poprzez wykorzystanie do sterowania sygna³u prêdkoœci k¹towej skrêcania. \( \dot{\theta}(t) \) uzyskamy bezpoœrednio poprzez ca³kowanie odpowiedniej kombinacji linowej sygna³ów wyjœciowych przyspieszeniomierzy. Problemem przyspieszeniomierzy jest jednak wystêpowanie sta³ego, lub wolnozmiennego b³êdu, który zosta³by wzmocniony przez element ca³kuj¹cy. Do pozbycia siê go zastosowano filtr washout (TODO polska nazwa?) w postaci \( s/(s+a) \), co razem z elementem ca³kuj¹cym daje kompensator opóŸniaj¹cy fazê \( a/(s+a) \).
+Zgodnie z \cite{Vivek} w przypadku jednowymiarowego regulatora najlepsze efekty uzyskujemy poprzez wykorzystanie do sterowania sygna³u prêdkoœci k¹towej skrêcania. \( \dot{\theta}(t) \) uzyskamy bezpoœrednio poprzez ca³kowanie odpowiedniej kombinacji linowej sygna³ów wyjœciowych przyspieszeniomierzy. Problemem przyspieszeniomierzy jest jednak wystêpowanie sta³ego, lub wolnozmiennego b³êdu, który zosta³by wzmocniony przez element ca³kuj¹cy. Do pozbycia siê go zastosowano filtr washout (TODO polska nazwa?) w postaci \( s/(s+a) \), co razem z elementem ca³kuj¹cym daje filtr dolnoprzepustowy \( a/(s+a) \).
 
 Filtr washout dobrano tak, aby mia³ minimalny wp³yw na sygna³ pomiarowy w okolicach czêstotliwoœci flutteru \( f_f = 6,67 Hz \). Czêstotliwoœæ kompensatora jest o rz¹d wielkoœci mniejsza od \( f_f \).
 
@@ -111,7 +129,59 @@ Poniewa¿ uk³ad otwarty posiada dwa niestabilne pierwiastki, wykres Nyquista odpo
 Wstêpna analiza pokaza³a, ¿e klasyczny regulator o postaci \( K_c(s) = -0,2 \frac{4,19}{s + 4,19} \) mo¿e zapewniæ stabilnoœæ uk³adu do \(149 \% U_{fol}\). Pe³na analiza uk³adu zamkniêtego zosta³a umieszczona w dalszej czêœci rozdzia³u.
 
 \section{Regulator Hinf}
-TODO. Prace trwaj¹, poni¿ej kilka przyk³adowych rysunków.
+Ca³a praca zwi¹zana z syntez¹ regulatora \( H_\infty \) sprowadza siê do skonstruowania uogólnionego modelu \( P(s) \), w którym musz¹ zostaæ uwzglêdnione wszystkie kryteria projektowe wyprowadzone w rozdziale \ref{KryteriaProjektowe}. Zostanie to zrealizowane poprzez dodanie funkcji wagowych.
+
+Rys. (\ref{WingModelP1}) przedstawia diagram blokowy generycznego modelu \( P \). W pierwszym podejœciu (regulator \( H_\infty 1 \)) pominiêto model niepewnoœci. Znaczenie poszczególnych funkcji wagowych zosta³o omówione poni¿ej.
+\begin{itemize}
+\item Ograniczenie na sygna³ steruj¹cy:
+\begin{equation}
+W_u(s) = 1 / (0,3 \cdot \delta_{max}). 
+\end{equation} 
+\item Ograniczenie maksymalnych obci¹¿eñ konstrukcji:
+\begin{equation}
+W_p(s) = \left[
+\begin{array}{cc}
+\frac{1}{h_{max}} \frac{s}{s + 4,19} & 0 \\
+0 & \frac{1}{\theta_{max}} \frac{s}{s + 4,19} 
+\end{array}
+\right] . 
+\end{equation} 
+Filtr górnoprzepustowy zawarty w \( W_p(s) \) zapewnia, ¿e bêdziemy minimalizowaæ tylko obci¹¿enia maj¹ce zwi¹zek z drganiami aeroelastycznymi, a nie statyczne (lub wolnozmienne) obci¹¿enia wynikaj¹ce np. z agresywnego manewru, poniewa¿ jest to poza mo¿liwoœciami uk³adu t³umienia flatteru.
+\item Charakter sygna³u wejœciowego od pilota:
+\begin{equation}
+W_\delta(s) = 0,7 \cdot \delta_{max}
+\end{equation}
+Zak³adamy, ¿e aby system t³umienia flatteru dzia³a³ poprawnie, musimy ograniczyæ sygna³ steruj¹cy od pilota do uzgodnionych 70\% wartoœci maksymalnej.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth/2]{WingModelP1.png}
+\caption{Uogólniony model \( P \)}
+\label{WingModelP1}
+\end{figure}
+
+Wektor \( y = [\ddot{h}, \ddot{\theta}]^T \) reprezentuje sygna³y pomiarowe wykorzystane do regulacji. Sygna³ steruj¹cy to \( u = \delta_c\). Zewnêtrznymi zaburzeniami jest bia³y szum napêdzaj¹cy model turbulencji \( \eta \) oraz sygna³ steruj¹cy od pilota \( \delta_p \). Wielkoœci jakoœciowe podlegaj¹ce optymalizacji to wa¿one zniekszta³cenia p³ata \( z_p = W_p(s) [ h, \theta ]^T\) oraz wa¿ony sygna³ steruj¹cy \( z_u = W_u(s) \delta_c \). Model odniesienia \( G_n(s) \) to model linowy skrzyd³a dla nominalnych warunków lotu i prêdkoœci \( U_0 = V_{fol} \).
+
+W wyniku syntezy otrzymano regulator \( K \) oraz wartoœæ \( \gamma =  3\). Wartoœæ \( \gamma \) œwiadczy o tym, ¿e kryteria projektowe nie zosta³y spe³nione. Synteza regulatora jest procesem optymalizacyjnym, dlatego ¿eby móc poprawnie zinterpretowaæ wyniki, nale¿y odnaleŸæ aktywne ograniczenie, które nie pozwala kontynuowaæ optymalizacji.
+
+Z analizy najwiêkszej wartoœci osobliwej {\bf wa¿onego uk³adu zamkniêtego} dowiemy siê, dla jakiego zakresu pulsacji ograniczenie jest aktywne. Z analizy SVD dowiemy siê, które ograniczenia nie pozwalaj¹ na dalsz¹ optymalizacjê. Z rys. (\ref{SvdHinf1}) mo¿emy odczytaæ pulsacjê dla której \( \| T_{zw}(s) \|_\infty = \gamma \). Dla tej czêstotliwoœci g³ówn¹ rolê odgrywa ograniczenie sygna³u steruj¹cego \( W_u(s) \), co jest po¿¹danym zjawiskiem, gdy¿ oznacza, ¿e ca³y potencja³ elementów wykonawczych zosta³ wykorzystany. Z dolnego wykresu na rys. (\ref{SvdHinf1}) dowiadujemy siê, ¿e decyduj¹ce znaczenie ma sygna³ od pilota \( \delta_p \). Problem w tym, ¿e dla tak du¿ej pulsacji \( \omega = 45 rad/s \) wp³yw komend pilota powinien byæ znikomy.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth*2/3]{SvdHinf1.eps}
+\caption{Analiza aktywnych ograniczeñ}
+\label{SvdHinf1}
+\end{figure}
+
+\subsubsection{Hinf 2}
+
+Analiza aktywnych ograniczeñ obna¿y³a b³êdnie sformu³owane wymagania projektowe. Standardowo w projektach systemu sterowania lotem przyjmuje siê, ¿e pasmo przenoszenia dla poleceñ pilota nie powinno przekraczaæ \( 3 Hz \), co odpowiada fizycznym mo¿liwoœciom cz³owieka. Z tego powodu funkcja wagowa \( W_\delta(s) \) zosta³a zmodyfikowana tak, aby opisaæ charakter sygna³ów steruj¹cych od pilota.
+\begin{equation}
+W_\delta(s) = \frac{0.7}{s + 3\cdot 2 \pi}
+\end{equation}
+
+Dla tak postawionego problemu w postaci wa¿onego modelu \( P \) otrzymano nowy regulator \( K \) (regulator \(H_\infty 2\) oraz wartoœæ \( \gamma = 0.4 \), która œwiadczy o spe³nieniu kryteriów projektowych.
 
 \begin{figure}
 \centering

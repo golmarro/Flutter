@@ -198,7 +198,7 @@ classdef Model < handle
             val  = feedback(this.Gn, this.Khinf, 1);
         end
         
-        function [Wu Guns] = unstructUncert(this, order, quiet)
+        function [Wu Guns] = unstructUncert(this, order, plot)
             if ~exist('order','var')
                 order = 2;
             end
@@ -210,7 +210,6 @@ classdef Model < handle
             for i = 2:size(pert,1)
                 Gi = lft(diag(pert(i,:)), this.Gdelta);
                 Garray = stack(1,Garray,Gi);
-                hold on
             end
 
             % Funkcja ucover domysle stosuje niepewnosc multiplikatywna na wejsciu -
@@ -219,14 +218,31 @@ classdef Model < handle
             [Guns info] = ucover(Garray, this.Gn, order);
             Wu = info.W1;
             this.Wunc = info.W1;
-            if ~exist('quiet','var')
-                sigma(this.Gn, 'b')
-                hold on;
-                sigma(this.Gn + this.Gn*this.Wunc, 'r--')
-                for i = 1 : length(Garray)
-                    sigma(Garray(:,:,i),'k:');
+            if exist('plot','var')
+                if plot == 1
+                    %sigma(this.Gn, 'b')
+                    [svWunc w] = sigma(this.Wunc);
+                    svGn = sigma(this.Gn, w);
+                    semilogx(w, mag2db(svGn(1,:)),'b');
+                    hold on;
+                    %sigma(this.Gn + this.Gn*this.Wunc, 'r--')
+                    semilogx(w, mag2db(svGn(1,:) + svWunc(1,:).*svGn(1,:)), 'r--');
+                    for i = 1 : length(Garray)
+                        sigma(Garray(:,:,i),'k:');
+                    end
+                    legend('G_n(s)','(I + w_o(s))(G_n(s))','rodzina G_r');
+                elseif plot == 2
+                    % ------------------------ error plot
+                    [svWunc w] = sigma(this.Wunc);
+                    svGn = sigma(this.Gn, w);
+                    semilogx(w, mag2db(svWunc(1,:)), 'r--');
+                    hold on;
+                    for i = 1 : length(Garray)
+                        svGr = sigma(Garray(:,:,i),w);
+                        semilogx(w, mag2db((svGr(1,:) - svGn(1,:))./svGn(1,:)), 'k:');
+                    end
+                    legend('w_o(s)','(G_r(s) - G_n(s))/G_n(s)');
                 end
-                legend('G_n(s)','(I + w_o(s))(G_n(s))','rodzina G_r');
                 % Gorny i dolny przedzial w ktorym moze znalezc sie Gp:
 %                 [sv w] = sigma(this.Gn + this.Gn*this.Wunc);
 %                 frGn = freqresp(this.Gn, w);

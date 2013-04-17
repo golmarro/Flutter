@@ -18,7 +18,7 @@ classdef Atmosphere < handle
         TC                  % Temp [C]
     end
     properties(GetAccess = 'public', SetAccess = 'public')
-        h = 4000;           % Altitude [m]
+        h = 5500;           % Altitude [m]
     end
     
     methods

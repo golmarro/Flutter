@@ -328,12 +328,47 @@ TODO: Cecha podejœcia Robust Control - uwzglêdnienie niepewnoœci podczas syntezy
 
 \subsection{Regulator Hinf}
 
+Synteza regulatora \( H_\infty \) standardowo odbywa siê z wykorzystaniem tzw. { \it nowoczesnego paradygmatu} (modern paradigm) \cite{Handbook}. Zgodnie z tym podejœciem zarówno wymogi osi¹gowe jak i odpornoœciowe mog¹ zostaæ uwzglêdnione w i zrzutowane do postaci uogólnionego modelu \(P\) (Rys. \ref{ModernParadigm}).
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth/2]{ModernParadigm.png}
+\caption{Uogólniony model zgodny z nowoczesnym paradygmatem}
+\label{ModernParadigm}
+\end{figure}
+
+Uk³ad liniowy \( P \) zawiera dynamikê obiektu razem z elementami wykonawczymi i sensorami, model niepewnoœci oraz funkcje wagowe, które projektant dobiera tak, aby uzyskaæ po¿¹dany wynikowy regulator \( K \). Sygna³y pomiarowe wykorzystane do regulacji oznaczono jako \( y \), sygna³ steruj¹cy regulatora - jako \( u \). Elementy wektora \( w \) to zewnêtrze wejœcia uk³adu - zaburzenia, wartoœci zadane regulacji lub szumy pomiarowe. Na wyjœciu jako \( z \) oznaczone s¹ wszystkie wielkoœci, które chcemy sterowaæ. Mog¹ to byæ np. abstrakcyjne wskaŸniki jakoœci regulacji, wa¿ony uchyb lub wysi³ek sterowania.
+
+Ogólny problem mo¿na okreœliæ jako poszukiwanie stabilizuj¹cego regulatora \( K \), który bêdzie minimalizowa³ elementy wektora \( z \), przy wystêpowaniu zewnêtrznego sygna³u \( w \). Chodzi wiêc o minimalizacjê { \it wielkoœci } uk³adu zamkniêtego \( T_{zw}(s) \). Jako miernik tej wielkoœci doskonale spe³nia swoj¹ rolê norma \( H_\infty \).
+
+Sam algorytm wyznaczania quasi-optymalnego regulatora \( H_\infty \) jest  wyjaœniony np. w \cite{Handbook}, dlatego nie zostanie tutaj przytoczony. W niniejszej pracy do syntezy regulatora \( H_\infty \) wykorzystano oprogramowanie Matlab oraz zestaw narzêdzi Robust Control Toolbox. W wyniku syntezy otrzymujemy regulator \( K \) oraz wartoœæ skalarn¹ \( \gamma \), która okreœla poziom, do jakiego uda³o siê obni¿yæ normê uk³adu zamkniêtego.
+
+\begin{equation}
+\| T_{zw} (s) \|_\infty < \gamma
+\end{equation}
+
+Je¿eli otrzymamy \( \gamma < 1 \) oznacza to, ¿e wszystkie kryteria zrzutowane na generyczny model \(P\) zosta³y spe³nione.
+
+TODO: Interpretacja funkcji wagowej dla uk³adu SISO.
+
+Zapisany w takiej formie mo¿e podkreœlaæ znaczenie pewnego sygna³u wyjœciowego w przestrzeni czêstotliwoœci.
+\begin{equation}
+\| w_p(s) T_{zw}(s) \|_\infty < \gamma
+\end{equation}
+Natomiast zapisany w takiej formie (przy wykorzystaniu w³asnoœci normy \( H_\infty \) ) mo¿na interpretowaæ jako kszta³towanie charakterystyki czêstotliwoœciowej uk³adu zamkniêtego.
+\begin{equation}
+\| T_{zw}(s) \|_\infty < \frac{\gamma}{w_p(s)}
+\end{equation}
+
+
+TODO: Przyk³ad. Masa na sprê¿ynie. Ujêcie wymagañ co do sygna³u sterowania i uchybu. Synteza regulatora.
+
 \subsection{Warunek odpornej stabilnoœci}
 
 Warunek odpornej stabilnoœci uk³adu z modelem wzglêdnej niepewnoœci na wyjœciu mo¿na wyprowadziæ z teorii ma³ych wzmocnieñ (Small Gain Theorem)~\cite{Handbook}.
 
 \begin{theorem}
-Warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
+Zak³adaj¹c, ¿e nominalny uk³ad zamkniêty oraz funkcja wagowa \( w_o(s) \) s¹ stabilne, warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
 \begin{equation}
 \mathcal{G}_p = \{ G_p(s) : G_p(s) = (I + w_o(s)\Delta(s))G_n(s), \|\Delta(s)\|_\infty \leq 1 \}
 \end{equation}

@@ -83,3 +83,6 @@ model nominalny - model odniesienia - model odpowiada nominalnym wartoœciom niep
 Zbiór spektralny [Bus³owicz] - zbiór spektralny rodziny wielomianów S[W]
 nazywamy zbiór zer wszystkich wielomianów nale¿¹cych do tej rodziny
 S[W] jest ograniczony i domkniêty
+
+
+SSP - œrodek si³ poprzecznych, œrodek skrêceñ - punkt wzglêdem którego nastêpuje skrêcenie skrzyd³a obci¹¿onego si³¹ P
