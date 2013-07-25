@@ -75,8 +75,10 @@ Rozdzia³ 3. Model skrzyd³a
    
 
 Rozdzia³ 4. Model samolotu
-Model sztywny. Postacie ruchu (szybkie, fugoidalne, holendrowanie).
-Model pó³sztywny. Postacie ruchu (inne postacie flutteru? symetryczne/asymetryczne)
+* Prze³o¿enie modelu analitycznego na nieliniowy model z wykorzystanie mnarzêdzi FastPrototyping (SimMechanics)
+  - porównanie odpowiedzi skokowych
+* Model sztywny. Postacie ruchu (szybkie, fugoidalne, holendrowanie).
+* Model pó³sztywny. Postacie ruchu (inne postacie flutteru? symetryczne/antysymetryczne czy asymetryczne)
 Porównanie modeli (sztywny, pó³sztywny).
 Porównanie modeli szkrzyd³a (sztywno zamocowanego i swobodnego)
 
@@ -92,8 +94,8 @@ Porównanie ró¿nych regulatorów dla skrzyd³a sztywno zamocowanego.
 Sprawdzenie efektywnoœci dla skrzyd³a swobodnego
 
 Rozdzia³ 6. System sterowania (CAS - control augmentation system)
-Wymagania projektowe.
-Kilka klasycznych regulatorów SISO.
+Wymagania projektowe - ogólne uproszczone z MIL.... na podstawie Handbook.
+Kilka klasycznych regulatorów SISO lub jeden Hinf dla modelu pó³sztywnego.
 Analiza skutecznoœci
 
 Rozdzia³ 7. Po³¹czenie dwóch regulatorów.

@@ -1,12 +1,19 @@
 \chapter{Model skrzyd³a}
-W poni¿szym rozdziale zosta³ zawarty opis oraz analiza modelu matematycznego skrzyd³a podlegaj¹cego zjawisku flatteru.
+
+Poni¿szy rozdzia³ zawiera opis oraz analizê modelu matematycznego skrzyd³a podlegaj¹cego zjawisku flatteru.
 
 \section{Model matematyczny}
-(TODO wyjaœniæ dlaczego stosujemy profil referencyjny, jego po³o¿enie wzd³u¿ skrzyd³a)
 
-Model matematyczny elastycznego skrzyd³a o dwóch stopniach swobody zosta³ zaczerpniêty z \cite{WaszakModel}. Na model sk³ada siê dynamika strukturalna, aerodynamika quasi-stacjonarna, dynamika elementu wykonawczego oraz prosty model turbulencji.
+Model matematyczny skrzyd³a zosta³ zaczerpniêty z \cite{WaszakModel}. Na model sk³ada siê dynamika strukturalna, aerodynamika quasi-stacjonarna, dynamika elementu wykonawczego oraz model turbulencji (rys.~\ref{RysModelSkrzydla}).
 
-Postaæ odpowiednio wektora stanu, wejœciowego i wyjœciowego:
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{ModelSkrzydla.png}
+\caption{Schemat blokowy modelu skrzyd³a.}
+\label{RysModelSkrzydla}
+\end{figure}
+
+Postaci odpowiednio wektora stanu, wejœciowego i wyjœciowego s¹ nastêpuj¹ce:
 \begin{align*}
 x &= [ h, \theta, \dot{h}, \dot{\theta}, \dot{\delta}, \delta, t_1, t_2] \\
 u &= [ \delta_c, \eta ] \\
@@ -27,7 +34,7 @@ symbol & opis & jedn. \\
 \( \delta_c \) & wartoœæ zadana wychylenia lotki  & [rad] \\
 \( \delta \) & wychylenie lotki & [rad] \\
 \( \eta \) & sygna³ turbulencji  & [-] \\
-\( t_1, t_2 \) & stany zwi¹zany z modelem turbulencji & [-] \\
+\( t_1, t_2 \) & stany zwi¹zane z modelem turbulencji & [-] \\
 \( w_g \) & pionowa wartoœæ podmuchu & [m/s] \\
 \hline
 \end{tabular}
@@ -36,18 +43,17 @@ symbol & opis & jedn. \\
 \end{table}
 %\end{center}
 
-\subsubsection{Równania strukturalne}
-(TODO - czy to odpowiednia nazwa - równania strukturalne)
+\subsubsection{Model strukturalny}
 
 Uk³ad równañ \ref{EqModelStruktury} opisuje drgania skrêtne i giêtne skrzyd³a~\cite{WaszakModel}.
 
 \begin{equation}
 \left[ \begin{array}{cc} m & s_{h\theta} \\ s_{h\theta} & I_\theta \\ \end{array} \right] 
-\left\{ \begin{array}{c} \ddot{h} \\ \ddot{\theta} \end{array} \right\}
+\left[ \begin{array}{c} \ddot{h} \\ \ddot{\theta} \end{array} \right]
 + \left[ \begin{array}{cc} K_h & 0 \\ 0 & K_\theta \\ \end{array} \right]
-\left\{ \begin{array}{c} h \\ \theta \end{array} \right\}
-= \left\{ \begin{array}{c} m \\ s_{h\theta} \end{array} \right\} g
-+ \left\{ \begin{array}{c} Q_h \\ Q_\theta \end{array} \right\}
+\left[ \begin{array}{c} h \\ \theta \end{array} \right]
+= \left[ \begin{array}{c} m \\ s_{h\theta} \end{array} \right] g
++ \left[ \begin{array}{c} Q_h \\ Q_\theta \end{array} \right]
 \label{EqModelStruktury}
 \end{equation}
 
@@ -55,13 +61,15 @@ Wyra¿enia \( m \), \(I_\theta\) to masy uogólnione postaci ruchu giêtnego i skrê
 
 %\( K_h \), \(K_\theta\) to odpowiednio sztywnoœæ na zginanie i skrêcanie (TODO jak to siê nazywa: przetransponowane/uogólnione do profilu odniesienia?)
 
-Jak siê okazuje wspó³czynnik sprzê¿enia drgañ giêtnych i skrêtnych \( s_{h\theta} \), którego wartoœæ wynika z po³o¿enia CG skrzyd³a wzglêdem SSP, ma decyduj¹ce znaczenie na to kiedy i czy w ogóle wyst¹pi zjawisko flutteru.
+Jak siê okazuje wspó³czynnik sprzê¿enia drgañ giêtnych i skrêtnych \( s_{h\theta} \), którego wartoœæ wynika z po³o¿enia CG skrzyd³a wzglêdem SSP, ma decyduj¹ce znaczenie na to kiedy i czy w ogóle wyst¹pi zjawisko flatteru.
 
 \begin{equation}
 s_{h\theta} = m \cdot x_{cg}
 \end{equation}
 
 \subsubsection{Model aerodynamiki quasi-stacjonarnej}
+(TODO wyjaœniæ dlaczego stosujemy profil referencyjny, jego po³o¿enie wzd³u¿ skrzyd³a)
+
 Standardow¹ metod¹ szacowania si³ aerodynamicznych jest u¿ycie pochodnych stabilnoœciowych i sterowania (stability and control derivatives). Si³y aerodynamiczne mog¹ zostaæ przedstawione jako funkcje liniowe k¹ta natarcia \( \alpha \), wychylenia powierzchni sterowych \(\delta\) oraz ich pochodnych wzglêdem czasu (\ref{EqSilyAero}). Wartoœci wspó³czynników aerodynamicznych zosta³y zawarte w tabeli~\ref{TabWspAero}
 
 \begin{equation}
@@ -104,7 +112,7 @@ Symbol & opis & Wartoœæ & Jedn. \\
 \label{TabWspAero}
 \end{table}
 
-Model aerodynamiki oparty na wspó³czynnikach jest raczej uproszczonym podejœciem, ale w zupe³noœci wystarczaj¹cy aby uchwyciæ najwa¿niejsze cechy zjawiska flutteru~\cite{WaszakModel}.
+Model aerodynamiki oparty na wspó³czynnikach jest raczej uproszczonym podejœciem, ale w zupe³noœci wystarczaj¹cy aby uchwyciæ najwa¿niejsze cechy zjawiska flatteru~\cite{WaszakModel}.
 
 Niestacjonarny charakter modelu aerodynamiki wynika z uwzglêdnienia wspó³czynników wzglêdem pochodnych (np. \( C_{L_{\dot\alpha}} \) ). 
 
@@ -117,7 +125,7 @@ Wyra¿enie (\ref{EqKatNatarcia}) pozwala wyznaczyæ k¹t natarcia w chwili \(t\).
 
 Symbol \( U_0 \) oznacza prêdkoœæ lotu w \(m/s\), a symbol  \( x_{ac} \) - odleg³oœæ œrodka aerodynamicznego od SSP w metrach.
 
-\subsubsection{Model elementów wykonawczych}
+\subsubsection{Model elementu wykonawczego}
 Parametry si³ownika zosta³y równie¿ zaczerpniête z \cite{WaszakModel}. Model drugiego rzêdu przedstawia równanie~(\ref{EqSilownik}).
 
 \begin{equation}
@@ -160,7 +168,7 @@ Istniej¹ dwie praktyczne analityczne reprezentacje widmowej gêstoœci mocy turbul
 \end{equation}
 Mo¿na ten model traktowaæ jako filtr, którego charakterystyka czêstotliwoœciowa odpowiada widmowej gêstoœci mocy. Wejœciem filtra jest bia³y szum \(eta(t)\).
 
-Wartoœci parametrów modelu turbulencji zaczerpniête z~\cite{WaszakModel} dla prêdkoœci lotu zbli¿onej do prêdkoœci krytycznej flutteru wynosz¹:\\*
+Wartoœci parametrów modelu turbulencji zaczerpniête z~\cite{WaszakModel} dla prêdkoœci lotu zbli¿onej do prêdkoœci krytycznej flatteru wynosz¹:\\*
 \( \alpha_t = 2,49 \) \\*
 \( \beta_t = 99 \) \\*
 
@@ -177,9 +185,9 @@ Rysunek \ref{RysTurbulencja} przedstawia pionow¹ sk³adow¹ turbulencji \( w_g(t) 
 
 \subsubsection{Wartoœci liczbowe - parametry}
 
-Parametry wyjœciowego modelu zosta³y odpowiednio przeskalowane tak, aby w³aœciwoœci skrzyd³a odpowiada³y skrzyd³u Preadatora. Model jest parametryzowany prêdkoœci¹ i wysokoœci¹ lotu oraz poziomem paliwa w skrzyd³ach. Wysokoœæ lotu determinuje gêstoœæ powietrza, co razem z prêdkoœci¹ wyznacza ciœnienie dynamiczne. Poziom paliwa ma wp³yw na masê i moment bezw³adnoœci. 
+Parametry wyjœciowego modelu zosta³y odpowiednio przeskalowane tak, aby w³aœciwoœci skrzyd³a odpowiada³y skrzyd³u MQ-1. Model jest parametryzowany prêdkoœci¹ i wysokoœci¹ lotu oraz poziomem paliwa w skrzyd³ach. Wysokoœæ lotu determinuje gêstoœæ powietrza, co razem z prêdkoœci¹ wyznacza ciœnienie dynamiczne. Poziom paliwa ma wp³yw na masê i moment bezw³adnoœci. 
 
-Wartoœci parametrów (ewentualnie ich zakres) zosta³y zawarte w tabeli \ref{TabParametrySkrzydla}. Górne ograniczenie prêdkoœci jak i ciœnienia dynamicznego odpowiada prêdkoœci krytycznej flutteru, ale celem projektu jest zwiêkszenie tej prêdkoœci, a wiêc rozpatrywany zakres bêdzie jeszcze wiêkszy.
+Wartoœci parametrów (ewentualnie ich zakres) zosta³y zawarte w tabeli \ref{TabParametrySkrzydla}. Górne ograniczenie prêdkoœci jak i ciœnienia dynamicznego odpowiada prêdkoœci krytycznej flatteru, ale celem projektu jest zwiêkszenie tej prêdkoœci, a wiêc rozpatrywany zakres bêdzie jeszcze wiêkszy.
 
 \begin{table}[hbt]
 \centering
@@ -225,7 +233,7 @@ Rys. \ref{RysOdpSkokowa} przedstawia odpowiedŸ modelu skrzyd³a dla sygna³u skoko
 \subsubsection{Analiza prêdkoœci lotu}
 Dolnym ograniczeniem prêdkoœci lotu jest prêdkoœæ \(V_{min}\), dla której skrzyd³o jest w stanie wytworzyæ  si³ê noœn¹ wystarczaj¹c¹ do lotu poziomego.
 
-Zak³ada siê, ¿e jedynym górnym ograniczeniem jest prêdkoœæ krytyczna flutteru \(V_k\). Wyznaczenie prêdkoœci krytycznej polega na odnalezieniu minimalnej prêdkoœci, dla której uk³ad przestaje byæ stabilny. Wp³yw na tê prêdkoœæ ma zarówno wysokoœæ lotu, jak i (poœrednio) poziom paliwa w skrzyd³ach (rys~\ref{RysPredkosci}).
+Zak³ada siê, ¿e jedynym górnym ograniczeniem jest prêdkoœæ krytyczna flatteru \(V_k\). Wyznaczenie prêdkoœci krytycznej polega na odnalezieniu minimalnej prêdkoœci, dla której uk³ad przestaje byæ stabilny. Wp³yw na tê prêdkoœæ ma zarówno wysokoœæ lotu, jak i (poœrednio) poziom paliwa w skrzyd³ach (rys~\ref{RysPredkosci}).
 
 \begin{figure}[hbt]
 \centering
@@ -244,13 +252,14 @@ Rys. \ref{RysWingLocus} przedstawia wêdrówkê pierwiastków uk³adu wzglêdem prêdko
 \label{RysWingLocus}
 \end{figure}
 
-Gdy uk³ad staje siê niestabilny - linia pierwiastkowa wkracza na dodatni¹ pó³p³aszczyznê czêœci rzeczywistej, wektor w³asny odpowiadaj¹cy niestabilnej wartoœci w³asnej przyjmuje postaæ charakterystyczn¹ dla flutteru. Drgania skrêtne s¹ przesuniête wzglêdem drgañ giêtnych o oko³o 90 stopni.
+Gdy uk³ad staje siê niestabilny - linia pierwiastkowa wkracza na dodatni¹ pó³p³aszczyznê czêœci rzeczywistej, wektor w³asny odpowiadaj¹cy niestabilnej wartoœci w³asnej przyjmuje postaæ charakterystyczn¹ dla flatteru. Drgania skrêtne s¹ przesuniête wzglêdem drgañ giêtnych o oko³o 90 stopni (rys.~\ref{RysKatThetaH}).
 
-%(TODO: Pokazaæ jak siê zmieniaj¹ postacie ruchu?)
-
-%\subsubsection{Postacie ruchu}
-
-
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth/2*3]{KatThetaH.eps}
+\caption{Przesuniêcie fazowe drgañ skrêtnych wzglêdem drgañ giêtnych dla ró¿nej masy paliwa. W okolicach prêdkoœci flutteru wartoœæ przesuniêcia osi¹ga 90 stopni.}
+\label{RysKatThetaH}
+\end{figure}
 
 \section{Modelu skrzyd³a z niepewnoœci¹}
 Jak wynika z tabeli \ref{TabParametrySkrzydla} zakres zmiennoœci parametrów jest du¿y. Istnieje zatem ryzyko, ¿e rodzina modeli \( \mathcal{G}_r \) mo¿e byæ zbyt du¿a, aby jeden liniowy regulator zapewni³ stabilnoœæ w ca³ym obszarze pracy. 

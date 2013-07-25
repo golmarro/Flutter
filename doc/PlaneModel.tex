@@ -1,7 +1,44 @@
 
 \chapter{Model samolotu}
-TODO. Zaplanowane w tym rozdziale:\\
-* Model sztywny. Postacie ruchu (szybkie, fugoidalne, holendrowanie).\\
-* Model pó³sztywny. Postacie ruchu (dodatkowe postacie flutteru symetryczne/asymetryczne?)\\
-* Porównanie modeli (sztywny, pó³sztywny).
-* Porównanie modeli skrzyd³a (sztywno zamocowanego i swobodnego)
+
+Pozycja samolotu wzglêdem pewnego punktu na ziemi jest opisana przez trzy wspó³rzêdne \(X_E = [ x_E, y_E, z_E] \). Analogicznie prêdkoœæ samolotu wzglêdem ziemi okreœla wektor \(V_E = [u_e, v_e, w_e] \). Z punktu widzenia dynamiki lotu, istotniejsza jest prêdkoœæ samolotu wzglêdem otaczaj¹cego powietrza, czyli prêdkoœæ w uk³adzie odniesienia zwi¹zanym z samolotem - \(V_b = [u_b, v_b, w_b] \)
+Po³o¿enie samolotu wzglêdem ziemi, a tym samym uk³adu odniesienia zwi¹zanego z samolotem, wzglêdem uk³adu odniesienia zwi¹zanego z ziemi¹, opisuj¹ k¹ty Eulera: \( e = [\phi_b, \theta_b, \psi_b] \), które opisuj¹ odpowiednio przechylenie, pochylenie i odchylenie samolotu.
+
+Model ma budowê modu³ow¹
+
+W tym rozdziale zostanie przedstawiona analiza modelu samolotu sztywnego oraz pó³sztywnego.
+
+
+Model samolotu w locie swobodnym zosta³ w ca³oœci zaimplementowany przy u¿yciu Simulinka i zestawu narzêdzi SimMechanics. 
+
+
+
+Ró¿nica miêdzy dynamik¹ skrzyd³a sztywno zamocowanego i skrzyd³a zamocowanego do samolotu w locie swobodnym.
+
+\section{Model skrzyd³a w Simulinku}
+¯eby móc zaimplementowaæ ca³y model samolotu, najpierw nale¿a³o przenieœæ do Simulinka model sztywno zamocowanego skrzyd³a. Do tego celu zosta³y wykorzystane bloki z zestawu SimMechanics.
+
+\section{Analiza modelu samolotu}
+Model modularny. Skoñczona sztywnoœæ ka¿dego elementu samolotu mo¿e byæ uwzglêdniona, ale nie ma potrzeby, poza tym za d³ugo trwa³aby symulacja.
+
+Symulacja z udzia³em pilota, prosty interfejs do sterowania. Wykorzystanie wizualizacji SimMechanics.
+
+Podstawowy test - sanity check, z wykorzystaniem symulacji z pilotem.
+
+\subsection{Trymowanie}
+Na potrzeby dalszej analizy, a w szczególnoœci linearyzacji modelu, konieczne jest uzyskanie stanu ustalonego.
+
+TODO: Parametry algorytmu trymowania.
+
+\subsection{Linearyzacja}
+Linearyzacja z wykorzystaniem narzêdzi Simulinka.
+
+\section{Porównanie modelu sztywnego i pó³sztywnego}
+TODO: Przebiegi czasowe - reakcja na stery powinna byæ opóŸniona dla modelu pó³sztywnego.
+
+\section{Porównanie dynamiki skrzyd³a}
+TODO: Mapa biegunów skrzyd³a swobodnego i sztywno zamocowanego
+
+Wnioski:
+
+Skrzyd³o swobodne jest mniej stabilne - mniejsze t³umienie.

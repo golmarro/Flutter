@@ -86,3 +86,23 @@ S[W] jest ograniczony i domkniêty
 
 
 SSP - œrodek si³ poprzecznych, œrodek skrêceñ - punkt wzglêdem którego nastêpuje skrêcenie skrzyd³a obci¹¿onego si³¹ P
+
+
+mechanika lotu - prawa ruchu samolotu
+si³y zewnêtrzne, trajektoria lotu
+k¹towe po³o¿enie samolotu w przestrzeni
+
+samolot jako punkt materialny
+samolot jako cia³o sztywne
+samolot jako struktura odkszta³calna
+
+statecznoœæ i sterownoœæ
+statecznoœæ samolotu - powrót do stanu równowagi statycznej
+
+Stopnie swobody zwi¹zane z:
+ruch postêpowy
+ruch obrotowy
+odkszta³cenia
+dynamika elementów wykonawczych
+
+samolot, p³atowiec
