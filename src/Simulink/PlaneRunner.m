@@ -116,25 +116,36 @@ classdef PlaneRunner < SimRunner
         
         function op = trim(this)
             savedActuatorMode = this.actuatorModel;
-            this.actuatorModel = 'none';
+            %this.actuatorModel = 'none';
             
             DofIndex = 1;
             
             spec = operspec(this.mdl);
             % TODO wspolna identyfikacja stanow dla wszystkich modeli
             % theta, psi, phi,
-            set(spec.States(1),'SteadyState', 1)
-            set(spec.States(2),'Known', 1)
-            set(spec.States(3),'Known', 1)
-            set(spec.States(4),'Known', 1)  % pos
-            set(spec.States(5),'Known', 1)
-            set(spec.States(6),'Known', 1)  
-            set(spec.States(7),'Known', 1)  % p, q, r
-            set(spec.States(8),'Known', 1)
-            set(spec.States(9),'SteadyState', 0)
-            set(spec.States(10),'SteadyState', 0)    % V
-            set(spec.States(11),'Known', 1)
-            set(spec.States(12),'SteadyState', 0)
+            
+            if strcmp(this.mdl,'PlaneSim')
+                offset = 6;
+            else
+                offset = 0;
+            end
+            
+            if ~strcmp(this.actuatorModel, 'none')
+                offset = offset + 4;
+            end
+            
+            set(spec.States(1 + offset),'SteadyState', 1)
+            set(spec.States(2 + offset),'Known', 1)
+            set(spec.States(3 + offset),'Known', 1)
+            set(spec.States(4 + offset),'Known', 1)  % pos
+            set(spec.States(5 + offset),'Known', 1)
+            set(spec.States(6 + offset),'Known', 1)  
+            set(spec.States(7 + offset),'Known', 1)  % p, q, r
+            set(spec.States(8 + offset),'Known', 1)
+            set(spec.States(9 + offset),'SteadyState', 0)
+            set(spec.States(10 + offset),'SteadyState', 0)    % V
+            set(spec.States(11 + offset),'Known', 1)
+            set(spec.States(12 + offset),'SteadyState', 0)
             
             
 %             for i = 1:size(spec.States,1)
@@ -168,15 +179,19 @@ classdef PlaneRunner < SimRunner
 %             set(spec.Inputs(3), 'Max', 45*pi/180);
 %             set(spec.Inputs(4), 'Min', -45*pi/180);
 %             set(spec.Inputs(4), 'Max', 45*pi/180);
-            set(spec.Inputs(3), 'u', -40*pi/180);
-            set(spec.Inputs(4), 'u', -40*pi/180);
+            set(spec.Inputs(3), 'u', -10*pi/180);
+            set(spec.Inputs(4), 'u', -10*pi/180);
+            if strcmp(this.mdl,'PlaneSim')
+                set(spec.Inputs(5), 'Known', 1)
+                set(spec.Inputs(6), 'Known', 1)
+            end
             
             spec
             op = findop(this.mdl,spec);
             
             % Extract states from operating point
             for i = 1:size(spec.States,1)
-                this.state(i) = get(op.States(i),'x');
+                %this.state(i) = get(op.States(i),'x');
             end
             % Extract inputs from operating point
             for i=1:4
@@ -210,9 +225,9 @@ classdef PlaneRunner < SimRunner
 
             this.fuse.Back.Mass = 60 + 75; % kg
             this.fuse.Back.Inertia = [1138 0 0; 0 1138 0; 0 0 14.4]; % kg*m2
-            this.fuse.Back.CG = [0 0 2.52];
+            this.fuse.Back.CG = [0 0 2.32];
 
-            this.fuse.Front.Mass = 60 + 140; % kg
+            this.fuse.Front.Mass = 60 + 80; % kg
             this.fuse.Front.Inertia = [785 0 0; 0 785 0; 0 0 10.8]; % kg*m2
             this.fuse.Front.CG = [0 0 -2.68];
             

@@ -1,15 +1,15 @@
 Model {
-  Name			  "PilotSim"
+  Name			  "PilotSimFlex"
   Version		  7.4
   MdlSubVersion		  0
   GraphicalInterface {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.319"
+    ComputedModelVersion    "1.320"
     NumModelReferences	    1
     ModelReference {
-      ModelRefBlockPath	      "PilotSim/Model|PlaneStiffSim"
+      ModelRefBlockPath	      "PilotSimFlex/Model|PlaneSim"
     }
     NumTestPointedSignals   0
   }
@@ -33,9 +33,9 @@ Model {
   ModifiedByFormat	  "Rafal"
   LastModifiedBy	  "Rafal"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Tue Apr 23 17:37:11 2013"
-  RTWModifiedTimeStamp	  288638824
-  ModelVersionFormat	  "1.%<AutoIncrement:319>"
+  LastModifiedDate	  "Fri Apr 19 02:11:48 2013"
+  RTWModifiedTimeStamp	  288238200
+  ModelVersionFormat	  "1.%<AutoIncrement:320>"
   ConfigurationManager	  "None"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
@@ -1884,7 +1884,7 @@ Model {
     }
   }
   System {
-    Name		    "PilotSim"
+    Name		    "PilotSimFlex"
     Location		    [2, 82, 1262, 747]
     Open		    on
     ModelBrowserVisibility  off
@@ -2017,11 +2017,11 @@ Model {
       BlockType		      ModelReference
       Name		      "Model"
       SID		      1341
-      Ports		      [4, 2]
+      Ports		      [4, 4]
       Position		      [335, 120, 470, 280]
-      ModelNameDialog	      "PlaneStiffSim"
+      ModelNameDialog	      "PlaneSim"
       SimulationMode	      "Normal"
-      ModelReferenceVersion   "1.326"
+      ModelReferenceVersion   "1.313"
       List {
 	ListType		InputPortNames
 	port0			"RightAileron [rad]"
@@ -2032,14 +2032,18 @@ Model {
       List {
 	ListType		OutputPortNames
 	port0			"euler [rad]"
-	port1			"V_E [m/s]"
+	port1			"hr, thetar, hl, thetal"
+	port2			"[h theta] dd"
+	port3			"V_W [m/s]"
       }
       List {
 	ListType		OutputPortOutputBusAsStructs
 	port0			"off"
 	port1			"off"
+	port2			"off"
+	port3			"off"
       }
-      CopyOfModelName	      "PlaneStiffSim"
+      CopyOfModelName	      "PlaneSim"
     }
     Block {
       BlockType		      "M-S-Function"
@@ -2214,10 +2218,14 @@ Model {
     }
     Line {
       SrcBlock		      "Model"
-      SrcPort		      2
+      SrcPort		      4
       Points		      [320, 0]
       DstBlock		      "Display3"
       DstPort		      1
+    }
+    Annotation {
+      Name		      "Algebraic loop - nie do przeskoczenia"
+      Position		      [663, 377]
     }
   }
 }
@@ -2240,7 +2248,7 @@ MatData {
 Stateflow {
   machine {
     id			    1
-    name		    "PilotSim"
+    name		    "PilotSimFlex"
     created		    "22-Jan-2007 08:53:46"
     isLibrary		    0
     firstTarget		    2

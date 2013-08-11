@@ -165,19 +165,19 @@ classdef WingFlutter < handle
             % ss([-2*zeta*omega -omega^2; 1 0],[k*omega^2; 0], [0 1], 0);
             
             model = ss(A, B, C, D);
-            model.StateName = ['h [ft]           ';
+            model.StateName = {'h [ft]           ';
                                'theta [rad]      ';
                                'h_dot [ft/s]     ';
                                'theta_dot [rad/s]';
                                'delta_dot [rad/s]';
                                'delta [rad]      ';
                                'turb state 1     ';
-                               'turb state 2     '];
+                               'turb state 2     '};
             
-            model.InputName = ['delta_c[rad]';
-                               'turb in     '];
+            model.InputName = {'delta_c[rad]';
+                               'turb in     '};
             
-            model.OutputName = ['h [ft]           ';
+            model.OutputName = {'h [ft]           ';
                                 'theta [rad]      ';
                                 'h_dot [ft/s]     ';
                                 'theta_dot [rad/s]';
@@ -185,7 +185,7 @@ classdef WingFlutter < handle
                                 'w [m/s]          ';
                                 'w dot [m/s]      ';
                                 'h_dd [m/s2]      ';
-                                'theta_dd [rad/s2 '];
+                                'theta_dd [rad/s2 '};
         end
         
         function model = getModelSS(this)
@@ -259,17 +259,20 @@ classdef WingFlutter < handle
             model = @Model;
         end
         
-        function showModes(this)
+        function [mag phase freq damp] = showModes(this)
             sys = this.getModelSS();
             [V E] = eig(sys.A);
             for i = 1:size(V,1)
                 mag = abs(V(:,i));
                 phase = angle(V(:,i));
                 freq = abs(E(i,i));
-                d = -cos(angle(E(i,i)));
-                fprintf('freq: %f [rad/s] damp: %f\n',freq, d);
-                fprintf('                 %f %f %f %f\n',mag);
-                fprintf('                 %f %f %f %f\n',floor(phase*180/pi));
+                damp = -cos(angle(E(i,i)));
+                phase = floor(phase*180/pi);
+                if nargout == 0
+                    fprintf('freq: %f [rad/s] damp: %f\n',freq, damp);
+                    fprintf('                 %f %f %f %f\n',mag);
+                    fprintf('                 %f %f %f %f\n',phase);
+                end
             end
         end
         
@@ -454,8 +457,8 @@ classdef WingFlutter < handle
             inSignal = [1 2];           % delta_c turb
             outSignal = [1 2 8 9];      % h theta h_dd theta_dd
             
-            %inSignal = [1];           % delta_c turb
-            %outSignal = [9];      % h theta h_dd theta_dd
+            inSignal = [1 2];           % delta_c turb
+            outSignal = [8 9];      % h theta h_dd theta_dd
             
             % Nominal model:
             Gnom = this.getLinearModel;
@@ -541,7 +544,7 @@ classdef WingFlutter < handle
             end
         end
         
-        function [W1 W2 Gunc] = addUncert(this, order, varargin)
+        function [Wunc1 Wunc2 Gunc] = addUncert(this, order, plotType, varargin)
             % [W1 W2 Gunc] = addUncert(this, order, fuelRange, altRange, speedRange)
             % Calculate weighting function w(s) of multiplicative
             % uncertainty at model output
@@ -553,12 +556,18 @@ classdef WingFlutter < handle
                 order = 3;
             end
             
-            %plot = 1;      % ordinary plot
-            plot = 3;       % absolute error plot
+            if ~exist('plotType','var')
+                plotType = 0;      % no plot
+                %plotType = 1;      % ordinary plot
+                %plotType = 3;       % absolute error plot
+            end
             
             [Gnom Garray] = this.getPlantArray(varargin{:});
             
-            legnd = this.plotPlantArray(Gnom, Garray, plot);
+            legnd = {};
+            if plotType > 0
+                legnd = this.plotPlantArray(Gnom, Garray, plotType);
+            end
             
             % Calculate the weighting function of requested order
               % Output Multiplicative:    USYS = (I + W1*ULTIDYN*W2)*PNOM
@@ -568,14 +577,19 @@ classdef WingFlutter < handle
             sys = tf(1,1); % - used to transform const weights to system
             
             [Gunc,Info] = ucover(Garray,Gnom,order,[],'Additive');
+            
+            % ----------------- return values
+            Wunc1 = Info.W1 * sys;
+            Wunc2 = Info.W2 * sys;
+            % 0--------------------------------
             W1 = Info.W1 * sys;
             W2 = Info.W2 * sys;
             svW1 = sigma(W1, w);
             svW2 = sigma(W2, w);
-            if plot == 1
+            if plotType == 1
                 semilogx(w, mag2db(svGnom(1,:) + svW1(1,:) .* svW2(1,:)), 'b--');
                 legnd{end+1} = 'G_n(s) + W_1(s)\Delta(s)';
-            else
+            elseif plotType == 3
                 %semilogx(w, mag2db(svW1(1,:) .* svW2(1,:)), 'b--');
                 semilogx(w, svW1(1,:) .* svW2(1,:), 'b--');
                 legnd{end+1} = 'W_2(s)';
@@ -586,10 +600,10 @@ classdef WingFlutter < handle
             W2 = Info.W2 * sys;
             svW1 = sigma(W1, w);
             svW2 = sigma(W2, w);
-            if plot == 1
+            if plotType == 1
                 semilogx(w, mag2db(svGnom(1,:) + svW1(1,:) .* svW2(1,:)), 'c--');
                 legnd{end+1} = 'G_n(s) + \Delta(s)W_2(s)';
-            else
+            elseif plotType == 3
                 %semilogx(w, mag2db(svW1(1,:) .* svW2(1,:)), 'c--');
                 semilogx(w, (svW1(1,:) .* svW2(1,:)), 'c--');
                 legnd{end+1} = 'W_2(s)';
@@ -600,20 +614,22 @@ classdef WingFlutter < handle
             W2 = Info.W2 * sys;
             svW1 = sigma(W1, w);
             svW2 = sigma(W2, w);
-            if plot == 1
+            if plotType == 1
                 semilogx(w, mag2db(svGnom(1,:) + svW1(1,:) .* svW2(1,:)), 'g--');
                 legnd{end+1} = 'G_n(s) + W_1(s)\Delta(s)W_2(s)';
-            else
+            elseif plotType == 3
                 %semilogx(w, mag2db(svW1(1,:) .* svW2(1,:)), 'g--');
                 semilogx(w, (svW1(1,:) .* svW2(1,:)), 'g--');
                 legnd{end+1} = 'W_1(s)W_2(s)';
             end
             
             %legend('G_{ri}' ,'G_n', 'G_n + W_1 \Delta','G_n + \Delta W2','G_n + W_1 \Delta W_2')
-            legend(legnd);
+            if plotType > 0
+                legend(legnd);
+            end
         end
         
-        function [W1 W2 Gunc] = multUncert(this, order, varargin)
+        function [Wunc1 Wunc2 Gunc] = multUncert(this, order, plotType, varargin)
             % [W1 W2 Gunc] = multUncert(this, order, fuelRange, altRange, speedRange)
             % Calculate weighting function w(s) of multiplicative
             % uncertainty at model output
@@ -623,14 +639,19 @@ classdef WingFlutter < handle
             if ~exist('order','var')
                 order = 3;
             end
-            
-            %plot = 1;  % standard plot
-            plot = 2;  % error plot
+            if ~exist('plotType','var')
+                plotType = 0; % no plot
+                %plotType = 1;      % ordinary plot
+                %plotType = 2;  % error plot
+            end
             
             [Gnom Garray] = this.getPlantArray(varargin{:});
 
-            legnd = this.plotPlantArray(Gnom, Garray, plot);
-            %this.plotPlantArray(Gnom, Garray, plot);
+            legnd = {};
+            if plotType > 0
+                legnd = this.plotPlantArray(Gnom, Garray, plotType);
+            end
+            %this.plotPlantArray(Gnom, Garray, plotType);
             
             % Calculate the weighting function of requested order
               % Output Multiplicative:    USYS = (I + W1*ULTIDYN*W2)*PNOM
@@ -641,14 +662,18 @@ classdef WingFlutter < handle
             sys = tf(1,1); % - used to transform const weights to system
             
             [Gunc,Info] = ucover(Garray,Gnom,order,[],uncertType);
+            % ----------------- return values
+            Wunc1 = Info.W1 * sys;
+            Wunc2 = Info.W2 * sys;
+            % 0--------------------------------
             W1out = Info.W1 * sys;
             W2out = Info.W2 * sys;
             svW1 = sigma(W1out, w);
             svW2 = sigma(W2out, w);
-            if plot == 1
+            if plotType == 1
                 semilogx(w, mag2db((1 + svW1(1,:) .* svW2(1,:)).*svGnom(1,:)), 'b');
                 legnd{end+1} = 'Out 1';
-            else
+            elseif plotType > 0
                 %semilogx(w, mag2db(svW1(1,:) .* svW2(1,:)), 'b');
                 semilogx(w, (svW1(1,:) .* svW2(1,:)), 'b');
                 legnd{end+1} = 'Out W_1(s)';
@@ -659,10 +684,10 @@ classdef WingFlutter < handle
             W2out = Info.W2 * sys;
             svW1o = sigma(W1out, w);
             svW2o = sigma(W2out, w);
-            if plot == 1
+            if plotType == 1
                 semilogx(w, mag2db((1 + svW1o(1,:) .* svW2o(1,:)).*svGnom(1,:)), 'b:');
                 legnd{end+1} = 'Out 2';
-            else
+            elseif plotType > 0
                 %semilogx(w, mag2db(svW1o(1,:) .* svW2o(1,:)), 'b:');
                 semilogx(w, (svW1o(1,:) .* svW2o(1,:)), 'b:');
                 legnd{end+1} = 'Out W_1(s)W_2(s)';
@@ -676,9 +701,9 @@ classdef WingFlutter < handle
             W2in = Info.W2 * sys;
             svW1i = sigma(W1in, w);
             svW2i = sigma(W2in, w);
-            if plot == 1
+            if plotType == 1
                 semilogx(w, mag2db(svGnom(1,:).*(1 + svW1i(1,:) .* svW2i(1,:))), 'g');
-            else
+            elseif plotType > 0
                 %semilogx(w, mag2db(svW1i(1,:) .* svW2i(1,:)), 'g');
                 semilogx(w, (svW1i(1,:) .* svW2i(1,:)), 'g');
             end
@@ -689,16 +714,16 @@ classdef WingFlutter < handle
             W2in = Info.W2 * sys;
             svW1i = sigma(W1in, w);
             svW2i = sigma(W2in, w);
-            if plot == 1
+            if plotType == 1
                 semilogx(w, mag2db(svGnom(1,:).*(1 + svW1i(1,:) .* svW2i(1,:))), 'g:');
-            else
+            elseif plotType > 0
                 %semilogx(w, mag2db(svW1i(1,:) .* svW2i(1,:)), 'g:');
                 semilogx(w, (svW1i(1,:) .* svW2i(1,:)), 'g:');
             end            
             legnd{end+1} = 'In 2';
             
             % Input - output 
-%             if plot == 1
+%             if plotType == 1
 %                 semilogx(w, mag2db((1 + svW1o(1,:) .* svW2o(1,:)).*svGnom(1,:).*(1 + svW1i(1,:) .* svW2i(1,:))), 'g:');
 %                 legnd{end+1} = 'In - Out';
 %             else
@@ -706,7 +731,9 @@ classdef WingFlutter < handle
 %             end
             
             %legend('G_{ri}' ,'G_n', 'G_n(1 + W_1 \Delta)','G_n(1 + W_1 \Delta W_2)')
-            legend(legnd);
+            if plotType > 0
+                legend(legnd);
+            end
 
             W1 = W1in;
             W2 = W2in;
@@ -727,6 +754,8 @@ classdef WingFlutter < handle
         function disp(this)
             fprintf('WingFlutter model for:\n')
             fprintf('\tspeed: \t\t%f [km/h]\n', this.U0*3.6);
+            fprintf('\tfuel level: \t\t%f [%]\n', this.params.fuelLevel*100);
+            fprintf('\talt: \t\t%f [m]\n', this.atmosphere.h);
             fprintf('\tMach: \t\t%f\n', this.U0/this.atmosphere.c);
             fprintf('\tdyn. pressure: \t%f [Pa]\n', this.q);
             fprintf('\talpha0: \t%f\n', this.params.alpha0);

@@ -1,19 +1,26 @@
-function [Khinf descr] = HinfController3( G , Number, verbose, delta_max_p)
+function [Khinf descr] = HinfController4( wing , verbose, delta_max_p, uncert)
     % G - full model
     %% Get full model for flutter speed
-    if ~exist('G','var')
+    if ~exist('wing','var')
         wing = WingFlutter;
         wing.U0 = wing.getFlutterSpeed();
-        G = wing.getLinearModel();
     end
+    
+    G = wing.getLinearModel();
+    fprintf('###################################### HINF controller\n');
+    disp(wing);
+    
     if ~exist('Number','var')
         Number = 1;
     end
     if ~exist('delta_max_p','var')
-        delta_max_p = 0.3;
+        delta_max_p = 1;
     end
     if ~exist('verbose','var')
         verbose = 0;
+    end
+    if ~exist('uncert','var')
+        uncert = 2;
     end
     
     h_max = 0.32;
@@ -34,24 +41,31 @@ function [Khinf descr] = HinfController3( G , Number, verbose, delta_max_p)
     washout = tf([1 0],[1 4.19]);
     Wp = [washout/h_max 0;
           0   washout/theta_max];
+    Wdelta_p = tf(0.7*delta_max,[1/(3*2*pi)  1]);
     
-    if Number == 1
-        % ----------------------------------------- Hinf #1
-        %Wdelta_p = zpk([], [],0.7);
-        Wdelta_p = 0.7*delta_max;
-    elseif Number == 2
-        % ----------------------------------------- Hinf #2
-        %Wdelta_p = zpk([],-3*2*pi,0.7);
-        Wdelta_p = tf(0.7*delta_max,[1/(3*2*pi)  1]);
-    end
-
-    systemnames = 'P Wp Wu Wdelta_p';
-    inputvar = '[turb;delta_p;delta_c]';
-    outputvar = '[Wp;Wu;P(3:4)]';
+    %% Uncertainty model
+%     Vf = wing.getFlutterSpeed;
+%     
+%     if uncert == 1
+%         [Wunc W2 Gunc] = wing.addUncert(3, 0, 0.5, 5500, Vf*[0.8 1 1.4]);
+%     elseif uncert == 2
+%         [Wunc W2 Gunc] = wing.multUncert(3, 0, 0.5, 5500, Vf*[0.8 1 1.4]);
+%     end
+    %%
+%     WuncRef = eye(2)*Wunc;
+    
+    %%
+    
+%     Wunc = 0.02*WuncRef;
+    Wunc = [h_max 0; 0 theta_max];
+    systemnames = 'P Wp Wu Wdelta_p Wunc';
+    inputvar = '[n1;n2;turb;delta_p;delta_c]';
+    outputvar = '[Wp;Wu;Wunc;n1+P(3);n2+P(4)]';
     input_to_Wdelta_p = '[delta_p]';
     input_to_P = '[turb;Wdelta_p;delta_c]';
     input_to_Wp = '[P(1:2)]';
     input_to_Wu = '[delta_c]';
+    input_to_Wunc = '[P(3:4)]';
     %outputnames = '[zp{2};zu;h_dd;theta_dd]';
     Pw = sysic;
 
@@ -113,8 +127,8 @@ function [Khinf descr] = HinfController3( G , Number, verbose, delta_max_p)
     
     %% SVD analysis
     if verbose == 1
-        CL.InputName = {'\eta','\delta_p'};
-        CL.OutputName = {'z_{p1} = W_h(s) h','z_{p2} = W_\theta(s) \theta', 'z_u = W_u(s) \delta_c'};
+        CL.InputName = {'n1','n2','\eta','\delta_p'};
+        CL.OutputName = {'z_{p1} = W_h(s) h','z_{p2} = W_\theta(s) \theta', 'z_u = W_u(s) \delta_c','zr1','zr2'};
         SvdAnalysis(CL);
         subplot(2,1,1);
         title('Analiza SVD uk³adu zamkniêtego');
@@ -128,5 +142,9 @@ function [Khinf descr] = HinfController3( G , Number, verbose, delta_max_p)
     
     % print -dpsc2 ../doc/Ilustracje/SvdHinf1.ps
     % print -depsc2 ../doc/Ilustracje/SvdHinf1.eps
+    
+    %% Vfcl
+    ana = LinearAnalysis(Khinf);
+    ana.getFlutterSpeed(90)
 end
 

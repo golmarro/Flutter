@@ -4,14 +4,23 @@ classdef StabParams < WingParams
     end
     
     properties(Dependent)
-        rightOrient = [0 0 -30]
+        rightOrient = [stabAlpha0 0 -30]
         leftOrient = [stabAlpha0 0 210]
+    end
+    
+    properties(Constant)
+        %wingEmptyMass = 20;
     end
     
     methods
         function this = StabParams()
-            this.mass = 20;
-            this.Itheta_0 = 1.5;
+            %this.mass = 20;
+            %this.Itheta_0 = 1.5;
+            this.fuelLevel = 0;
+            this.wingEmptyMass = 20;
+            this.emptyWingItheta = 1.5;
+            this.emptyWingXcg_p = 0;
+            
             % --------------------------- [dimensions] ----------- 
             this.c = 0.64;                          % [m]
             this.C1 = 0.64;                          % [m]

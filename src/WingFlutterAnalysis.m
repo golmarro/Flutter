@@ -310,7 +310,7 @@ wing.showModes;
 plane.fuelLevel = 1;
 wing.showModes;
 
-% --------------------------- BACT
+%% --------------------------- BACT
 clear
 bactParams = BactParams('metric');
 wing = WingFlutter(bactParams);

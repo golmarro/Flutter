@@ -14,10 +14,13 @@ figure
 wing.isGravity = 'on';
 wing.AeroForces = 'off';
 
-simRunner.sim(4);
-wing.sim(4);
-legend('Simulink', 'Analytical');
-title('Porownanie w prozni - tylko drgania strukturalne i grawitacja')
+simRunner.sim(2);
+wing.sim(2);
+legend('WingSim', 'model analityczny');
+ylabel('\theta [deg]');
+subplot(2,1,1);
+ylabel('h [m]');
+%title('Porownanie w prozni - tylko drgania strukturalne i grawitacja')
 
 %% Bez grawitacji, w prozni, stan poczatkowy
 figure
@@ -37,10 +40,13 @@ figure
 wing.isGravity = 'on';
 wing.AeroForces = 'on';
 
-simRunner.sim(4);
-wing.sim(4);
-legend('Simulink', 'Analytical');
-title('Skok jednostkowy na lotce')
+simRunner.sim(2);
+wing.sim(2);
+legend('WingSim', 'model analityczny');
+ylabel('\theta [deg]');
+subplot(2,1,1);
+ylabel('h [m]');
+%title('Skok jednostkowy na lotce')
 % Roznice moga wynikac z samego sygnalu wejsciowego. W modelu simulink czas
 % probkowania = 0.01. W modelu analitycznym moze byc duzo mniejszy
 

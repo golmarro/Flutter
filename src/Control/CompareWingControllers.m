@@ -4,6 +4,7 @@ function CompareWingControllers(str)
 
     controllers = {};
     descriptions = {};
+    ana = {};
     colors = {'k','b','r','g','y'};
 
     % open-loop
@@ -13,23 +14,62 @@ function CompareWingControllers(str)
     [K descr] = HinfController1();
     controllers{end+1} = K;
     descriptions{end+1} = descr;
+    ana{end+1} = LinearAnalysis(K);
     
     [K descr] = HinfController2();
     controllers{end+1} = K;
     descriptions{end+1} = descr;
+    ana{end+1} = LinearAnalysis(K);
     
-    [K descr] = HinfController3();
+    wing = WingFlutter;
+    wing.U0 = wing.getFlutterSpeed;
+    Gn = wing.getLinearModel;
+
+    [K descr] = HinfController3(Gn,1);
+    controllers{end+1} = K;
+    descriptions{end+1} = 'Hinf 3.1';
+    ana{end+1} = LinearAnalysis(K);
+    %ana = LinearAnalysis(K);
+    
+    [K descr] = HinfController3(Gn,2);
+    controllers{end+1} = K;
+    descriptions{end+1} = 'Hinf 3.2';
+    ana{end+1} = LinearAnalysis(K);
+    
+    wing.U0 = wing.getFlutterSpeed * 1.2;
+    Gn = wing.getLinearModel;
+    
+    [K descr] = HinfController3(Gn,2);
+    controllers{end+1} = K;
+    descriptions{end+1} = 'Hinf 3.2 Gn dla 1.2*Vf';
+    ana{end+1} = LinearAnalysis(K);
+
+    [K descr] = ClassicSISOController();
     controllers{end+1} = K;
     descriptions{end+1} = descr;
-
-    [k descr] = ClassicSisoController();
-    controllers{end+1} = k;
-    descriptions{end+1} = descr;
+    ana{end+1} = LinearAnalysis(K);
 
     % [k descr] = lqgwingcontroller();
     % controllers{end+1} = k;
     % descriptions{end+1} = descr;
 
+    %% Flutter speed
+    for i = 2:length(controllers)
+        analysis = LinearAnalysis(controllers{i});
+        fprintf('Controller: %s \t\t Vf: %f\n', descriptions{i}, analysis.getFlutterSpeed);
+    end
+    
+    %% max delta analysis
+    f = figure; hold on;
+    for i = 2:length(controllers)
+        analysis = LinearAnalysis(controllers{i});
+        analysis.lineColor = colors{i};
+        fprintf('Controller: %s\n', descriptions{i});
+        analysis.maxDeltaAnalysis;
+    end
+    figure(f)
+    legend(descriptions{2:end})
+    
     %% Full analysis
     f1 = figure; hold on;
     f2 = figure; hold on;
@@ -72,4 +112,24 @@ function CompareWingControllers(str)
     end
     figure(f)
     legend(descriptions{2:end})
+    
+    %% Flutter speed versus fuel level
+    f = figure; hold on;
+    for i = 1:length(controllers)
+        analysis = LinearAnalysis(controllers{i});
+        analysis.lineColor = colors{i};
+        analysis.wing.atmosphere.h = 5500;
+        %analysis.flutterSpeedVersusFuel([0 0.5 1]);
+        analysis.flutterSpeedVersusFuel([0.5]);
+    end
+    %%
+    for i = 2:length(controllers)
+        analysis = LinearAnalysis(controllers{i});
+        analysis.lineColor = colors{i};
+        analysis.wing.atmosphere.h = 5500;
+        %analysis.flutterSpeedVersusFuel([0 0.5 1]);
+        analysis.manouverSpeedVersusFuel([0 0.5 1]);
+    end
+    figure(f)
+    legend(descriptions)
 end

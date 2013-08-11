@@ -7,6 +7,8 @@ classdef SimRunner < handle
         stopTime = 10
         state = []
         actuatorModel = 'linear'
+        % Flutter suppression regulator
+        reg1 = ss([tf(0,1) tf(0,1)]);
     end
     
     properties(Dependent)
@@ -60,7 +62,8 @@ classdef SimRunner < handle
             if nargin > 2
                 this.setState(state);
             else
-                this.state = [0 0 0 0 0 0 0 0];
+                % this.state = [0 0 0 0 0 0 0 0];
+                this.state = [0 0 0 0 0 0 0 0 zeros(1, size(this.reg1.a,1))];
             end
             % Load model
             load_system(this.mdl);
@@ -91,6 +94,9 @@ classdef SimRunner < handle
         
         function val = get.U0(this)
             val = this.wingFlutter.U0;
+        end
+        function set.U0(this, val)
+            this.wingFlutter.U0 = val;
         end
         function val = get.Q(this)
             val = this.wingFlutter.q;

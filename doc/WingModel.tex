@@ -172,7 +172,7 @@ Wartoœci parametrów modelu turbulencji zaczerpniête z~\cite{WaszakModel} dla prê
 \( \alpha_t = 2,49 \) \\*
 \( \beta_t = 99 \) \\*
 
-Rysunek \ref{RysTurbulencja} przedstawia pionow¹ sk³adow¹ turbulencji \( w_g(t) \) dla przyk³adowego sygna³u wejœciowego modelu \(\eta(t)\).
+Rysunek (\ref{RysTurbulencja}) przedstawia pionow¹ sk³adow¹ turbulencji \( w_g(t) \) dla przyk³adowego sygna³u wejœciowego modelu \(\eta(t)\).
 
 \begin{figure}[hbt]
 \centering
@@ -214,7 +214,7 @@ Symbol & Opis & Wartoœæ & Jednostki \\
 \end{table}
 
 \section{Analiza modelu}
-Rys. \ref{RysOdpSkokowa} przedstawia odpowiedŸ modelu skrzyd³a dla sygna³u skokowego na wejœciu \( \delta_c \), dla prêdkoœci poni¿ej prêdkoœci krytycznej \( U_0 = 0,55 V_k\). Rys. \ref{RysOdpTurb} przedstawia reakcjê modelu na typowy sygna³ turbulencji. Przebiegi wstêpnie potwierdzaj¹ poprawnoœæ modelu.
+Rys. (\ref{RysOdpSkokowa}) przedstawia odpowiedŸ modelu skrzyd³a dla sygna³u skokowego na wejœciu \( \delta_c \), dla prêdkoœci poni¿ej prêdkoœci krytycznej \( U_0 = 0,55 V_k\). Rys. \ref{RysOdpTurb} przedstawia reakcjê modelu na typowy sygna³ turbulencji. Przebiegi wstêpnie potwierdzaj¹ poprawnoœæ modelu.
 
 \begin{figure}[hbt]
 \centering
@@ -243,7 +243,7 @@ Zak³ada siê, ¿e jedynym górnym ograniczeniem jest prêdkoœæ krytyczna flatteru \(
 \end{figure}
 
 \subsubsection{Wêdrówka pierwiastków uk³adu}
-Rys. \ref{RysWingLocus} przedstawia wêdrówkê pierwiastków uk³adu wzglêdem prêdkoœci lotu dla ró¿nych konfiguracji (poziomu paliwa).
+Rys. (\ref{RysWingLocus}) przedstawia wêdrówkê pierwiastków uk³adu wzglêdem prêdkoœci lotu dla ró¿nych konfiguracji (poziomu paliwa).
 
 \begin{figure}[hbt]
 \centering
@@ -256,36 +256,203 @@ Gdy uk³ad staje siê niestabilny - linia pierwiastkowa wkracza na dodatni¹ pó³p³a
 
 \begin{figure}[hbt]
 \centering
-\includegraphics[width=\linewidth/2*3]{KatThetaH.eps}
+\includegraphics[width=\linewidth*2/3]{KatThetaH.eps}
 \caption{Przesuniêcie fazowe drgañ skrêtnych wzglêdem drgañ giêtnych dla ró¿nej masy paliwa. W okolicach prêdkoœci flutteru wartoœæ przesuniêcia osi¹ga 90 stopni.}
 \label{RysKatThetaH}
 \end{figure}
 
-\section{Modelu skrzyd³a z niepewnoœci¹}
+\section{Model skrzyd³a z niepewnoœci¹}
 Jak wynika z tabeli \ref{TabParametrySkrzydla} zakres zmiennoœci parametrów jest du¿y. Istnieje zatem ryzyko, ¿e rodzina modeli \( \mathcal{G}_r \) mo¿e byæ zbyt du¿a, aby jeden liniowy regulator zapewni³ stabilnoœæ w ca³ym obszarze pracy. 
 
 Celem tego rozdzia³u jest ujêcie ca³ej rodziny modeli \( \mathcal{G}_r \) w jednym (niepewnym) modelu \( G_p(s) \).
+
+\subsection{Rodzina modeli i model nominalny}
+Model nominalny zwyczajowo jest wybierany dla œrednich wartoœci parametrów pracy \cite{RobustMatlab}. Model nominalny \( G_n(s) \) zosta³ wybrany arbitralnie dla prêdkoœci lotu równej prêdkoœci krytycznej \( U_0 = V_k \), oraz poziomu paliwa i wysokoœci lotu odpowiadaj¹cych wartoœciom œrednim (\(H = 5500 m, f_l = 50\%\)). Rysunek \ref{RodzinaModeli} przedstawia najwiêksz¹ wartoœæ osobliw¹ modelu nominalnego na tle rodziny modeli \( \mathcal{G}_r \).
+
+TODO ewentualnie model nominalny dla najgorszego przypadku
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{RodzinaModeliGr.eps}
+\caption{Najwiêksza wartoœæ osobliwa dla modeli nale¿¹cych do rodziny \( \mathcal{G}_r \) oraz dla modelu nominalnego \( G_n \)}
+\label{RodzinaModeli}
+\end{figure}
 
 \subsection{Wybór modelu niepewnoœci}
 Zakres zmiennoœci parametrów modelu mo¿na wprost prze³o¿yæ na niepewnoœæ parametryczn¹. Nale¿y zwróciæ jednak uwagê na siln¹ korelacjê niektórych parametrów (np. wynikaj¹cych ze wzrostu masy paliwa). Wykorzystanie parametrycznego modelu niepewnoœci mog³oby okazaæ siê zbyt zachowawcze i w rezultacie uniemo¿liwiæ syntezê regulatora. Np. sytuacja, w której moment bezw³adnoœci skrzyd³a \( I_\theta \) osi¹ga swoje maksimum, a jednoczeœnie masa \( m \) - minimum, jest nieosi¹galna.
 
 Wobec tego postanowiono wykorzystaæ model niestrukturalny niepewnoœci, który mo¿e obj¹æ niepewnoœæ parametryczn¹ i dodatkowo zapewniæ wiêksz¹ stabilnoœæ obliczeñ \cite{RobustMatlab}.
 
+\subsection{Model z niepewnoœci¹ parametryczn¹}
+Zakres zmiennoœci wspó³czynników równañ matematycznych opisuj¹cych obiekt mo¿na wprost prze³o¿yæ na niepewnoœæ parametryczn¹. Przy skrajnie zachowawczym podejœcie nale¿a³oby uwzglêdniæ osobno ka¿dy z niepewnych parametrów modelu, np.:
+\begin{align*}
+m & \in <m_{min}, m_{max}> \\
+I_\theta & \in <I_{\theta min}, I_{\theta max}> \\
+&...
+\end{align*}
+Tak utworzona rodzina modeli na pewno objê³aby wszystkie mo¿liwoœci, ale jednoczeœnie zawiera³aby nierealne modele (np. dla maksymalnej masy skrzyd³a i jednoczeœnie minimalnego \( I_\theta \) ).
+
+% TODO jakis wykres zeby pokazac jak bardzo moglyby roznic sie te modele?
+
+Nale¿y zatem uwzglêdniæ siln¹ korelacjê niektórych wspó³czynników (np. wynikaj¹cych ze wzrostu masy paliwa). Tak na przyk³ad mo¿na przyj¹æ, ¿e masa \(m\), moment bezw³adnoœci \(I_\theta\) oraz wspó³czynnik sprzê¿enia \( s_{h\theta} \) zale¿¹ liniowo od poziomu paliwa (co jest pewnym przybli¿eniem):
+\begin{align*}
+m &= m_{min} + f_l(m_{max} - m_{min}) \\
+I_\theta &= I_{\theta min} + f_l(I_{\theta max} - I_{\theta min}) \\
+&...,\\
+\end{align*}
+gdzie \( f_l \in <0,1> \) to poziom paliwa.
+
+Teraz odnosz¹c siê do przyk³adowego zapisu niepewnoœci parametrycznej \ref{NiepParam}, wektor niepewnych parametrów \( q \) przyjmie postaæ:
+\begin{equation*}
+q = [f_l, U_0],
+\end{equation*}
+gdzie \( f_l \in <0,1> \) to poziom paliwa, a \( U_0 \in <28,130> [m/s]\) - prêdkoœæ lotu. (Wysokoœæ lotu dla uproszczenia pominiêto).
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{ParamUncertSample.eps}
+\caption{Przebiegi czasowe losowych modeli dla skokowego sygna³u na wejœciu \( \delta_c \)}
+\label{ParamUncertSample}
+\end{figure}
+
+Rys. \ref{ParamUncertSample} przedstawia przebiegi czasowe przyk³adowych modeli dla losowych wartoœci wektora \( q \).
+
+\subsection{Ustrukturyzowana niepewnoœæ parametryczna}
+Aby móc wykorzystaæ analizê strukturalnej wartoœci osobliwej, nale¿y tak przekszta³ciæ model obiektu, aby niepewnoœæ parametryczn¹ wyodrêbniæ do blokowej macierzy \( \Delta \). Metodologia tego przekszta³cenia zostanie przedstawiona na przyk³adzie modelu strukturalnego p³ata.
+
+Uk³ad równañ \ref{EqModelStruktury} mo¿emy przedstawiæ w postaci diagramu blokowego jak na rys. \ref{SchematModelStr} (si³y ciê¿koœci zosta³y pominiête). 
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth*2/3]{SchematModelStr.png}
+\caption{Diagram blokowy modelu strukturalnego p³ata}
+\label{SchematModelStr}
+\end{figure}
+Niepewne parametry mo¿na przedstawiæ jako:
+\begin{align*}
+m &= \bar{m} (1+ p_m \delta_l)\\
+I_\theta &= \bar{I_\theta} (1+ p_{I} \delta_l)\\
+s_{h\theta} &= \bar{s_{h\theta}} (1+ p_{s} \delta_l)
+\end{align*}
+gdzie \( \bar{m}, \bar{I_\theta} , \bar{s_{h\theta}} \) to wartoœci œrednie, \( p_m, p_{I}, p_{s} \) procentowy zakres zmian odpowiednich parametrów, a \( \delta_l \) okreœla zmianê poziomu paliwa (wartoœæ \( \delta_l = -1 \) odpowiada poziomowi 0).
+Cztery sta³e bloki na schemacie \ref{SchematModelStr} mog¹ zostaæ zast¹pione uk³adami uwzglêdniaj¹cymi zmianê \( \delta_l \), tak, jak to pokazano na rys{SchematModelStrU}. 
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth*2/3]{SchematModelStrU.png}
+\caption{Diagram blokowy modelu strukturalnego z wyodrêbnionym niepewnym parametrem \( \delta_l \)}
+\label{SchematModelStrU}
+\end{figure}
+Bior¹c pod uwagê, ¿e
+\begin{equation*}
+\frac{1}{m} = \frac{1}{\bar{m} (1+ p_m \delta_l)} = \frac{1}{\bar{m}} - \frac{p_m}{\bar{m}}\delta_l(1+p_m\delta_l)
+\end{equation*}
+odpowiednie macierze przyjm¹ postaæ:
+\begin{equation*}
+M_m = \left[ \begin{matrix}
+-p_m & \frac{1}{\bar{m}} \\
+-p_m & \frac{1}{\bar{m}}
+\end{matrix}\right],
+M_I = \left[ \begin{matrix}
+0 & \bar{I_\theta} \\
+p_I & \bar{I_\theta} 
+\end{matrix}\right],
+M_s = \left[ \begin{matrix}
+0 & \bar{s_{h\theta}} \\
+p_s & \bar{s_{h\theta}} 
+\end{matrix}\right]
+\end{equation*}
+
+
 \subsection{Niepewnoœæ wzglêdna na wyjœciu}
-Model nominalny \( G_n(s) \) zosta³ wybrany intuicyjnie dla prêdkoœci lotu równej prêdkoœci krytycznej \( U_0 = V_k \), oraz poziomu paliwa i wysokoœci lotu odpowiadaj¹cych wartoœciom œrednim (\(H = 5500 m, f_l = 50\%\)).
 
-Po dodaniu modelu niepewnoœæ niestrukturalnej do modelu nominalnego otrzymamy model niepewny (zaburzony) \( G_p(s) \) (\ref{NiepewnoscNiestr}).
-
-\begin{align}
-G_p(s) &= (I + W_u(s)\cdot \Delta)\cdot G_n(s)\\
-\| \Delta \|_{\infty} & \leq 1
-\label{NiepewnoscNiestr}
-\end{align}
-
-Aby model \( G_p(s) \) pokry³ ca³¹ rodzinê \( \mathcal{G}_r \) nale¿y tak dobraæ funkcjê wagow¹ \( W_u(s) \), aby by³a spe³niona zale¿noœæ (\ref{WarunekNaWu}).
+Po dodaniu modelu niepewnoœci niestrukturalnej do modelu nominalnego otrzymamy model z niepewnoœci¹ (model zaburzony) \( G_p(s) \) (\ref{NiepewnoscNiestr}).
 
 \begin{equation}
-\sigma_{max}(W_u(s)) \geq \max_{i} \left( \frac{\sigma_{max}(G_i(s) - G_n(s))}{\sigma_{max}(G_n(s))} \right)
+\begin{split}
+G_p(s) &= (I + W_o(s)\cdot \Delta(s))\cdot G_n(s)\\
+\| \Delta(s) \|_{\infty} & \leq 1
+\end{split}
+\label{NiepewnoscNiestr}
+\end{equation}
+
+Aby model \( G_p(s) \) obj¹³ ca³¹ rodzinê \( \mathcal{G}_r \) nale¿y tak dobraæ funkcjê wagow¹ \( W_o(s) \), aby by³a spe³niona zale¿noœæ (\ref{WarunekNaWu}).
+
+\begin{equation}
+\forall{G_i(s) \in \mathcal{G}_r} \forall{\omega \in \mathcal{R}} \sigma_{max}(G_p(j\omega)) \geq \sigma_{max}(G_i(j\omega))
 \label{WarunekNaWu}
 \end{equation}
-Dla poprawnego wyniku wystarczy dobraæ skoñczony, ale reprezentatywny zbiór modeli \(G_i(s)\) takich, ¿e \( G_i(s) \in \mathcal{G}_r \).
+
+Przy wykorzystaniu w³asnoœci maksymalnej wartoœci osobliwej (\ref{WlSigmaPlus} i \ref{WlSigmaMnozenie}), warunek na funkcjê wagow¹ mo¿na przedstawiæ w postaci (\ref{WarunekNaWu2}).
+
+\begin{equation}
+\forall{\omega \in \mathcal{R}}
+|W_o(j\omega)| \geq \max_{G_i(s) \in \mathcal{G}_r} \left( \frac{\sigma_{max}(G_i(j\omega)) - \sigma_{max}(G_n(j\omega))}{\sigma_{max}(G_n(j\omega))} \right)
+\label{WarunekNaWu2}
+\end{equation}
+
+Dla poprawnego wyniku wystarczy dobraæ skoñczony, ale reprezentatywny zbiór modeli \(G_i(s)\) takich, ¿e \( G_i(s) \in \mathcal{G}_r \). Do wyznaczenia funkcji wagowej modelu niepewnoœci wykorzystano funkcjê {\it ucover}, która dzia³a w dwóch krokach: \\ 
+- najpierw dla pewnego zbioru czêstotliwoœci wyznacza optymaln¹ wartoœæ \( W_o(s) \)\\ 
+- nastêpnie oblicza filtr okreœlonego rzêdu najlepiej dopasowany do tych wartoœci.
+
+Rysunek (\ref{FigUncertOut}) przedstawia dopasowanie modelu z niepewnoœci¹ do rodziny \( \mathcal{G}_r \) w zale¿noœci od rzêdu funkcji wagowej. Uznano, ¿e rz¹d równy 5 jest dobrym kompromisem pomiêdzy z³o¿onoœci¹, a poziomem dopasowania.
+
+
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{UncertOut.eps}
+\caption{Najwiêksza wartoœæ osobliwa modelu z niepewnoœci¹ wzglêdn¹ na wyjœciu na tle rodziny modeli \( \mathcal{G}_r \)}
+\label{FigUncertOut}
+\end{figure}
+
+\subsection{Niepewnoœæ wzglêdna na wejœciu}
+Zasada wyznaczania funkcji wagowej \( W_i(s) \) modelu niepewnoœci wzglêdnej na wejœciu, opisanego równaniem (\ref{NiepewnoscNiestrIn}), jest podobna jak w przypadku niepewnoœci na wyjœciu.
+
+\begin{equation}
+\begin{split}
+G_p(s) &= G_n(s) \cdot (I + W_i(s)\cdot \Delta(s))\\
+\| \Delta(s) \|_{\infty} & \leq 1
+\end{split}
+\label{NiepewnoscNiestrIn}
+\end{equation}
+
+Rysunek (\ref{FigUncertIn}) przedstawia najwiêksz¹ wartoœæ osobliw¹ modelu z niepewnoœci¹ dla ró¿nych wartoœci rzêdu funkcji wagowych. Ponownie jako optymaln¹ wybrano funkcjê wagow¹ rzêdu 5. poniewa¿ dalszy wzrost tej wartoœci ma niewielki wp³yw na dopasowanie modelu.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{UncertIn.eps}
+\caption{Najwiêksza wartoœæ osobliwa modelu z niepewnoœci¹ wzglêdn¹ na wejœciu na tle rodziny modeli \( \mathcal{G}_r \)}
+\label{FigUncertIn}
+\end{figure}
+
+\subsection{Niepewnoœæ bezwzglêdna}
+Model z niepewnoœci¹ bezwzglêdn¹ definiuje równanie (\ref{NiepewnoscAdd}). 
+
+\begin{equation}
+\begin{split}
+G_p(s) &= G_n(s) + W_a(s)\cdot \Delta(s)\\
+\| \Delta \|_{\infty} & \leq 1
+\end{split}
+\label{NiepewnoscAdd}
+\end{equation}
+
+Funkcja wagowa \( W_a(s) \) musi byæ tak dobrana, aby jej modu³ dla dowolnej czêstotliwoœci by³ wiêkszy od ró¿nicy maksymalnych wartoœci osobliwych modelu z rodziny \( \mathcal{G}_r \) i modelu nominalnego. Rysunek (\ref{FigUncertAdd}) przedstawia porównanie wartoœci osobliwej dla modeli z niepewnoœci¹ bezwzglêdn¹ dla funkcji wagowej rzêdu 3,5 oraz 7. Tym razem wzrost jakoœci modelu wraz ze wzrostem rzêdu funkcji wagowej jest istotny, dlatego do dalszej analizy wybrano model z funkcj¹ wagow¹ rzêdu 7.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{UncertAdd.eps}
+\caption{Najwiêksza wartoœæ osobliwa modelu z niepewnoœci¹ bezwzglêdn¹ na tle rodziny modeli \( \mathcal{G}_r \)}
+\label{FigUncertAdd}
+\end{figure}
+
+\subsection{Porównanie modeli niepewnoœci}
+
+Model niepewnoœci powinien z jednej strony w pe³ni "obj¹æ" rodzinê modeli rzeczywistych (czyli spe³niæ warunek (\ref{WarunekNaWu})), z drugiej strony musi mo¿liwie ciasno przylegaæ do zbioru \( \mathcal{G}_r \). W dziedzinie czêstotliwoœci oznacza to, ¿e chcemy aby dla ka¿dej czêstotliwoœci górne oszacowanie maksymalnej wartoœci osobliwej by³o dok³adnie równej maksimum po maksymalnych wartoœciach osobliwych ze wszystkich \( G_i(s) \in \mathcal{G}_r \). Zak³adaj¹c ¿e warunek (\ref{WarunekNaWu}) jest spe³niony oznacza to, ¿e im ni¿ej le¿y wykres \( \sigma_{max}(G_p(j\omega) \) tym lepiej.
+
+Na podstawie rysunku (\ref{FigUncertPorownanie}) mo¿na stwierdziæ, ¿e rodzinê modeli rzeczywistych najlepiej reprezentuje model z niepewnoœci¹ bezwzglêdn¹.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{UncertPorownanie.eps}
+\caption{Porównanie najwiêkszej wartoœci osobliwej modeli z niepewnoœci¹}
+\label{FigUncertPorownanie}
+\end{figure}

@@ -31,6 +31,9 @@ classdef WingParams < handle
         plane               % reference to plane configuration class (PlaneParams)
         
         fuelLevel = 0.5     % [-]
+        
+        wingEmptyMass       = 90    % [kg] single wing
+        emptyWingItheta     = 7.56  % [kg*m2]
     end
     
     properties(Constant)
@@ -41,8 +44,6 @@ classdef WingParams < handle
         alphaMax = 12*pi/180;
         
         fuelMaxMass         = 300   % [kg] about 400 liters of fuel
-        wingEmptyMass       = 90    % [kg] single wing
-        emptyWingItheta     = 7.56  % [kg*m2]
     end
 	
     properties(GetAccess = 'public', SetAccess = 'public')    
@@ -136,9 +137,17 @@ classdef WingParams < handle
             val = this.CMq_50 + (this.Xsp_p - 0.5)*this.CLq;
         end
         function val = get.omegah(this)
+            % To jest po to zeby umozliwic polimorfizm
+            val = this.getOmegah;
+        end
+        function val = getOmegah(this)
             val = sqrt(this.Kh / this.m);
         end
         function val = get.omegatheta(this)
+            % To jest po to zeby umozliwic polimorfizm
+            val = this.getOmegatheta;
+        end
+        function val = getOmegatheta(this)
             val = sqrt(this.Ktheta / this.Itheta);
         end
         function val = get.dampphi(this)
@@ -148,9 +157,17 @@ classdef WingParams < handle
             val = 2 * this.Itheta_0 * this.zetatheta * this.omegatheta;
         end
         function val = get.shtheta(this)
+            % To jest po to zeby umozliwic polimorfizm
+            val = this.getShtheta();
+        end
+        function val = getShtheta(this)
             val = this.mass * this.Xcg;
         end
         function val = get.Itheta(this)
+            % To jest po to zeby umozliwic polimorfizm
+            val = this.getItheta;
+        end
+        function val = getItheta(this)
             val = this.Itheta_0 + this.mass * this.Xcg^2;
         end
         function val = get.Itheta_0(this)
@@ -166,6 +183,9 @@ classdef WingParams < handle
             val = this.Kh * this.Yac^2;
         end
         function val = get.m(this)
+            val = this.getM();
+        end
+        function val = getM(this)
             val = this.Iphi / this.Yac^2 + (this.Ycg/this.Yac)^2 * this.mass;
         end
         function val = get.mass(this)

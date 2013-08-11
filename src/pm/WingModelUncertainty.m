@@ -1,78 +1,134 @@
-% Niepewnosc modelu skrzydla
+%% Niepewnosc modelu skrzydla
+% clear;
+% wing = WingFlutter;
+% Vf = wing.getFlutterSpeed;
+%[W1 W2 Gunc] = wing.addUncert(5, 1, 0.5, 5500, Vf*[0.8 1 1.4]);
+%[W1 W2 Gunc] = wing.multUncert(5, 2, 0.5, 5500, Vf*[0.8 1 1.4]);
 
-%% Wykres wartoœci osobliwej (SV) dla rodziny modeli
+%% Rodzina modeli i model nominalny
+% [RodzinaModeliGr.eps]
 clear
-wing = WingFlutter;
-wing.atmosphere.h = 5500;
-plane = PlaneParams(wing.params);
+figure
+[Garray Gnom] = modelFamily(2);
+legend('G_n(s)','G_i(s)');
 
-% Sygnaly wejsciowe / wyjsciowe brane pod uwage (istotny z punktu widzenia zalozen
-% projektowych)
-inSignal = [1 2];           % delta_c turb
-outSignal = [1 2 8 9];      % h theta h_dd theta_dd
-inSignal = 1;       % delta_c
-outSignal = 9;      % theta_ddot
+%% Niepewnosc wzgledna na wyjsciu
+clear
+figure
+[Garray Gnom] = modelFamily(0);
+close(gcf)
+figure
+[Wunc,Info] = ucover(Garray,Gnom,3,[],'OutputMult');
+[svGnom w] = sigma(Gnom);
+svWo = sigma(Info.W1, w);
+loglog(w, svGnom(1,:) + svWo .* svGnom(1,:), 'g:', 'LineWidth',1.5);
+hold on;
 
-% Typ wykresu
-% 1 - (Gi - Gn), Wu
-% 2 -  Gi, Gn, (I + Wu)Gn
-type = 2;
+[Wunc,Info] = ucover(Garray,Gnom,7,[],'OutputMult');
+[svGnom w] = sigma(Gnom);
+svWo = sigma(Info.W1, w);
+loglog(w, svGnom(1,:) + svWo .* svGnom(1,:), 'm:', 'LineWidth',1.5);
 
-% Model nominalny
-Vk = wing.getFlutterSpeed;
-wing.U0 = Vk * 0.9;
-Gnom = wing.getLinearModel;
-Gnom = Gnom(outSignal,inSignal);
+[Wunc,Info] = ucover(Garray,Gnom,5,[],'OutputMult');
+[svGnom w] = sigma(Gnom);
+svWo = sigma(Info.W1, w);
+loglog(w, svGnom(1,:) + svWo .* svGnom(1,:), 'b', 'LineWidth',2);
 
-% Rodzina modeli Gi
-Garray = stack(1,Gnom);
+[Garray Gnom] = modelFamily(2);
 
-[sv_nom w] = sigma(Gnom);
+legend('(I + W_o^3(s) \Delta(s))G_n(s)','(I + W_o^7(s) \Delta(s))G_n(s)',...
+       '(I + W_o^5(s) \Delta(s))G_n(s)','G_n(s)','G_i(s)');
 
-% Przygotowanie obrazu
-% figure; 
-% if(type == 1)
-%     loglog(1,1);
-% else
-%     loglog(w, sv_nom(1,:), 'LineWidth', 2, 'Color','r');
-% end
-% hold on;
+%% Niepewnosc wzgledna na wejsciu
+clear
+figure
+[Garray Gnom] = modelFamily(0);
+close(gcf)
+figure
+[Wunc,Info] = ucover(Garray,Gnom,[],3,'InputMult');
+[svGnom w] = sigma(Gnom);
+svWi = sigma(Info.W1,w);
+loglog(w, svGnom(1,:) + svWi .* svGnom(1,:), 'g:', 'LineWidth',1.5);
+hold on;
 
-%Hrange = [0 5500 11000];
-Hrange = 5500;
-fuelRange = [0, 0.5, 1];
-fuelRange = [0:0.2:1];
-%speedRange = [Vk*0.6 : 0.4*Vk : 1.4*Vk];
-speedRange = wing.U0;;
+[Wunc,Info] = ucover(Garray,Gnom,[],7,'InputMult');
+[svGnom w] = sigma(Gnom);
+svWi = sigma(Info.W1,w);
+loglog(w, svGnom(1,:) + svWi .* svGnom(1,:), 'm:', 'LineWidth',1.5);
 
-for H = Hrange
-    wing.atmosphere.h = H;
-    for fuel = fuelRange
-        plane.fuelLevel = fuel;
-        for speed = speedRange
-            % Pomin Gnom 
-            if H == 5500 && fuel == 0.5 && speed == 1.4*Vk
-                continue
-            end
-            
-            wing.U0 = speed;
-            sys = wing.getLinearModel;
-            sys = sys(outSignal,inSignal);
-            
-            if type == 1
-                sv = sigma(sys - Gnom, w);
-                loglog(w,sv(1,:)./sv_nom(1,:));
-            else
-                %sv = sigma(sys, w);
-                %loglog(w, sv(1,:));
-                %sigma(sys, w);
-                %hold on;
-            end
-                
-            Garray = stack(1,Garray,sys);
-        end
-    end
-end
+[Wunc,Info] = ucover(Garray,Gnom,[],5,'InputMult');
+[svGnom w] = sigma(Gnom);
+svWi = sigma(Info.W1,w);
+loglog(w, svGnom(1,:) + svWi .* svGnom(1,:), 'b', 'LineWidth',2);
+
+[Garray Gnom] = modelFamily(2);
+legend('G_n(s)(I + W_i^3(s) \Delta(s))', 'G_n(s)(I + W_i^7(s) \Delta(s))',...
+       'G_n(s)(I + W_i^5(s) \Delta(s))','G_n(s)','G_i(s)');
+
+%% Niepewnosc bezwzgledna
+clear
+figure
+[Garray Gnom] = modelFamily(0);
+close(gcf)
+figure
+[Wunc,Info] = ucover(Garray,Gnom,3,[],'Additive');
+[svGnom w] = sigma(Gnom);
+svWa = sigma(Info.W2,w);
+loglog(w, svGnom(1,:) + svWa, 'g:', 'LineWidth',1.5);
+hold on;
+
+[Wunc,Info] = ucover(Garray,Gnom,7,[],'Additive');
+[svGnom w] = sigma(Gnom);
+svWa = sigma(Info.W2,w);
+loglog(w, svGnom(1,:) + svWa, 'm:', 'LineWidth',1.5);
+
+[Wunc,Info] = ucover(Garray,Gnom,5,[],'Additive');
+[svGnom w] = sigma(Gnom);
+svWa = sigma(Info.W2,w);
+loglog(w, svGnom(1,:) + svWa, 'b', 'LineWidth',2);
+
+[Garray Gnom] = modelFamily(2);
+legend('G_n(s) + W_a^3(s) \Delta(s)', 'G_n(s) + W_a^7(s) \Delta(s)',...
+       'G_n(s) + W_a^5(s) \Delta(s)','G_n(s)','G_i(s)');
+
+%% Porownanie modeli niepewnosci   
+clear
+figure
+[Garray Gnom] = modelFamily(0);
+close(gcf)
+figure;
+
+[sv w] = sigma(Gnom);
+loglog(w, sv(1,:), 'r', 'LineWidth',2);
+hold on;
+
+[Wunc,Info] = ucover(Garray,Gnom,5,[],'OutputMult');
+[svGnom w] = sigma(Gnom);
+svWo = sigma(Info.W1, w);
+Wo = Info.W1;
+loglog(w, svGnom(1,:) + svWo .* svGnom(1,:), 'b', 'LineWidth',1.5);
+hold on;
+
+[Wunc,Info] = ucover(Garray,Gnom,[],5,'InputMult');
+[svGnom w] = sigma(Gnom);
+svWi = sigma(Info.W1,w);
+Wi = Info.W1;
+loglog(w, svGnom(1,:) + svWi .* svGnom(1,:), 'm', 'LineWidth',1.5);
+
+[Wunc,Info] = ucover(Garray,Gnom,7,[],'Additive');
+[svGnom w] = sigma(Gnom);
+svWa = sigma(Info.W2,w);
+Wa = Info.W2;
+loglog(w, svGnom(1,:) + svWa, 'g', 'LineWidth',1.5);
+
+ylabel('\sigma_{max}(G)')
+xlabel('\omega [rad/s]')
+set(gca,'XLim',[4 10000])
+set(gcf,'Units','centimeters','Position',[0, 0, 14, 8]);
+set(gcf, 'PaperUnits', 'centimeters', 'PaperSize', [14 8]);
+
+legend('G_n(s)','(I + W_o(s) \Delta(s))G_n(s)','G_n(s)(I + W_i(s) \Delta(s))',...
+    'G_n(s) + W_a(s)');
 
 %%
 
@@ -95,7 +151,8 @@ for i = 1 : length(Garray)
 end
 svGnom = sigma(Gnom, w);
 svWo = sigma(Info.W1, w);
-semilogx(w, mag2db(svGnom + svWo .* svGnom), 'b');
+
+semilogx(w, mag2db(svGnom(1,:) + svWo .* svGnom(1,:)), 'b');
 semilogx(w, mag2db(svGnom),'r')
 
 sigma(Wunc,'c:');
@@ -118,7 +175,7 @@ lineStyles = {'y','g','b','r'};
 for i = 2:5
     [W,Info] = ucover(Garray,Gnom,i);
     %[W,Info] = ucover(Gnom,Info,i,0);
-    
+
     if type == 1
         sv = sigma(Info.W1, w);
         loglog(w,sv, lineStyles{i-1})

@@ -66,10 +66,15 @@ classdef LinearAnalysis < handle
         function val = get.CL(this)
             if ~isempty(this.K)
                 % Feed delta_c to output for easier analysis
+                B = this.OL.B(:,[1 1 2]);
                 C = [this.OL.C; zeros(1, size(this.OL.C,2))];
-                D = [this.OL.D; 1 0];
-                sys = ss(this.OL.a, this.OL.b, C, D);
-                sys.InputName = this.OL.InputName;
+                D = [this.OL.D(:,[1 1 2]); 1 0 0];
+                sys = ss(this.OL.a, B, C, D);
+%                 C = [this.OL.C; zeros(1, size(this.OL.C,2))];
+%                 D = [this.OL.D; 1 0];
+%                 sys = ss(this.OL.a, this.OL.b, C, D);
+                sys.InputName = {this.OL.InputName{1}, 'delta_p', 'turb'};
+%                 sys.InputName = this.OL.InputName;
                 sys.OutputName = [this.OL.OutputName;
                                   'delta_c [rad]    '];
                 
@@ -78,8 +83,10 @@ classdef LinearAnalysis < handle
                 if(size(this.K,2) == 4)
                     val = feedback(sys, this.K, 1, ...
                         [this.out_h_dot this.out_theta_dot this.out_h_dd this.out_theta_dd]);
+                    val = val(:,[2 3]);
                 else
                     val = feedback(sys, this.K, 'name');
+                    val = val(:,[2 3]);
                 end
                 
                 val.InputName = ['delta_p[rad]';
@@ -119,6 +126,14 @@ classdef LinearAnalysis < handle
         function val = get.lineFormat(this)
             val = [this.lineColor this.lineStyle];
         end
+        function set.lineFormat(this, val)
+            this.lineColor = val(1);
+            if length(val) > 1
+                this.lineStyle = val(2:end);
+            else
+                this.lineStyle = '-';
+            end
+        end
         
         % -------------------------------------------------- [ Analysis ] ---------
         
@@ -143,6 +158,38 @@ classdef LinearAnalysis < handle
             Uf1 = this.Ufol();
             Uf2 = this.Ufcl();
             fprintf('Flutter speed increased by %f%%\n', (Uf2/Uf1-1)*100);
+        end
+        
+        function maxDeltaAnalysis(this)
+            Ufcl = this.Ufcl();
+            Ufol = this.Ufol();
+            U = (0.8*Ufol/Ufcl : 0.02 : 1) * Ufcl;
+            Wdelta = tf(0.7,[1/(3*2*pi)  1]);
+            maxDelta_c = zeros(size(U));
+            
+            for i = 1:length(U)
+                this.U0 = U(i);
+                if this.isStable()
+                    delta = step(this.CL(this.out_delta_c,this.in_delta_p) * Wdelta);
+                    maxDelta_c(i) = max(abs(delta));
+                else
+                    maxDelta_c(i) = 0;
+                end
+            end
+            maxDelta_c = maxDelta_c*180/pi;
+            plot(U,maxDelta_c, this.lineFormat);
+            hold on;
+            xlabel('Predkosc lotu U_0 [m/s]')
+            ylabel('max(|\delta_c(t)|) [deg]');
+            title('');
+            handle = plot([Ufol Ufol],[0 max(maxDelta_c)], 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([Ufcl Ufcl],[0 max(maxDelta_c)], 'r:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([U(1) U(end)],[1 1]*this.deltaMax*180/pi, 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([U(1) U(end)],[1 1]*this.deltaMax*this.deltaPercent*180/pi, 'k:');
+            hasbehavior(handle,'legend',false);
         end
         
         function [t, y, rms] = controlSignalAnalysis(this)
@@ -294,6 +341,33 @@ classdef LinearAnalysis < handle
                 finalTime, war, DeltaMax, DeltaMax / mean(deltaRms));
         end
         
+        function [U Hinf] = hinfAnalysis(this, inSignal, outSignal)
+            % Hinf in case of siso is trivial
+            U = (0.8*this.Ufol/this.Ufcl : 0.02 : 1) * this.Ufcl;
+            Hinf = zeros(size(U));
+            for i = 1:length(U)
+                this.U0 = U(i);
+                [mag, ~] = bode(this.CL(outSignal,inSignal));
+                Hinf(i) = max(mag);
+            end
+            
+            if nargout == 0
+                plot(U, Hinf, this.lineFormat);
+                hold on;
+            
+                handle = plot([this.Ufol this.Ufol],[0 max(Hinf)], 'k:');
+                hasbehavior(handle,'legend',false);
+                handle = plot([this.Ufcl this.Ufcl],[0 max(Hinf)], 'r:');
+                hasbehavior(handle,'legend',false);
+%                 handle = plot([U(1) U(end)], [this.deltaMax this.deltaMax], 'k:');
+%                 hasbehavior(handle,'legend',false);
+%                 handle = plot([U(1) U(end)], [this.deltaMax this.deltaMax]*this.deltaPercent, 'k:');
+%                 hasbehavior(handle,'legend',false);
+                xlabel('Speed [m/s]');
+                %title('H_\infty norm of \delta_c signal due to turbulence for different speeds');
+            end
+        end
+        
         function turbulenceHinfAnalysis(this)
             % Calculate ||G turb delta_c || inf 
             % = sup (over omega) |G turb delta_c |
@@ -301,19 +375,30 @@ classdef LinearAnalysis < handle
             Ufcl = this.Ufcl();
             Ufol = this.Ufol();
             
-            U = (0.8*Ufol/Ufcl : 0.02 : 1) * Ufcl;
-            delta_c_Hinf = zeros(size(U));
+            %[U Hinf] = this.hinfAnalysis(this.in_turb, this.out_delta_c);
+            U = (0.8*this.Ufol/this.Ufcl : 0.02 : 1) * this.Ufcl;
+            Hinf = zeros(size(U));
+            maxDelta = zeros(size(U));
+            maxDelta2 = zeros(size(U));
             for i = 1:length(U)
                 this.U0 = U(i);
                 [mag, ~] = bode(this.CL(this.out_delta_c,this.in_turb));
-                delta_c_Hinf(i) = max(mag);
+                Hinf(i) = max(mag);
+                [delta_c ~] = step(this.CL(this.out_delta_c,this.in_turb));
+                maxDelta(i) = max(abs(delta_c));
+                [t, eta] = this.getTurbSampleSignal();
+                delta_c = lsim(this.CL(this.out_delta_c,this.in_turb), eta, t);
+                maxDelta2(i) = max(abs(delta_c));
             end
             
-            plot(U, delta_c_Hinf, this.lineFormat);
+            plot(U, Hinf, this.lineFormat);
             hold on;
-            handle = plot([Ufol Ufol],[0 max(delta_c_Hinf)], 'k:');
+            plot(U,maxDelta,'b--');
+            plot(U,maxDelta2,'b:');
+            legend('Hinf','step','random');
+            handle = plot([Ufol Ufol],[0 max(Hinf)], 'k:');
             hasbehavior(handle,'legend',false);
-            handle = plot([Ufcl Ufcl],[0 max(delta_c_Hinf)], 'r:');
+            handle = plot([Ufcl Ufcl],[0 max(Hinf)], 'r:');
             hasbehavior(handle,'legend',false);
             handle = plot([U(1) U(end)], [this.deltaMax this.deltaMax], 'k:');
             hasbehavior(handle,'legend',false);
@@ -321,6 +406,47 @@ classdef LinearAnalysis < handle
             hasbehavior(handle,'legend',false);
             xlabel('Speed [m/s]'); ylabel('||G_{\eta \delta}||_\infty [rad]')
             title('H_\infty norm of \delta_c signal due to turbulence for different speeds');
+        end
+        
+        function controlHinfAnalysis(this)
+            % Calculate ||G turb delta_c || inf 
+            % = sup (over omega) |G turb delta_c |
+            this.resetDefaultConditions();
+            Ufcl = this.Ufcl();
+            Ufol = this.Ufol();
+            
+            Wdelta = zpk([],-3*2*pi,0.7);
+            U = (0.8*this.Ufol/this.Ufcl : 0.02 : 1) * this.Ufcl;
+            Hinf = zeros(size(U));
+            maxDelta = zeros(size(U));
+            maxDelta2 = zeros(size(U));
+            for i = 1:length(U)
+                this.U0 = U(i);
+                [mag, ~] = bode(this.CL(this.out_delta_c,this.in_delta_p)*Wdelta);
+                Hinf(i) = max(mag);
+                [delta_c ~] = step(this.CL(this.out_delta_c,this.in_delta_p)*Wdelta);
+                maxDelta(i) = max(abs(delta_c));
+                [delta_c ~] = step(this.CL(this.out_delta_c,this.in_delta_p)*0.7);
+                maxDelta2(i) = max(abs(delta_c));
+            end
+            
+            plot(U, Hinf, this.lineFormat);
+            hold on;
+            plot(U,maxDelta,'b--');
+            plot(U,maxDelta2,'b:');
+            
+            legend('Hinf','max |\delta_c(t)| (filtr)', 'max |\delta_c(t)|');
+            
+            handle = plot([Ufol Ufol],[0 max(Hinf)], 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([Ufcl Ufcl],[0 max(Hinf)], 'r:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([U(1) U(end)], [this.deltaMax this.deltaMax], 'k:');
+            hasbehavior(handle,'legend',false);
+            handle = plot([U(1) U(end)], [this.deltaMax this.deltaMax]*this.deltaPercent, 'k:');
+            hasbehavior(handle,'legend',false);
+            xlabel('Speed [m/s]');
+            title('Analiza sygnalu sterowania wzgledem komend pilota dla roznych predkosci');
         end
         
         function fullAnalysis(this, f1, f2)
@@ -361,11 +487,41 @@ classdef LinearAnalysis < handle
         
         function isStab = isStable(this)
             isStab = true;
-            [~, E] = eig(this.CL.a);
+            cl = feedback(this.OL, this.K, 'name');
+            [~, E] = eig(cl.a);
+            %[~, E] = eig(this.CL.a);
             % Check if unstable
             if sum(real(diag(E)) > 0) > 0
                 isStab = false;
             end
+        end
+        
+        % Speed where delta_c exceeds max value
+        % || G turbulence -> delta_c || > 1
+        function isStab = isRealStable(this)
+            isStab = true;
+            [mag, ~] = bode(this.CL(this.out_delta_c, this.in_turb));
+            % Check if unstable
+            if max(mag) > 1 || ~this.isStable()
+                isStab = false;
+            end
+        end
+        
+        % Speed where delta_c exceeds max value
+        % || G turbulence -> delta_c || > 1
+        function isStab = isManouverable(this)
+            isStab = true;
+            %[mag, ~] = bode(0.7*this.CL(this.out_delta_c, this.in_delta_p));
+            % Check if unstable
+            %Wdelta = zpk([],-3*2*pi,0.7);
+            Wdelta = tf(0.7,[1/(3*2*pi)  1]);
+            delta = step(this.CL(this.out_delta_c, this.in_delta_p)*Wdelta);
+            if max(abs(delta)) > this.deltaMax*this.deltaPercent
+                isStab = false;
+            end
+%             if max(mag) > this.deltaMax*this.deltaPercent || ~this.isStable()
+%                 isStab = false;
+%             end
         end
              
         function stallSpeedVersusAlt(this,h)
@@ -388,13 +544,19 @@ classdef LinearAnalysis < handle
         
         function Uf = getFlutterSpeed(this, left, right)
             if ~exist('left','var')
-                left = 10;
+                left = 40;
             end
             if ~exist('right','var')
                 right = this.wing.atmosphere.c*2;
             end
             this.U0 = left;
-            assert(this.isStable());
+            %assert(this.isStable());
+            if ~this.isStable()
+                fprintf('CL unstable for: U = %f, fuel = %f, h = %f\n',...
+                    this.U0, this.wing.params.fuelLevel, this.wing.atmosphere.h);
+                Uf = -1;
+                return;
+            end
             this.U0 = right;
             assert(~this.isStable());
             
@@ -426,6 +588,175 @@ classdef LinearAnalysis < handle
             ylabel('Altitude [m]');
             xlabel('Flutter speed [km/h]');
             title('Flutter speed versus altitude');
+        end
+        
+        function [Ufcl fuel] = flutterSpeedVersusFuel(this, fuel)
+            if ~exist('fuel','var')
+                fuel = 0:0.1:1;
+            end
+            Ufcl = zeros(1, length(fuel));
+            %lastU = 30;
+            for i = 1:length(fuel)
+                this.wing.params.fuelLevel = fuel(i);
+                Ufcl(i) = this.getFlutterSpeed(30);
+                %lastU = Uf(i);
+            end
+            plot(Ufcl*3.6, fuel*100, this.lineFormat);
+            ylabel('Fuel level [%]');
+            xlabel('Flutter speed [km/h]');
+            title('Flutter speed versus altitude');
+        end
+        
+        function Uf = getManouverSpeed(this, left, right)
+            if ~exist('left','var')
+                left = 10;
+            end
+            if ~exist('right','var')
+                right = this.wing.atmosphere.c*2;
+            end
+            this.U0 = left;
+            % assert(this.isManouverable());
+            if ~this.isManouverable()
+                fprintf('CL unmanouverable for: U = %f, fuel = %f, h = %f\n',...
+                    this.U0, this.wing.params.fuelLevel, this.wing.atmosphere.h);
+                Uf = -1;
+                return;
+            end
+            this.U0 = right;
+            assert(~this.isManouverable());
+            
+            while right-left > 1
+                new = (right+left)/2;
+                this.U0 = new;
+                if(this.isManouverable())
+                    left = new;
+                else
+                    right = new;
+                end
+            end
+            
+            Uf = (right+left)/2;
+        end
+        
+        function [Ufcl fuel] = manouverSpeedVersusFuel(this, fuel)
+            if ~exist('fuel','var')
+                fuel = 0:0.1:1;
+            end
+            Ufcl = zeros(1, length(fuel));
+            %lastU = 30;
+            for i = 1:length(fuel)
+                this.wing.params.fuelLevel = fuel(i);
+                Ufcl(i) = this.getManouverSpeed(30);
+                %lastU = Uf(i);
+            end
+            plot(Ufcl*3.6, fuel*100, this.lineFormat);
+            ylabel('Fuel level [%]');
+            xlabel('Speed [km/h]');
+%             title('Flutter speed versus altitude');
+        end
+        
+        function Uf = getRealFlutterSpeed(this, left, right)
+            % Speed where delta_c exceeds max value
+            % || G turbulence -> delta_c || > 1
+            if ~exist('left','var')
+                left = 10;
+            end
+            if ~exist('right','var')
+                right = this.wing.atmosphere.c*2;
+            end
+            this.U0 = left;
+            assert(this.isRealStable());
+            this.U0 = right;
+            assert(~this.isRealStable());
+            
+            while right-left > 1
+                new = (right+left)/2;
+                this.U0 = new;
+                if(this.isRealStable())
+                    left = new;
+                else
+                    right = new;
+                end
+            end
+            
+            Uf = (right+left)/2;
+        end
+        
+        function [Ufcl fuel] = realFlutterSpeedVersusFuel(this, fuel)
+            if ~exist('fuel','var')
+                fuel = 0:0.1:1;
+            end
+            Ufcl = zeros(1, length(fuel));
+            %lastU = 30;
+            for i = 1:length(fuel)
+                this.wing.params.fuelLevel = fuel(i);
+                Ufcl(i) = this.getRealFlutterSpeed(30);
+                %lastU = Uf(i);
+            end
+            plot(Ufcl*3.6, fuel*100, this.lineFormat);
+            ylabel('Fuel level [%]');
+            xlabel('Speed [km/h]');
+%             title('Flutter speed versus altitude');
+        end
+        
+        function robustStabilityAnalysis(this, alt, fuel)
+            if ~exist('alt','var')
+                %alt = 0:1000:11000;
+                alt = [0 5500 11000];
+            end
+            if ~exist('fuel','var')
+                %fuel = 0:0.1:1;
+                fuel = [0 0.5 1];
+            end
+            
+            styles = {'r','r--','r:','g','g--','g:','b','b--','b:'};
+            for i = 1:length(alt)
+                this.wing.atmosphere.h = alt(i);
+                this.lineFormat = styles{i};
+                this.flutterSpeedVersusFuel(fuel);
+                hold on;
+            end
+        end
+        
+        function robustnessAnalysis(this, alt, fuel)
+            if ~exist('alt','var')
+                %alt = 0:1000:11000;
+                %alt = [0 5500 11000];
+                alt = 5500;
+            end
+            if ~exist('fuel','var')
+                %fuel = 0:0.1:1;
+                fuel = [0 0.5 1];
+            end
+            
+            styles = {'r','r--','r:','g','g--','g:','b','b--','b:'};
+            % ------------------------------------ stability (flutter
+            % speed)
+            for i = 1:length(alt)
+                this.wing.atmosphere.h = alt(i);
+                %this.lineFormat = styles{i};
+                this.lineStyle = '-';
+                this.flutterSpeedVersusFuel(fuel);
+                hold on;
+            end
+            
+            % ------------------------------------- manouver
+            for i = 1:length(alt)
+                this.wing.atmosphere.h = alt(i);
+                %this.lineFormat = styles{i};
+                this.lineStyle = '--';
+                this.manouverSpeedVersusFuel(fuel);
+                hold on;
+            end
+            
+            % ------------------------------------- max stress
+            for i = 1:length(alt)
+                this.wing.atmosphere.h = alt(i);
+                %this.lineFormat = styles{i};
+                this.lineStyle = ':';
+                this.realFlutterSpeedVersusFuel(fuel);
+                hold on;
+            end
         end
     end
     
