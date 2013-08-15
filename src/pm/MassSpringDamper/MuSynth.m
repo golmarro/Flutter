@@ -1,3 +1,4 @@
+%%
 msd = Model;
 m = ureal('m',msd.m,'Percentage',msd.pm);
 c = ureal('c',msd.c,'Percentage',msd.pc);
@@ -9,3 +10,6 @@ C = [0 1];
 D = 0;
 
 sys = ss(A,B,C,D);
+
+%% 
+[stabmarg,destabu,report] = robuststab(sys);

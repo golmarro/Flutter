@@ -327,24 +327,25 @@ Uk³ad równañ \ref{EqModelStruktury} mo¿emy przedstawiæ w postaci diagramu blokow
 \caption{Diagram blokowy modelu strukturalnego p³ata}
 \label{SchematModelStr}
 \end{figure}
-Niepewne parametry mo¿na przedstawiæ jako:
+Niepewne parametry zale¿¹ tylko od poziomu paliwa:
 \begin{align*}
 m &= \bar{m} (1+ p_m \delta_l)\\
 I_\theta &= \bar{I_\theta} (1+ p_{I} \delta_l)\\
 s_{h\theta} &= \bar{s_{h\theta}} (1+ p_{s} \delta_l)
 \end{align*}
 gdzie \( \bar{m}, \bar{I_\theta} , \bar{s_{h\theta}} \) to wartoœci œrednie, \( p_m, p_{I}, p_{s} \) procentowy zakres zmian odpowiednich parametrów, a \( \delta_l \) okreœla zmianê poziomu paliwa (wartoœæ \( \delta_l = -1 \) odpowiada poziomowi 0).
-Cztery sta³e bloki na schemacie \ref{SchematModelStr} mog¹ zostaæ zast¹pione uk³adami uwzglêdniaj¹cymi zmianê \( \delta_l \), tak, jak to pokazano na rys{SchematModelStrU}. 
+Cztery sta³e bloki na schemacie \ref{SchematModelStr} mog¹ zostaæ zast¹pione macierzami uwzglêdniaj¹cymi \( \delta_l \), tak, jak to pokazano na rys. \ref{SchematModelStrU}. 
 \begin{figure}[hbt]
 \centering
 \includegraphics[width=\linewidth*2/3]{SchematModelStrU.png}
 \caption{Diagram blokowy modelu strukturalnego z wyodrêbnionym niepewnym parametrem \( \delta_l \)}
 \label{SchematModelStrU}
 \end{figure}
-Bior¹c pod uwagê, ¿e
-\begin{equation*}
-\frac{1}{m} = \frac{1}{\bar{m} (1+ p_m \delta_l)} = \frac{1}{\bar{m}} - \frac{p_m}{\bar{m}}\delta_l(1+p_m\delta_l)
-\end{equation*}
+Bior¹c pod uwagê, ¿e:
+\begin{align*}
+\frac{1}{m} &= \frac{1}{\bar{m} (1+ p_m \delta_l)} = \frac{1}{\bar{m}} - \frac{p_m}{\bar{m}}\delta_l(1+p_m\delta_l)\\
+\frac{1}{I_\theta} &= \frac{1}{\bar{I_\theta} (1+ p_I \delta_l)} = \frac{1}{\bar{I_\theta}} - \frac{p_I}{\bar{I_\theta}}\delta_l(1+p_I\delta_l)
+\end{align*}
 odpowiednie macierze przyjm¹ postaæ:
 \begin{equation*}
 M_m = \left[ \begin{matrix}
@@ -352,15 +353,148 @@ M_m = \left[ \begin{matrix}
 -p_m & \frac{1}{\bar{m}}
 \end{matrix}\right],
 M_I = \left[ \begin{matrix}
-0 & \bar{I_\theta} \\
-p_I & \bar{I_\theta} 
+-p_I & \frac{1}{\bar{I_\theta}} \\
+-p_I & \frac{1}{\bar{I_\theta}}
 \end{matrix}\right],
 M_s = \left[ \begin{matrix}
 0 & \bar{s_{h\theta}} \\
 p_s & \bar{s_{h\theta}} 
 \end{matrix}\right]
 \end{equation*}
+Otrzymaliœmy w ten sposób nowe (,,sztuczne'') sygna³y wejœciowe i wyjœciowe - odpowiednio \( r = [r_m, r_I, r_{s_1}, r_{s_2}] \) i \( z = [z_m, z_I, z_{s_1}, z_{s_2} ] \). Model strukturalny uwzglêdniaj¹cy zmienne parametry, przedstawiono na rys.~\ref{SchematModelDelta}. Nale¿y zaznaczyæ, ¿e macierz \( \Delta \) sk³ada siê wy³¹cznie z powtórzonej wartoœci \( \delta_l \). Wyznaczaj¹c \( G_p(s) = L_u(G_\Delta(s), \Delta) \) otrzymujemy model strukturalny skrzyd³a dla pewnej wartoœci poziomu paliwa.
 
+\begin{equation*}
+\Delta = \left[ \begin{matrix} 
+\delta_l & 0 & 0 & 0 \\
+0 & \delta_l & 0 & 0 \\
+0 & 0 & \delta_l & 0 \\
+0 & 0 & 0 & \delta_l \\
+\end{matrix} \right]
+\end{equation*}
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth/2]{SchematModelDelta.png}
+\caption{Schemat blokowy modelu z uwzglêdnieniem niepewnoœci parametrycznej}
+\label{SchematModelDelta}
+\end{figure}
+
+
+
+Ostateczna postaæ macierzy modelu:
+
+\begin{gather*}
+A = \left[ \begin{matrix}
+\mathbf{0} & \mathbf{0} \\
+M^{-1} K   & M^{-1} D
+\end{matrix} \right], 
+\\
+B = \left[ \begin{matrix}
+\mathbf{0} & \mathbf{0} & \mathbf{0} \\
+-M^{-1} \left[ \begin{matrix} p_m\bar{m} & 0 \\ 0 & p_I*\bar{I_\theta} \end{matrix} \right]  &   -M^{-1}p_s    &    M^{-1}
+\end{matrix} \right], 
+\\
+C = 
+\left[ \begin{matrix}
+-M^{-1}K - 
+\left[ \begin{matrix} K_h/\bar{m} & 0 \\ 0 & K_\theta/\bar{I_\theta}
+ \end{matrix}  \right] &
+\mathbf{0} \\
+-M^{-1}K \bar{s}    &      \mathbf{0}
+\end{matrix}\right],
+\\
+D = 
+\left[ \begin{matrix}
+\bar{s_{h\theta}} /\bar{m}  M^{-1}
+\left[ \begin{matrix} p_m \bar{m} & 0 \\ 0 & p_I*\bar{I_\theta}
+\end{matrix} \right] -
+\left[ \begin{matrix} p_m & 0 \\ 0 & p_I \end{matrix}\right]
+&
+\bar{s_{h\theta}}/\bar{m}  M^{-1} p_s - 
+\left[ \begin{matrix} p_s/\bar{m} & 0\\ 0 & p_s/\bar{I_\theta} 
+\end{matrix} \right]
+&
+-\bar{s_{h\theta}}/\bar{m}  M^{-1}+
+\left[ \begin{matrix} 1/\bar{m} & 0\\ 0 & 1/\bar{I_\theta} \end{matrix} \right] \\
+-\bar{s_{h\theta}} * M^{-1}* [pm*m 0;0 pI*I] &
+-\bar{s_{h\theta}} * M^{-1}*ps &
+\bar{s_{h\theta}}  * M^{-1} \\
+\mathbf{0} &
+\mathbf{0} &
+\mathbf{0}
+\end{matrix} \right]
+\end{gather*}
+
+
+
+Wykorzystuj¹c powy¿sz¹ metodologiê, z pomoc¹ narzêdzi {\it Robust Control Toolbox } wygenerowano model z ustrukturyzowan¹ niepewnoœci¹ parametryczn¹ uwzglêdniaj¹c¹ wszystkie trzy niepewne parametry (poziom paliwa, prêdkoœæ i wysokoœæ lotu).
+
+\subsection{Analiza strukturalnej wartoœci osobliwej}
+Analiza strukturalnej wartoœci osobliwej pozwala obliczyæ granice stabilnoœci uk³adu. Dla uproszczenia analizy, ograniczono siê do prêdkoœci jako niepewnego parametru. Wyznaczenie strukturalnej wartoœci osobliwej uk³adu \( G_p(s) \) wzglêdem znormalizowanej macierzy niepewnoœci \( \Delta \) wymaga oszacowania wartoœci \( \mu_\Delta(G(j\omega) \) dla ka¿dej \( \omega \in \mathcal{R} \). Oczywiœcie konieczne jest wybranie pewnego dyskretnego zbioru \( \omega_i \), który bêdzie odpowiedni dla danego obiektu. Zbiór ten musi uwzglêdniaæ zakres pulsacji, w którym spodziewamy siê wyst¹pienia niestabilnoœci - w tym przypadku bêdzie to czêstotliwoœæ flatteru. W ogólnoœci najpierw nale¿y przeanalizowaæ wartoœæ \( \mu_\Delta \) dla mo¿liwie du¿ego ale rzadkiego zbioru \( \omega_i \), a nastêpnie zawêziæ poszukiwania do zakresu, gdzie górne oszacowanie \( \mu_\Delta \) przyjmuje najwiêksze wartoœci.
+
+Je¿eli znamy czêstotliwoœæ niestabilnej postaci ruchu, najprostszym sposobem znalezienia \( \mu_\Delta(G) \) jest poszukiwanie maksimum lokalnego w okolicach tej czêstotliwoœci.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{NiepewnoscUrojona.eps}
+\caption{Porównanie oszacowania strukturalnej wartoœci osobliwej wzglêdem niepewnoœci czysto rzeczywistej oraz zawieraj¹cej 1\% czêœci urojonej}
+\label{NiepewnoscUrojona}
+\end{figure}
+
+Problemem zwi¹zanym z wykorzystaniem strukturalnej wartoœci osobliwej jest to, ¿e w modelach z parametryczn¹ niepewnoœci¹, gdy macierz \( \Delta \) sk³ada siê z liczb rzeczywistych, zbie¿noœæ algorytmu oszacowania \( \mu_\Delta \) jest niezadowalaj¹ca, a czêsto w ogóle niemo¿liwe jest oszacowanie dolnej wartoœci \( \mu_\Delta \). Praktycznym sposobem radzenia sobie z tym problemem jest sztuczne wprowadzenie urojonej niepewnoœci \cite{RobustMatlab}. W tej sytuacji macierz \( \Delta \) rozszerzamy o dodatkowe elementy, które mog¹ przyjmowaæ wartoœci ze zbioru liczb zespolonych.
+\[
+\Delta = \left[ 
+\begin{matrix} 
+\begin{matrix} 
+\delta_1 & & \\
+& \delta_2 & \\
+& & \delta_n
+\end{matrix} 
+& \mathbf{0} \\
+\mathbf{0} &
+\begin{matrix} 
+\delta_1\prime & & \\
+& \delta_2\prime & \\
+& & \delta_n\prime
+\end{matrix} 
+\end{matrix} 
+\right], \quad
+\delta_1, \delta_2, ... \delta_n \in \mathcal{R} , \quad
+\delta_1\prime, \delta_2\prime, ... \delta_n\prime \in \mathcal{C} , \quad
+\]
+Zak³adaj¹c, ¿e chcemy wprowadziæ 1\% udzia³ wartoœci urojonej, przekszta³camy analizowan¹ macierz \( M \):
+\begin{gather*}
+M\prime = F_{out} M F_{in} \\
+F_{out} = \left[ \begin{matrix} 
+\mathbf{I}_n \\
+0,01 \cdot \mathbf{I}_n
+\end{matrix} \right],
+F_{in} = \left[ \begin{matrix} 
+\mathbf{I}_n & 0,01 \cdot \mathbf{I}_n
+\end{matrix} \right]
+\end{gather*}
+
+Wystêpowanie liczby zespolonej w macierzy niepewnoœci nie ma fizycznego sensu (oznacza³oby to np. przesuniêcie fazy przyspieszenia wzglêdem si³y po podzieleniu przez masê). Z praktycznych wzglêdów jest to jednak uzasadnione, poniewa¿ nie wprowadza znacz¹cych przek³amañ (rys.~\ref{ModelUrojonaNiep}).
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{ModelUrojonaNiep.eps}
+\caption{Porównanie charakterystyki czêstotliwoœciowej modeli z rzeczywist¹ i urojon¹ wartoœci¹ zaburzenia \( \delta_{U} \)}
+\label{ModelUrojonaNiep}
+\end{figure}
+
+Najwa¿niejsze z punktu widzenia analizy stabilnoœci jest górne oszacowanie \( \bar{\mu_\Delta} (G(s)) \). Na rys.~\ref{PikMu} obserwujemy lokalne maksimum odpowiadaj¹ce pulsacji flatteru (44,5 rad/s). Samo przekroczenie wartoœci 1 oznacza brak odpornej stabilnoœci. Dodatkowo na podstawie odczytanej wartoœci mo¿emy okreœliæ graniczn¹ wartoœæ prêdkoœci, dla której uk³ad jest stabilny:
+\begin{gather}
+N_\Delta = \frac{1}{\bar{\mu_\Delta}} = \frac{1}{2,34} = 0,4274 \\
+U_0 = \bar{U_0}(1 + p_U \cdot 0,4274) = 97,094 m/s
+\end{gather}
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{PikMu.eps}
+\caption{Gorne oszacowanie wartoœci \( \mu_\Delta(G(s)) \). Widoczne lokalne maksimum dla czêstotliwoœci flatteru.}
+\label{PikMu}
+\end{figure}
 
 \subsection{Niepewnoœæ wzglêdna na wyjœciu}
 
@@ -446,7 +580,7 @@ Funkcja wagowa \( W_a(s) \) musi byæ tak dobrana, aby jej modu³ dla dowolnej czê
 
 \subsection{Porównanie modeli niepewnoœci}
 
-Model niepewnoœci powinien z jednej strony w pe³ni "obj¹æ" rodzinê modeli rzeczywistych (czyli spe³niæ warunek (\ref{WarunekNaWu})), z drugiej strony musi mo¿liwie ciasno przylegaæ do zbioru \( \mathcal{G}_r \). W dziedzinie czêstotliwoœci oznacza to, ¿e chcemy aby dla ka¿dej czêstotliwoœci górne oszacowanie maksymalnej wartoœci osobliwej by³o dok³adnie równej maksimum po maksymalnych wartoœciach osobliwych ze wszystkich \( G_i(s) \in \mathcal{G}_r \). Zak³adaj¹c ¿e warunek (\ref{WarunekNaWu}) jest spe³niony oznacza to, ¿e im ni¿ej le¿y wykres \( \sigma_{max}(G_p(j\omega) \) tym lepiej.
+Model niepewnoœci powinien z jednej strony w pe³ni ,,obj¹æ'' rodzinê modeli rzeczywistych (czyli spe³niæ warunek (\ref{WarunekNaWu})), z drugiej strony musi mo¿liwie ciasno przylegaæ do zbioru \( \mathcal{G}_r \). W dziedzinie czêstotliwoœci oznacza to, ¿e chcemy aby dla ka¿dej czêstotliwoœci górne oszacowanie maksymalnej wartoœci osobliwej by³o dok³adnie równej maksimum po maksymalnych wartoœciach osobliwych ze wszystkich \( G_i(s) \in \mathcal{G}_r \). Zak³adaj¹c ¿e warunek (\ref{WarunekNaWu}) jest spe³niony oznacza to, ¿e im ni¿ej le¿y wykres \( \sigma_{max}(G_p(j\omega) \) tym lepiej.
 
 Na podstawie rysunku (\ref{FigUncertPorownanie}) mo¿na stwierdziæ, ¿e rodzinê modeli rzeczywistych najlepiej reprezentuje model z niepewnoœci¹ bezwzglêdn¹.
 

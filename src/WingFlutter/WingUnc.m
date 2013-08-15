@@ -8,6 +8,16 @@ classdef WingUnc < WingParams
         Itheta_unc
         shtheta_unc
         U0_unc
+        
+        m_min
+        m_max
+        I_min
+        I_max
+        s_min
+        s_max
+        
+        U0_min = 40
+        U0_max = 120
     end
     
     methods
@@ -18,11 +28,20 @@ classdef WingUnc < WingParams
             params.fuelLevel = 1;
             qmax = [params.m; params.Itheta; params.shtheta];
 
+            
+            this.m_min = qmin(1);
+            this.I_min = qmin(2); 
+            this.s_min = qmin(3);
+            
+            this.m_max = qmax(1);
+            this.I_max = qmax(2); 
+            this.s_max = qmax(3);
+            
             this.m_unc = qmin(1) + this.fl*(qmax(1) - qmin(1));
             this.Itheta_unc = qmin(2) + this.fl*(qmax(2) - qmin(2));
             this.shtheta_unc = qmin(3) + this.fl*(qmax(3) - qmin(3));
             
-            this.U0_unc = ureal('U0',80,'Range',[40,120]);
+            this.U0_unc = ureal('U0',80,'Range',[this.U0_min, this.U0_max]);
         end
         
         function val = getM(this)
