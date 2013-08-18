@@ -71,6 +71,10 @@ Statki powietrzne z za³o¿enia pracuj¹ w bardzo zmiennym œrodowisku (du¿e zakresy
 
 Z tego powodu technika sterowania odpornego (robust control), wydaje siê byæ idealna do zastosowania w problemie t³umienia flatteru.
 
+\subsection{Regulator odporny a regulator parametryzowany}
+W lotnictwie najbardziej istotnym parametrem pracy obiektu jest prêdkoœæ lotu. Wraz ze zmian¹ prêdkoœci . Poniewa¿ jednak jest ona bardzo ³atwo mierzalna a zmiany s¹ oczywiœcie ci¹g³e, naturalnym rozwi¹zaniem jest zastosowanie regulatora parametryzowanego (gain scheduling) \cite{}. 
+
+W tej sytuacji techniki odpornego sterowania nie nale¿y rozpatrywaæ jako alternatywa, ale jako dope³nienie. Obszar pracy uk³adu musi zostaæ podzielony na mneijsze obszary. Parametry pracy zostaj¹ zdyskretyzowane i dla ka¿dego zestawu parametrów wyznaczany jest regulator. Nawet dla gêstej siatki dyskretyzacji nie mo¿emy mieæ pewnoœci, ¿e szereg regulatorów zapewni stabilnoœæ. Z pomoc¹ przychodzi w³aœnie teoria sterowania odpornego, które mo¿e tê stabilnoœæ zapewniæ, a co wiêcej, pozwala osi¹gn¹æ planowane kryteria jakoœci w ca³ym obszarze pracy.
 
 \chapter{Podstawy teoretyczne}
 
@@ -95,7 +99,7 @@ W niniejszej pracy uk³ad bêdzie oznaczany wielk¹ liter¹ niezale¿nie od postaci o
 
 Je¿eli wspó³czynniki równañ nie zale¿¹ od czasu mamy do czynienia z uk³adami stacjonarnymi. Chocia¿ z punktu widzenia charakteru zjawisk fizycznych, obiekt pracuj¹cy w zmiennym œrodowisku jest obiektem niestacjonarnym, to zazwyczaj opisuje siê go jako rodzina modeli stacjonarnych. Jest to o tyle s³uszne za³o¿enie, o ile zmiennoœæ parametrów jest du¿o wolniejsza od dynamiki obiektu.
 
-\section{Metody analizy uk³adów wielowymiarowych}
+\section{Metody analizy uk³adów wielowymiarowych (narzêdzia matematyczne?)}
 W przypadku systemów jednowymiarowych, analiza w dziedzinie czêstotliwoœci sprowadza siê do okreœlenia wzmocnienia i przesuniêcia fazowego odpowiedzi uk³adu na sinusoidalne wymuszenie. Charakterystykê czêstotliwoœciow¹ opisan¹ transmitancj¹ widmow¹ \(G(j \omega) \) uk³adu otrzymujemy bezpoœrednio podstawiaj¹c \( s = j \omega \) do transmitancji operatorowej.
 
 Gdy mamy do czynienia z systemem wielowymiarowym, na charakter odpowiedzi czêstotliwoœciowej maj¹ wp³yw wzglêdne wielkoœci i przesuniêcia fazowe poszczególnych sk³adników wektora wejœciowego. Sygna³ wejœciowy mo¿emy  przedstawiæ nastêpuj¹co: 
@@ -205,6 +209,80 @@ H_\infty (G(s)) = \sup_{\omega} \sigma_{\max}(G(j\omega))
 \end{equation}
 mo¿na zinterpretowaæ jako maksymalne wzmocnienie w dowolnym kierunku i dla dowolnej czêstotliwoœci. Norma ma szczególne zastosowanie do badania odpornej stabilnoœci uk³adu (Small Gain Theorem).
 
+\subsection{Strukturalna wartoœæ osobliwa macierzy}
+\label{sec:ssv}
+
+\begin{definition}
+\cite{Handbook} Dla macierzy \( M \in \mathcal{C}^{n x n} \), \( \mu_\Delta(M) \) jest zdefiniowana jako
+\begin{equation}
+\mu_\Delta(M) := \frac{1}{min\{\sigma_{max}(\Delta):\Delta \in \mathbf{\Delta}\}, det(I - M\Delta) = 0}
+\label{MuDef}
+\end{equation}
+Je¿eli nie istnieje \( \Delta \in {\bf \Delta} \), takie ¿e \( det(I-M\Delta) = 0\), to \( \mu_\Delta(M) := 0 \).
+\end{definition}
+Chocia¿ definicja nie nawi¹zuje bezpoœrednio to teorii sterowania, poprzez osobliwoœæ macierzy \((I - M\Delta)\), nale¿y rozumieæ niestabilnoœæ systemy zamkniêtego \( M - \Delta \), przedstawionego na rys.~\ref{mdelta}. Taki system opisuj¹ równania \( u = Mv \), \( v = \Delta u \). Jeœli \( I-M\Delta \) jest nieosobliwa, istnieje dok³adnie jedno rozwi¹zanie uk³adu równañ (\(u=0, v=0\), w przeciwnym przypadku istnieje nieskoñczenie wiele rozwi¹zañ, a normy \(\|u\|, \|v\|\) mog¹ byæ dowolnie du¿e.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth/3]{mdelta.png}
+\caption{Uk³ad zamkniêty \( M - \Delta \)}
+\label{mdelta}
+\end{figure}
+
+W tym kontekœcie, funkcja \( \mu(\cdot) \) okreœla wielkoœæ najmniejszej macierzy \( \Delta \), która powoduje ,,niestabilnoœæ'' pêtli przedstawionej na rys.~\ref{mdelta}. Norma destabilizuj¹cej macierzy \( \Delta\) wynosi \( 1/ \mu(M) \).
+
+Zbiór \( {\bf\Delta} \) musi mieæ okreœlon¹ blokow¹ strukturê, w której bloki le¿¹ na przek¹tnej:
+\begin{equation}
+{bf\Delta} = {diag[\delta_1 I_{r1},...,\delta_s I_{rs},\Delta_1,...,\Delta_f]:\delta_i \in \mathcal{C}, \Delta_j \in \mathcal{C}^{m_j x m_j}}
+\label{StrukturaDelta}
+\end{equation}
+gdzie \( \sum_{i}^{s} r_i + \sum_{j}^f m_j = n \), a n to rozmiar macierzy \( \Delta \in {\bf\Delta}\).
+
+W praktyce wartoœæ \( \mu_\Delta(M) \) mo¿e byæ wyznaczona jedynie poprzez oszacowanie dolnej i górnej granicy (odpowiednio \( \underline{\mu_\Delta(M)} i \overline{\mu_\Delta(M)} \) ). S³u¿¹ do tego numeryczne narzêdzia (np. funkcja {\it mussv } zestawu {\it Robust Control Toolbox}). Na podstawie wartoœci dolnego i górnego ograniczenia \( \mu_\Delta(M) \) otrzymamy informacjê o:
+\begin{itemize}
+\item \( \underline{N}_\Delta = |\Delta_{stab}| = \frac{1}{\bar{\mu}_\Delta} \) maksymalnej wielkoœci zaburzeñ , dla której uk³ad pozostaje stabilny
+\item \( \bar{N}_\Delta = |\Delta_{destab}| = \frac{1}{ \underline{\mu}_\Delta } \) minimalnej wielkoœci zaburzeñ, która destabilizuje uk³ad
+\end{itemize}
+Definicja \( \mu_\Delta \) w postaci odwrotnoœci wielkoœci \( \Delta \) \ref{MuDef} wprowadza pewne zamieszanie, które powinien uporz¹dkowaæ poni¿szy przyk³ad.
+
+\subsubsection{Przyk³ad - dolne i górne oszacowanie \( \mu_\Delta \)}
+Mamy dan¹ macierz
+\begin{equation*}
+M = \left[ \begin{matrix}
+1   & j\\
+1+2j& -2
+\end{matrix} \right]
+\end{equation*}
+oraz macierz perturbacji:
+\begin{equation*}
+\Delta = \left[ \begin{matrix}
+\delta_1   & 0\\
+ 0& \delta_2
+\end{matrix} \right]
+\end{equation*}
+gdzie \(\delta_1, \delta_2 \in \mathcal{C}\).
+Oszacowanie strukturalnej wartoœci osobliwej wynosi:
+\begin{equation*}
+\underline{\mu_\Delta(M)} \approx \overline{\mu_\Delta(M)} \approx 0,3268
+\end{equation*}
+Przyk³adowo dla macierzy
+\begin{equation*}
+\Delta_d = \left[ \begin{matrix}
+0.3196 + j 0.0682    &    0          \\
+        0            &-0.3263 - j 0.0174
+\end{matrix} \right]
+\end{equation*}
+której norma \( \|\Delta_d \|_2 = 1/\mu_\Delta(M) = 3,06 \), rzeczywiœcie wyznacznik \( det(I - M\Delta_d)\) jest równy 0.
+
+Poniewa¿ w praktycznych zastosowaniach \( \Delta \) reprezentuje zaburzenia (niepewnoœæ) modelu, uzasadnione jest ograniczenie wartoœci elementów do zbioru liczb rzeczywistych. Je¿eli za³o¿ymy, ¿e \( \delta_1, \delta_2 \in \mathcal{R} \), górne ograniczenie przyjmie wartoœæ:
+\begin{equation*}
+\bar{\mu}_\Delta(M) = 2,2899
+\end{equation*}
+Teraz nowa wartoœæ normy macierzy \( \Delta \) jest wiêksza od tej uzyskanej poprzednio
+\begin{equation*}
+\sigma\Delta(M) = 0,4367 > 3,06
+\end{equation*}
+
 \section{Niepewnoœæ}
 
 Analiza, lub synteza uk³adów regulacji opiera siê na modelu matematycznym obiektu fizycznego. Model matematyczny zawsze jest tylko przybli¿eniem rzeczywistoœci. Ró¿nica miêdzy modelem a rzeczywistym obiektem jest nazywana niepewnoœci¹ modelu matematycznego.
@@ -255,17 +333,78 @@ Analogicznie, model w dziedzinie czêstotliwoœci bêdzie mia³ postaæ nieskoñczonej
 \end{equation}
 gdzie zbiór \( Q \) jest okreœlony identycznie jak poprzednio \eqref{ZbiorQ}.
 
+\subsection{Ustrukturyzowana niepewnoœæ parametryczna}
+\label{sec:niepStr}
+
+Zapis modelu z niepewnoœci¹ w postaci~\ref{NiepParam} jest wygodny, ale nie znajduje zastosowania w praktycznych problemach. ¯eby umo¿liwiæ wykorzystanie teorii strukturalnej wartoœci osobliwej, niepewnoœæ parametryczna musi byæ ,,wyodrêbniona'' z modelu i zapisana w tzw. strukturalnej postaci \(\Delta\) (rys.~\ref{MsDelta}). 
+
+\begin{figure}[hbt]
+\centering
+\includegraphics{MsDelta.png}
+\caption{Standardowa konfiguracja \( M-\Delta \) z wyodrêbnion¹ niepewnoœci¹.}
+\label{MsDelta}
+\end{figure}
+
+Dla niepewnoœci parametrycznej, postaæ macierzy \(\Delta\) jest okreœlona podobnie jak w \ref{StrukturaDelta}, lecz wartoœci s¹ ograniczone do liczb rzeczywistych. Nie trac¹c na ogólnoœci rozwi¹zania, przyjmuje siê, ¿e macierz \( \Delta \) jest znormalizowana, czyli wartoœci jej elementów \( \delta \in <-1, 1> \).
+
+\subsubsection{Przyk³ad. Niepewnoœæ parametryczna cz³onu ca³kuj¹cego}
+Cz³on ca³kuj¹cy \( y(t) = \frac{k(q)}{s} \cdot u(t) \) (rys.~\ref{CzlonCalk}(a)) posiada niepewny wspó³czynnik \( k \), uzale¿niony od parametru \( q \):
+\[
+k(q) = \bar{k}(1 + q)
+\]
+Model w przestrzeni stanu jest zatem równie¿ uzale¿niona od parametru \( q\):
+\begin{equation}
+\begin{split}
+\dot{x}(t) &= \bar{k}(1 + q)u(t)\\
+y(t) &= x(t)
+\end{split}
+\label{EqCzlonCalk}
+\end{equation}
+W celu wyodrêbnienia niepewnego parametru \( q \) poza uk³ad, nale¿y dodaæ dwa ,,sztuczne'' sygna³y \( d_A(t), v_A(t) \); a sta³y blok zast¹piæ sta³¹ macierz¹ \( M_A\) tak, jak to pokazano na rys.~\ref{CzlonCalk}(b). 
+\begin{figure}[hbt]
+\centering
+\includegraphics{CzlonCalk.png}
+\caption{Cz³on ca³kuj¹cy (a). Wyodrêbniona niepewnoœæ parametryczna (b),(c).}
+\label{CzlonCalk}
+\end{figure}
+Dla \( M_A \) postaci:
+\[
+M_A = 
+\left[\begin{matrix}
+0 & \bar{k} \\ 1 & \bar{k}
+\end{matrix} \right]
+\]
+otrzymamy nowy uk³ad \( M(s)\) (rys.~\ref{CzlonCalk}(c)), w którym nie wystêpuje parametr \( q \):
+\begin{align*}
+\dot{x}(t) &= d_A(t) + \bar{k}u(t)\\
+v(t) &= \bar{k} u(t)\\
+y(t) &= x(t)
+\end{align*}
+Zamykaj¹c górn¹ pêtlê pewn¹ sta³¹ \( \Delta = q \) otrzymamy uk³ad wyjœciowy~\ref{EqCzlonCalk}.
+% TODO Fu(M(s),Delta
+
+% TODO a jak to robi matlab, gdy np dzielimy cos przez niepewny parametr?
+W przypadku ogólnym, gdy elementy macierzy uk³adu nie zale¿¹ liniowo od niepewnych parametrów, jesteœmy zmuszeni zaakceptowaæ mo¿liwe b³êdy.
+
+
+
 \subsection{Niepewnoœæ niestrukturalna}
 Czêstym Ÿród³em niepewnoœci co do modelu matematycznego jest tzw. niemodelowana dynamika, czyli pominiêcie pewnych zjawisk fizycznych. Je¿eli znamy zakres czêstotliwoœci tych zjawisk oraz wzmocnienie, mo¿emy je opisaæ korzystaj¹c z modelu niepewnoœci niestrukturalnej. W modelu zak³adamy totalny brak wiedzy na temat przesuniêcia fazowego pominiêtych oddzia³ywañ, st¹d w równaniach opisuj¹cych niepewnoœæ, pojawia siê symbol \( \Delta(s) \) który reprezentuje dowolny uk³ad, co do którego wiemy jedynie, ¿e amplituda odpowiedzi czêstotliwoœciowej jest mniejsza lub równa 1.
 
 
-\subsubsection{Model wzglêdnej (multiplikatywnej) niepewnoœci na wejœciu}
+\subsubsection{Model wzglêdnej (multiplikatywnej) niepewnoœci}
+Rozró¿nia siê niepewnoœæ wzglêdn¹ na wejœciu modelu (rys.~\ref{RysModeleNiep}(a)):
 \begin{equation}
 G_p(s) = G_n(s)(I + w_i(s) \Delta(s))
 \label{NiepWzglIn}
 \end{equation}
+oraz na wyjœciu (rys.~\ref{RysModeleNiep}(b)):
+\begin{equation}
+G_p(s) = (I + w_o(s) \Delta(s))G_n(s)
+\label{NiepWzglOut}
+\end{equation}
 
-Interpretacja niepewnoœci wzglêdnej na wejœciu obiektu dla uk³adu jednowymiarowego jest identyczna jak dla niepewnoœci na wyjœciu. Funkcja wagowa \(w_i(s)\) okreœla mo¿liw¹ ró¿nicê w amplitudzie odpowiedzi czêstotliwoœciowej {\bf wzglêdem} modelu nominalnego \( Gn(s) \) (rys. \ref{FigUncertMult}).
+Interpretacja niepewnoœci wzglêdnej na wejœciu wyjœciu obiektu dla uk³adu jednowymiarowego jest identyczna. Funkcja wagowa \(w_i(s)\) okreœla mo¿liw¹ ró¿nicê w amplitudzie odpowiedzi czêstotliwoœciowej {\bf wzglêdem} modelu nominalnego \( Gn(s) \) (rys. \ref{FigUncertMult}).
 
 \begin{figure}[hbt]
 \centering
@@ -274,16 +413,13 @@ Interpretacja niepewnoœci wzglêdnej na wejœciu obiektu dla uk³adu jednowymiarowe
 \label{FigUncertMult}
 \end{figure}
 
-\subsubsection{Model wzglêdnej (multiplikatywnej) niepewnoœci na wyjœciu}
-\begin{equation}
-G_p(s) = (I + w_o(s) \Delta(s))G_n(s)
-\label{NiepWzglOut}
-\end{equation}
 \subsubsection{Model bezwzglêdnej (addytywnej) niepewnoœci}
+Model bezwzglêdnej niepewnoœci opisany jest równaniem:
 \begin{equation}
 G_p(s) = G_n(s) + w_a(s) \Delta(s)
 \label{NiepBezwzgl}
 \end{equation}
+Funkcja wagowa \( w_a(s) \) opisuje bezwzglêdn¹ ró¿nicê miêdzy amplitud¹ odpowiedzi czêstotliwóœciowej obiektu nominalnego i obiektu rzeczywistego w najgorszym przypadku.
 
 \begin{figure}[hbt]
 \centering
@@ -335,97 +471,205 @@ Zazwyczaj mamy do czynienia z nieskoñczonym zbiorem \(\mathcal{G}_r\), dlatego w
 %\subsubsection{Model multiplikatywny (wzglêdny) niepewnoœci}
 %\subsubsection{Model addytywny (bezwzglêdny) niepewnoœci}
 
-\section{Strukturalna wartoœæ osobliwa macierzy}
-\begin{definition}
-\cite{Handbook} Dla macierzy \( M \in \mathcal{C}^{n x n} \), \( \mu_\Delta(M) \) jest zdefiniowana jako
+\section{Odpornoœæ uk³adu regulacji}
+Podstawowym kryterium oceny uk³adu regulacji jest stabilnoœæ. Zweryfikowanie stabilnoœci dla modelu nominalnego nie stanowi problemu. Ciekawszym problemem jest ocena, czy uk³ad pozostanie stabilny pomimo b³êdów w modelowaniu i zmiennoœci parametrów pracy. Drugim problemem jest uzyskanie po¿¹danej jakoœci sterowania. Ponownie sprawdzenie kryteriów jakoœci dla nominalnego modelu jest trywialne. Prawdziwym zadaniem jest osi¹gniêcie odpornych osi¹gów, czyli zapewnienie jakoœci regulacji dla ca³ego zakresu pracy (dla ca³ej rodziny \( \mathcal{G}_r \).
+
+Wyró¿niamy zatem cztery kolejne cechy uk³adu. Kolejnoœæ ma znaczenie, poniewa¿ dowolna cecha nie mo¿e byæ osi¹gniêta bez zrealizowania wszystkich poprzednich:
+\begin{enumerate}
+\item Nominalna stabilnoœæ
+\item Nominalne osi¹gi
+\item Odporna stabilnoœæ
+\item Odporne osi¹gi
+\end{enumerate}
+
+O ile pojêcie stabilnoœæ modelu liniowego jest jednoznaczne, o tyle definicja po¿¹danej jakoœci sterowania mo¿e byæ bardzo ró¿na. W teorii sterowania odpornego mamy do czynienia wy³¹cznie z kryteriami w dziedzinie czasu i zazwyczaj w ramach normy \( H_\infty \).
+
+\subsection{Warunek odpornej stabilnoœci}
+
+Postaæ warunku odpornej stabilnoœci bêdzie siê ró¿niæ w zale¿noœci od modelu u¿ytego do opisu niepewnoœci, natomiast w ka¿dym przypadku mo¿na ten warunek wyprowadziæ w oparciu o teoriê ma³ych wzmocnieñ (Small Gain Theorem)~\cite{Handbook}.
+
+\begin{theorem} {\bf Stabilnoœæ uk³adu z wzglêdn¹ niepewnoœci¹ na wyjœciu} \\
+Zak³adaj¹c, ¿e nominalny uk³ad zamkniêty oraz funkcja wagowa \( w_o(s) \) s¹ stabilne, warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
 \begin{equation}
-\mu_\Delta(M) := \frac{1}{min\{\sigma_{max}(\Delta):\Delta \in \mathbf{\Delta}\}, det(I - M\Delta) = 0}
-\label{MuDef}
+\mathcal{G}_p = \{ G_p(s) : G_p(s) = (I + w_o(s)\Delta(s))G_n(s), \|\Delta(s)\|_\infty \leq 1 \}
 \end{equation}
-Je¿eli nie istnieje \( \Delta \in {\bf \Delta} \), takie ¿e \( det(I-M\Delta) = 0\), to \( \mu_\Delta(M) := 0 \).
-\end{definition}
-Chocia¿ definicja nie nawi¹zuje bezpoœrednio to teorii sterowania, poprzez osobliwoœæ macierzy \((I - M\Delta\), nale¿y rozumieæ niestabilnoœæ systemy zamkniêtego \( M - \Delta \), przedstawionego na rys. \ref{mdelta}. Taki system opisuj¹ równania \( u = Mv \), \( v = \Delta u \). Jeœli \( I-M\Delta \) jest nieosobliwa, istnieje dok³adnie jedno rozwi¹zanie uk³adu równañ (\(u=0, v=0\), w przeciwnym przypadku istnieje nieskoñczenie wiele rozwi¹zañ, a normy \(\|u\|, \|v\|\) mog¹ byæ dowolnie du¿e.
+jest spe³nienie zale¿noœci:
+\begin{equation}
+\| w_o(s)G(s)K(s)(I + G(s)K(s))^{-1} \|_\infty < 1
+\label{MultStability}
+\end{equation}
+\end{theorem}
+
+\begin{theorem} {\bf Stabilnoœæ uk³adu z wzglêdn¹ niepewnoœci¹ na wejœciu} \\
+Zak³adaj¹c, ¿e nominalny uk³ad zamkniêty oraz funkcja wagowa \( w_o(s) \) s¹ stabilne, warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
+\begin{equation}
+\mathcal{G}_p = \{ G_p(s) : G_p(s) = G_n(s)(I + w_i(s)\Delta(s)), \|\Delta(s)\|_\infty \leq 1 \}
+\end{equation}
+jest spe³nienie zale¿noœci:
+\begin{equation}
+\| w_i(s)(I + K(s)G(s))^{-1}K(s)G(s) \|_\infty < 1
+\label{MultInStability}
+\end{equation}
+\end{theorem}
+
+\begin{theorem} {\bf Stabilnoœæ uk³adu z bezwzglêdn¹ niepewnoœci¹} \\
+Zak³adaj¹c, ¿e nominalny uk³ad zamkniêty oraz funkcja wagowa \( w_a(s) \) s¹ stabilne, warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
+\begin{equation}
+\mathcal{G}_p = \{ G_p(s) : G_p(s) = G_n(s) + w_a(s)\Delta(s), \|\Delta(s)\|_\infty \leq 1 \}
+\end{equation}
+jest:
+\begin{equation}
+\| w_a(s)(I + K(s)G(s))^{-1}K(s) \|_\infty < 1
+\label{AddStability}
+\end{equation}
+\end{theorem}
+
+Bezwzglêdny model niepewnoœci jest bardziej naturaln¹ reprezentacj¹ ró¿nic w 
+dynamice modelu i rzeczywistego obiektu (w szczególnoœci, nie ma koniecznoœci odzwierciedlania tych ró¿nic na wejœciu lub wyjœciu obiektu). Mimo to, w praktyce zazwyczaj stosuje siê model wzglêdny \cite{Handbook}, poniewa¿ jak wynika z równania \ref{AddStability} warunek odpornej stabilnoœci zale¿y zarówno od \( K(s)G(s) \) jak i wprost od transmitancji regulatora \( K(s) \). Uwzglêdnienie tego warunku w modelu uogólnionym nie jest trywialne.
+
+Nale¿y jeszcze zaznaczyæ, ¿e warunek wystarczaj¹cy (\ref{MultStability}), mo¿e byæ zbyt zachowawczy i nie zostanie spe³niony nawet dla odpornie stabilnego uk³adu, co prezentuje poni¿szy przyk³ad.
+
+\subsubsection{Przyk³ad - uk³ad masa-sprê¿yna-t³umik}
+Masa \( m \), której ruchowi towarzyszy tarcie lepkie o wspó³czynniku t³umienia \( c \), jest zamocowana na sprê¿ynie o sztywnoœci \( k \). Parametry uk³adu s¹ niepewne, a ich wartoœci nominalne i zakresy zmiennoœci wynosz¹:
+\begin{align}
+m &= 3 \pm 60 \%,\\
+c &= 1 \pm 60 \%,\\
+k &= 2 \pm 40 \%.
+\end{align}
+Sygna³em wejœciowym jest si³a przy³o¿ona do masy \( f(x) \), sygna³em wyjœciowym - po³o¿enie masy \( x(t) \).
+
+W pierwszym podejœciu zaprojektowano regulator \( H_\infty \), przy czym waga dotycz¹ca sygna³u steruj¹cego \( w_u(s) = 0,01 \), natomiast waga b³êdu sterowania \( e(t) \) wynosi:
+\begin{equation}
+w_p(s) = 0,95 \frac{s^2 + 1,8s + 10}{s^2 + 8s + 0,01}.
+\nonumber
+\end{equation}
+
+
+Kryteria jakoœciowe zdefiniowane funkcjami wagowymi \( w_u(s) \) i \( w_p(s) \) zosta³y spe³nione (\(\gamma < 1 \)), ale uk³ad zamkniêty okaza³ siê niestabilny dla pewnych wartoœci parametrów \( m, c\) i \(k\).
+
+W kolejnym etapie uwzglêdniono zmiennoœæ parametrów w postaci wzglêdnego modelu niepewnoœci. Wagê \( w_o(s) \) dobrano tak, aby powsta³a rodzina modeli objê³a rodzinê obiektów \( \mathcal{G}_r \subset \mathcal{G}_p \) (rys. \ref{MsdUncert}).
 
 \begin{figure}[hbt]
 \centering
-\includegraphics[width=\linewidth/3]{mdelta.png}
-\caption{Uk³ad zamkniêty \( M - \Delta \)}
-\label{mdelta}
+\includegraphics[width=\linewidth]{MsdUncert.eps}
+\caption{Dobór funkcji wagowej modelu niepewnoœci.}
+\label{MsdUncert}
 \end{figure}
 
-W tym kontekœcie, funkcja \( \mu(\cdot) \) okreœla wielkoœæ najmniejszej macierzy \( \Delta \), która powoduje "niestabilnoœæ" pêtli przedstawionej na rys{mdelta}. Norma destabilizuj¹cej macierzy \( \Delta\) wynosi \( 1/ \mu(M) \).
+Okazuje siê, ¿e chocia¿ kryteria jakoœciowe (w tym kryterium odpornoœci) nie zosta³y spe³nione (\( \gamma = 2,56 \)), uk³ad zamkniêty jest odpornie stabilny. Samo uwzglêdnienie niepewnoœci pozwoli³o osi¹gn¹æ odporn¹ stabilnoœæ. Na rys.~(\ref{Msd2}) porównano transmitancje widmowe uk³adu zamkniêtego \( G(s)K(s)(I+G(s)K(s))^{-1} \) dwóch regulatorów, które dla spe³nienia warunku wystarczaj¹cego kryterium stabilnoœci, powinny byæ mniejsze od \( 1/w_o(j\omega) \) dla ka¿dego \( \omega \geq 0 \).
 
-Zbiór \( {\bf\Delta} \) musi mieæ okreœlon¹ blokow¹ strukturê, w której bloki le¿¹ na przek¹tnej:
-\begin{equation}
-{bf\Delta} = {diag[\delta_1 I_{r1},...,\delta_s I_{rs},\Delta_1,...,\Delta_f]:\delta_i \in \mathcal{C}, \Delta_j \in \mathcal{C}^{m_j x m_j}}
-\end{equation}
-gdzie \( \sum_{i}^{s} r_i + \sum_{j}^f m_j = n \), a n to rozmiar macierzy \( \Delta \in {\bf\Delta}\).
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{Msd2.eps}
+\caption{Chocia¿ warunek wystarczaj¹cy nie zosta³ spe³niony, regulator 2. jest odpornie stabilny.}
+\label{Msd2}
+\end{figure}
 
-W praktyce wartoœæ \( \mu_\Delta(M) \) mo¿e byæ wyznaczona jedynie poprzez oszacowanie dolnej i górnej granicy (odpowiednio \( \underline{\mu_\Delta(M)} i \overline{\mu_\Delta(M)} \) ). S³u¿¹ do tego numeryczne narzêdzia (np. funkcja {\it mussv } zestawu {\it Robust Control Toolbox } ). Na podstawie wartoœci dolnego i górnego ograniczenia \( \mu_\Delta(M) \) otrzymamy informacjê o:
-\begin{itemize}
-\item maksymalnej wielkoœci zaburzeñ \( \sigma_{max}(\Delta) = \frac{1}{\underline{\mu_\Delta(M)}} \), dla której uk³ad pozostaje stabilny
-\item minimalnej wielkoœci zaburzeñ \( \sigma_{max}(\Delta) = \frac{1}{\overline{\mu_\Delta(M)}} \), która destabilizuje uk³ad
-\end{itemize}
-Definicja \( \mu_\Delta \) w postaci odwrotnoœci wielkoœci \( \Delta \) \ref{MuDef} wprowadza pewne zamieszanie, które powinien uporz¹dkowaæ poni¿szy przyk³ad.
-
-\subsubsection{Przyk³ad - dolne i górne oszacowanie \( \mu_\Delta \)}
-Mamy dan¹ macierz
-\begin{equation*}
-M = \left[ \begin{matrix}
-1   & j\\
-1+2j& -2
-\end{matrix} \right]
-\end{equation*}
-oraz macierz perturbacji:
-\begin{equation*}
-\Delta = \left[ \begin{matrix}
-\delta_1   & 0\\
- 0& \delta_2
-\end{matrix} \right]
-\end{equation*}
-gdzie \(\delta_1, \delta_2 \in \mathcal{C}\).
-Oszacowanie strukturalnej wartoœci osobliwej wynosi:
-\begin{equation*}
-\underline{\mu_\Delta(M)} \approx \overline{\mu_\Delta(M)} \approx 0,3268
-\end{equation*}
-Przyk³adowo dla macierzy
-\begin{equation*}
-\Delta_d = \left[ \begin{matrix}
-0.3196 + j 0.0682    &    0          \\
-        0            &-0.3263 - j 0.0174
-\end{matrix} \right]
-\end{equation*}
-której norma \( \|\Delta_d \|_2 = 1/\mu_\Delta(M) = 3,06 \), rzeczywiœcie wyznacznik \( det(I - M\Delta_d)\) jest równy 0.
-
-Poniewa¿ w praktycznych zastosowaniach \( \Delta \) reprezentuje zaburzenia (niepewnoœæ) modelu, uzasadnione jest ograniczenie wartoœci elementów do zbioru liczb rzeczywistych. Je¿eli za³o¿ymy, ¿e \( \delta_1, \delta_2 \in \mathcal{R} \), dolne ograniczenie przyjmie wartoœæ
-\begin{equation*}
-\underline{\mu_\Delta(M)} = 2,2899
-\end{equation*}
-natomiast górne ograniczenie okazuje siê niemo¿liwe do oszacowania za pomoc¹ dostêpnych narzêdzi.
-
-Teraz nowa wartoœæ normy macierzy \( \Delta \) jest wiêksza od tej uzyskanej poprzednio
-\begin{equation*}
-\sigma\Delta(M) = 0,4367 > 3,06
-\end{equation*}
 
 \subsection{Strukturalna wartoœæ osobliwa macierzy transmitancji}
-Strukturalna wartoœæ osobliwa macierzy mo¿e zostaæ wykorzystana do analizy odpornoœci macierzy transmitancji \( G(s) \) wzglêdem zaburzeñ okreœlonych struktur¹ \( \Delta \). W tej sytuacji, \( \Delta \) definiuje zaburzenia (model niepewnoœci), a \( M = G(j\omega) \) dla pewnej wartoœci \( \omega \). Mo¿emy zatem zdefiniowaæ strukturaln¹ wartoœæ osobliw¹ dla macierzy transmitancji:
+£¹cz¹c zawartoœæ rozdzia³ów \ref{sec:ssv} i \ref{sec:niepStr} mo¿emy wyprowadziæ warunek na odpornoœæ uk³adu regulacji w kontekœcie strukturalnej wartoœci osobliwej.
+
+Strukturalna wartoœæ osobliwa macierzy mo¿e zostaæ wykorzystana do analizy odpornoœci macierzy transmitancji \( G(s) \) wzglêdem zaburzeñ okreœlonych struktur¹ \( \Delta \)(model niepewnoœci). Mo¿emy zatem zdefiniowaæ strukturaln¹ wartoœæ osobliw¹ dla macierzy transmitancji:
 % TODO przerobic to na definicje?
 \begin{equation}
 \mu_\Delta(G(s)) := \sup_{\omega \in \mathcal{R}} \mu_\Delta(G(j\omega))
 \label{DefMuG}
 \end{equation}
-W ogólnoœci uk³ad \( G(s) \) jest stabilny wzglêdem zaburzeñ \( \Delta \), je¿eli \( G(s) \) jest stabilny i \( \mu_\Delta(G(s)) < 1 \).
 
-Poniewa¿ wartoœæ \( \mu_\Delta(g(S)) \) jest liczona osobno dla ka¿dej czêstotliwoœci, dyskretny zbiór \( \omega \) powinien byæ tak dobrany, aby zapewniæ wiarygodne wyniki oraz sensown¹ z³o¿onoœæ obliczeniow¹. Czêstotliwoœæ dla której \( \mu_\Delta \) przyjmuje najwiêksz¹ wartoœæ odpowiada czêstotliwoœci niestabilnej postaci ruchu.
+Zwyczajowo u¿ywa siê znormalizowanej postaci \( \Delta \) - dla \( | \Delta |_\infty = 1 \) mamy do czynienia ze skrajnym odchyleniem od uk³adu nominalnego. Przy takim za³o¿eniu warunek odpornej stabilnoœci wygl¹da nastêpuj¹co:
+\begin{theorem} {\bf Stabilnoœæ uk³adu z niepewnoœci¹ parametryczn¹} \\
+Zak³adaj¹c, ¿e nominalny uk³ad \( G(s) \) jest stabilny, warunkiem odpornej stabilnoœci rodziny uk³adów o postaci
+\begin{equation}
+\mathcal{G}_p = \{ G_p(s) : G_p(s) = F_u(G(s),\Delta) = ??, \Delta(s) \in \mathbf{\Delta} \}
+\end{equation}
+jest spe³nienie zale¿noœci:
+\begin{equation}
+\mu_\Delta(G(s)) < 1
+\label{MultStability}
+\end{equation}
+\label{ThOdpStab}
+\end{theorem}
 
-TODO wykres \( \mu_\Delta \) od czêstotliwoœci (np dla uk³adu masa-sprê¿yna-t³umik). Jak to zrobiæ? [Robust with Matlab] str. 120 (127).
+Poniewa¿ w praktycznych zastosowaniach mamy do czynienia z oszacowaniem wartoœci \( \mu_\Delta(G(s)) \), interesuje nas przede wszystkim górne oszacowanie \( \bar{\mu}_\Delta(G(s)) \), poniewa¿ na jego podstawie jesteœmy w stanie wyznaczyæ margines stabilnoœci, czyli graniczn¹ wielkoœæ zaburzeñ \( |\Delta|_\infty = 1/\bar{\mu}_\Delta(G(s)) \), dla których uk³ad pozostaje stabilny. Graficzn¹ interpretacjê SSV macierzy transmitancji przedstawia rys.~\ref{ssvSchemat}.
 
-TODO odporne osiagi z Robust Control with matlab, strona 73 (83)\\
-Robust Performance (RP)  < 1, for structured uncertainty\\
-Robust Stability (RS) < 1, for structured uncertainty\\
-Nominal Performance (NP) M22 < 1\\
-Nominal Stability (NS) M is internally stable
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{ssvSchemat.png}
+\caption{Górne i dolne oszacowanie strukturalnej wartoœci osobliwej oraz odpowiadaj¹ce oszacowanie normy macierzy \( \Delta \).}
+\label{ssvSchemat.png}
+\end{figure}
+
+Poniewa¿ wartoœæ \( \mu_\Delta(G(S)) \) mo¿e zostaæ obliczone numerycznie jako lokalne maksimum wzglêdem pulsacji, wstêpny zakresu poszukiwañ powinien byæ tak dobrany, aby zapewniæ wiarygodne wyniki oraz sensown¹ z³o¿onoœæ obliczeniow¹. Jest to zazwyczaj obszar czêstotliwoœci zbli¿onych do postaci ruchu (szczególnie tych niestabilnych).
+
+¯eby zdefiniowaæ warunek {\bf odpornych osi¹gów} musimy rozszerzyæ model z rys.~\ref{} aby uwzglêdniæ dodatkowe sygna³y wejœciowe i wyjœciowe. Na rys.~\ref{MDeltaRp}(a) przedstawiono dodatkowe sygna³y \( w \) (zewnêtrze zaburzenia, sygna³ steruj¹cy, szum pomiarowy) oraz \( z\) (dowolne wielkoœci podlegaj¹ce ocenie, np. uchyb lub wysi³ek sterowania). Zazwyczaj kryterium jakoœciowe jest zdefiniowane jako norma \( H_\infty \) transmitancji \( z(s) = T_{zw}(s)w(s) \) (funkcje wagowe s¹ ju¿ uwzglêdnione w modelu \(G(s)\)).
+\begin{figure}[hbt]
+\centering
+\includegraphics{MDeltaRp.png}
+\caption{Konfiguracja \( M-\Delta \) do analizy odpornoœci osi¹gów.}
+\label{MDeltaRp}
+\end{figure}
+
+Niech \(G(s)\) bêdzie postaci:
+\[
+G = 
+\left[\begin{matrix} 
+G_{11} & G_{12} \\
+G_{21} & G_{22}
+\end{matrix}\right]
+\]
+Mo¿na wykazaæ, ¿e
+\[
+z = [G_{22} + G_{21}\Delta(I - G_{11}\Delta)^{-1}G_{12}] w = Fu(G,\Delta)w
+\]
+Wobec tego kryterium jakoœciowe mo¿e zostaæ zapisane w postaci:
+\begin{equation}
+|T_{zw}|_\infty = |F_u(G,\Delta)|_\infty < 1
+\label{EqRobStab}
+\end{equation}
+Warunek \ref{EqRobStab} powinien byæ spe³niony dla ca³ej rodziny \( \mathcal{G}_r \) co jest równowa¿ne z odporn¹ stabilnoœci¹ uk³adu przedstawionego na rys.~\ref{MDeltaRp}(b). Macierz \( \Delta_p \in \mathcal{C}^{m \times n} \) mo¿e przyjmowaæ dowolne wartoœci, ale musi spe³niaæ ograniczenie \( |\Delta_p |_\infty \leq 1 \).
+
+Warunek na odporne osi¹gi mo¿e byæ sprowadzony do postaci z twierdzenia~\ref{ThOdpStab}, ale macierz niepewnoœci musi zostaæ zast¹piona przez:
+\[
+\tilde{\Delta} \in \mathbf{\tilde{\Delta}} = \{diag\{\Delta, \Delta_p\} : \Delta \in \mathbf{\Delta}, |\Delta_p|_\infty \leq 1\}
+\]
+
+Poni¿ej znajduje siê podsumowanie warunków spe³nienia kolejnych cech systemu:
+\begin{enumerate}
+\item Nominalna stabilnoœæ \( \Leftrightarrow \) \(G(s)\) stabilna
+\item Nominalne osi¹gi \( \Leftrightarrow \) \( |G_{22}|_\infty < 1 \)
+\item Odporna stabilnoœæ \( \Leftrightarrow \) \( \mu_\Delta(G_{11}) \) stabilne dla niepewnoœci \( \Delta \)
+\item Odporne osi¹gi \( \Leftrightarrow \) \( \mu_\Delta(G) \) stabilne dla niepewnoœci \( \tilde{\Delta} \)
+\end{enumerate}
+
+% TODO dwa typy niepewnoœci mog¹ byæ stosowane wymiennie
+Niepewnoœæ niestrukturalna mo¿e byæ bezpoœrednio przeniesiona do konfiguracji \( M-\Delta \), natomiast niepewnoœæ parametryczna mo¿e zostaæ objêta niepewnoœci¹ niestrukturaln¹ (co pokazano w przyk³adzie z poprzedniego rozdzia³u). Takie rozwi¹zanie jest jednak bardziej zachowawcze.
+
+\subsubsection{Przyk³ad. Odpornoœæ uk³adu masa-sprê¿yna-t³umik}
+Kontynuuj¹c przyk³ad z poprzedniego rozdzia³u, wyznaczono strukturaln¹ wartoœæ osobliw¹ wzglêdem odpowiedniej macierzy zaburzeñ \(\Delta\) dla dwóch uk³adów zamkniêtych (dla dwóch regulatorów wyznaczonych metod¹ minimalizacji normy \( H_\infty \)).
+
+Na podstawie wykresu \ref{MsdSsv} mo¿emy potwierdziæ wyniki uzyskane poprzednio z wykorzystaniem normy \( H_\infty \). Regulator \( K_{H\infty} \#1 \) nie stabilizuje odpornie uk³adu, poniewa¿ istnieje pulsacja \( \omega \), dla której \( \mu_\Delta(G(j\omega)) > 1\). Lokalne maksima wartoœci \( \mu_\Delta(G(j\omega))\) odpowiadaj¹ pulsacj¹ dwóch postaci ruchu. Uk³ad zamkniêty w pêtli z drugim regulatorem \( K_{H\infty} \#2 \) jest odpornie stabilny \( \forall_{\omega} \mu_\Delta(G(j\omega))\).
+Dodatkowo zamieszczono wykres wartoœci osobliwej uk³adu otwartego (który zgodnie z oczekiwaniami jest odpornie stabilny).
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\linewidth]{MsdSsv.eps}
+\caption{Strukturalna wartoœæ osobliwa uk³adu otwartego masa-sprê¿yna-t³umik oraz uk³adów zamkniêtych dla dwóch regulatorów.}
+\label{MsdSsv}
+\end{figure}
+
+Wa¿nym wnioskiem wynikaj¹cym z powy¿szej analizy jest to, ¿e warunek stabilnoœci oparty na normie \( H_\infty \) jest bardziej konserwatywny od tego wynikaj¹cego z SSV.
+
+\subsubsection{Przyk³ad. Odporne osi¹gi uk³adu masa-sprê¿yna-t³umik}
+Jak wykazano w poprzednim przyk³adzie, odporna stabilnoœæ zosta³a osi¹gniêta za pomoc¹ regulatora \( K_{H\infty} \#2 \). Weryfikacja odpornoœci osi¹gów polega na wyznaczeniu górnej granicy SSV dla wa¿onego uk³adu zamkniêtego \( \mu_\Delta(C_w(s)) \). Na rys.~\ref{MsdRobustPerf} przedstawiono wykres strukturalnej wartoœci osobliwej oraz maksymaln¹ wartoœæ osobliw¹ transmitancji pomiêdzy zewnêtrznym sygna³em \( w(t) \), a sygna³em jakoœci sterowania \( z(t) \).
+
+\begin{figure}[hbt]
+\centering
+\includegraphics{MsdRobustPerf.eps}
+\caption{Warunek odpornoœci osi¹gów dla uk³adu masa-sprê¿yna-t³umik.}
+\label{MsdRobustPerf}
+\end{figure}
+
+Zakres pulsacji, dla których \( \mu_\Delta(C_w(j\omega)) > 1 \) rzeczywiœcie pokrywa siê z zakresem, gdzie dla pewnego modelu \( G_p(s) \in \mathcal{G}_r \) \( \sigma_{max}(T_zw(j\omega)) > 1 \). Odporne osi¹gi nie zosta³y uzyskane.
 
 \section{Metody syntezy odpornych regulatorów}
 W standardowym podejœciu do uk³adu regulacji, prawa sterowania s¹ wyznaczane dla pewnego modelu nominalnego, który ma byæ mo¿liwie wiernym odwzorowaniem modelu rzeczywistego. Nastêpnie weryfikuje siê za³o¿enia projektowe, a w tym stabilnoœæ pracy w rzeczywistych (zmiennych) warunkach. Model nominalny jest jedynym wejœciem do procesu projektowania uk³adu sterowania.
@@ -541,84 +785,66 @@ W szczególnoœci dla uk³adów jednowymiarowych, optymalizacja \( H_\infty \) ma pr
 
 TODO: Przyk³ad. Masa na sprê¿ynie. Ujêcie wymagañ co do sygna³u sterowania i uchybu. Synteza regulatora.
 
-\subsection{Warunek odpornej stabilnoœci}
-
-Warunek odpornej stabilnoœci uk³adu z niepewnoœci¹ na wyjœciu mo¿na wyprowadziæ w oparciu o teoriê ma³ych wzmocnieñ (Small Gain Theorem)~\cite{Handbook}.
-
-\begin{theorem} {\bf Stabilnoœæ uk³adu z wzglêdn¹ niepewnoœci¹ na wyjœciu} \\
-Zak³adaj¹c, ¿e nominalny uk³ad zamkniêty oraz funkcja wagowa \( w_o(s) \) s¹ stabilne, warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
-\begin{equation}
-\mathcal{G}_p = \{ G_p(s) : G_p(s) = (I + w_o(s)\Delta(s))G_n(s), \|\Delta(s)\|_\infty \leq 1 \}
-\end{equation}
-jest spe³nienie zale¿noœci:
-\begin{equation}
-\| w_o(s)G(s)K(s)(I + G(s)K(s))^{-1} \|_\infty < 1
-\label{MultStability}
-\end{equation}
-\end{theorem}
-
-\begin{theorem} {\bf Stabilnoœæ uk³adu z wzglêdn¹ niepewnoœci¹ na wejœciu} \\
-Zak³adaj¹c, ¿e nominalny uk³ad zamkniêty oraz funkcja wagowa \( w_o(s) \) s¹ stabilne, warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
-\begin{equation}
-\mathcal{G}_p = \{ G_p(s) : G_p(s) = G_n(s)(I + w_i(s)\Delta(s)), \|\Delta(s)\|_\infty \leq 1 \}
-\end{equation}
-jest spe³nienie zale¿noœci:
-\begin{equation}
-\| w_i(s)(I + K(s)G(s))^{-1}K(s)G(s) \|_\infty < 1
-\label{MultInStability}
-\end{equation}
-\end{theorem}
-
-\begin{theorem} {\bf Stabilnoœæ uk³adu z bezwzglêdn¹ niepewnoœci¹} \\
-Zak³adaj¹c, ¿e nominalny uk³ad zamkniêty oraz funkcja wagowa \( w_a(s) \) s¹ stabilne, warunkiem {\bf wystarczaj¹cym} odpornej stabilnoœci rodziny uk³adów o postaci
-\begin{equation}
-\mathcal{G}_p = \{ G_p(s) : G_p(s) = G_n(s) + w_a(s)\Delta(s), \|\Delta(s)\|_\infty \leq 1 \}
-\end{equation}
-jest:
-\begin{equation}
-\| w_a(s)(I + K(s)G(s))^{-1}K(s) \|_\infty < 1
-\label{AddStability}
-\end{equation}
-\end{theorem}
-
-Bezwzglêdny model niepewnoœci jest bardziej naturaln¹ reprezentacj¹ ró¿nic w 
-dynamice modelu i rzeczywistego obiektu (w szczególnoœci, nie ma koniecznoœci odzwierciedlania tych ró¿nic na wejœciu lub wyjœciu obiektu). Mimo to, w praktyce zazwyczaj stosuje siê model wzglêdny \cite{Handbook}, poniewa¿ jak wynika z równania \ref{AddStability} warunek odpornej stabilnoœci zale¿y zarówno od \( K(s)G(s) \) jak i wprost od transmitancji regulatora \( K(s) \). Uwzglêdnienie tego warunku w modelu uogólnionym nie jest trywialne.
-
-Nale¿y jeszcze zaznaczyæ, ¿e warunek wystarczaj¹cy (\ref{MultStability}), mo¿e byæ zbyt zachowawczy i nie zostanie spe³niony nawet dla odpornie stabilnego uk³adu, co prezentuje poni¿szy przyk³ad.
-
-\subsubsection{Przyk³ad - uk³ad masa-sprê¿yna-t³umik}
-Masa \( m \), której ruchowi towarzyszy tarcie lepkie o wspó³czynniku t³umienia \( c \), jest zamocowana na sprê¿ynie o sztywnoœci \( k \). Parametry uk³adu s¹ niepewne, a ich wartoœci nominalne i zakresy zmiennoœci wynosz¹:
-\begin{align}
-m &= 3 \pm 60 \%,\\
-c &= 1 \pm 60 \%,\\
-k &= 2 \pm 40 \%.
-\end{align}
-Sygna³em wejœciowym jest si³a przy³o¿ona do masy \( f(x) \), sygna³em wyjœciowym - po³o¿enie masy \( x(t) \).
-
-W pierwszym podejœciu zaprojektowano regulator \( H_\infty \), przy czym waga dotycz¹ca sygna³u steruj¹cego \( w_u(s) = 0,01 \), natomiast waga b³êdu sterowania \( e(t) \) wynosi:
-\begin{equation}
-w_p(s) = 0,95 \frac{s^2 + 1,8s + 10}{s^2 + 8s + 0,01}.
-\nonumber
-\end{equation}
-
-
-Kryteria jakoœciowe zdefiniowane funkcjami wagowymi \( w_u(s) \) i \( w_p(s) \) zosta³y spe³nione (\(\gamma < 1 \)), ale uk³ad zamkniêty okaza³ siê niestabilny dla pewnych wartoœci parametrów \( m, c\) i \(k\).
-
-W kolejnym etapie uwzglêdniono zmiennoœæ parametrów w postaci wzglêdnego modelu niepewnoœci. Wagê \( w_o(s) \) dobrano tak, aby powsta³a rodzina modeli objê³a rodzinê obiektów \( \mathcal{G}_r \subset \mathcal{G}_p \) (rys. \ref{MsdUncert}).
-
+\subsection{Synteza mu}
+Uk³ad przedstawiony na rys.~\ref{MDeltaRp} stanowi zazwyczaj uk³ad zamkniêty (regulator jest ju¿ uwzglêdniony w pêtli sprzê¿enia zwrotnego). Standardowy uk³ad otwarty, s³u¿¹cy do syntezy regulatora, przedstawiono na rys.~\ref{muSynth}. 
 \begin{figure}[hbt]
 \centering
-\includegraphics[width=\linewidth]{MsdUncert.eps}
-\caption{Dobór funkcji wagowej modelu niepewnoœci.}
-\label{MsdUncert}
+\includegraphics[width=\linewidth/2]{muSynth.png}
+\caption{Konfiguracja uwzglêdniaj¹ca macierz niepewnoœci \( \Delta \) i regulator \(K\).}
+\label{muSynth}
 \end{figure}
+Sygna³y \( u \) i \(y\) oznaczaj¹ odpowiednio sygna³ steruj¹cy i sygna³y s³u¿¹ce regulacji (uchyb lub sygna³ pomiarowy). Macierz transmitancji \( G(s) \) mo¿na rozbiæ na poszczególne sk³adowe:
+\[
+G(s) = 
+\left[\begin{matrix} 
+G_{11} & G_{12} & G_{13}\\
+G_{21} & G_{22} & G_{23}\\
+G_{31} & G_{32} & G_{33}
+\end{matrix}\right]
+\]
+Teraz uk³ad zamkniêty
+\[
+G_{cl}(s) = 
+\left[\begin{matrix} 
+G_{11} & G_{12} \\
+G_{21} & G_{22}
+\end{matrix}\right]
++
+\left[\begin{matrix} 
+G_{13} \\ G_{23}
+\end{matrix}\right]
+K(I-G_{33} K)^{-1} \left[ G_{31} G_{32} \right]
+= F_l(G,K)
+\]
 
-Okazuje siê, ¿e chocia¿ kryteria jakoœciowe (w tym kryterium odpornoœci) nie zosta³y spe³nione (\( \gamma = 2,56 \)), uk³ad zamkniêty jest odpornie stabilny. Samo uwzglêdnienie niepewnoœci pozwoli³o osi¹gn¹æ odporn¹ stabilnoœæ. Na rys.~(\ref{Msd2}) porównano transmitancje widmowe uk³adu zamkniêtego \( G(s)K(s)(I+G(s)K(s))^{-1} \) dwóch regulatorów, które dla spe³nienia warunku wystarczaj¹cego kryterium stabilnoœci, powinny byæ mniejsze od \( 1/w_o(j\omega) \) dla ka¿dego \( \omega \geq 0 \).
+Dla osi¹gniêcia odpornej stabilnoœci i odpornych osi¹gów, wymagane jest znalezienie regulatora \( K \), dla którego spe³nione bêdzie:
+\[
+\inf_{\omega \in \mathcal{R}} \mu_{\tilde{\Delta}}[F_l(G,K)(j\omega)] < 1
+\]
+Do rozwi¹zanie powy¿szego zadania opracowano iteracyjny algorytm zwany ,,iteracj¹ D-K''. 
 
-\begin{figure}[hbt]
+
+D-K iteracje- naprzemienna minimalizacja \\
+\(\mu \) dla ustalonego K(s)\\
+znalezienie K(s) dla ustalonego D ??
+
+\subsubsection{Przyk³ad. Regulator mu dla uk³adu masa-sprê¿yna-t³umik.}
+Próba uzyskania odpornych osi¹gów dla uk³adu zamkniêtego
+
+\section{Podsumowanie}
+W rozdziale tym wprowadzono dwa podstawowe rodzaje opisu niepewnoœci - niepewnoœæ niestrukturaln¹ i ustrukturyzowan¹ niepewnoœæ parametryczn¹. Druga wymieniona jest bardziej ogólna i mo¿e zawieraæ równie¿ niepewnoœæ niestrukturaln¹. Dodatkowo zdefiniowano dwa poziomy odpornoœci (dwie cechy uk³adu regulacji) - odporn¹ stabilnoœæ i odporne osi¹gi. 
+
+Dwa podstawowe podejœcia wykorzystywane w technice sterowania odpornego to minimalizacja normy \( H_\infty \) i synteza strukturalnej wartoœci osobliwej \( \mu_\Delta \). Narzêdzia oparte na normie \( H_\infty \) s¹ w stanie zapewniæ jedynie odporn¹ stabilnoœæ, natomiast wykorzystanie SSV pozwala oprócz stabilnoœci, uzyskaæ odporne osi¹gi (tab.~\ref{TabPodsumowanie}).
+
+Chocia¿ przewaga metod SSV jest ewidentna, numeryczna implementacja jest du¿o bardziej wymagaj¹ca obliczeniowo i wra¿liwa na dane wejœciowe \cite{RobustMatlab}. Poza tym otrzymujemy regulator bardzo wysokiego rzêdu, dlatego celowe jest jednoczesne korzystanie z obydwu narzêdzi, dla weryfikacji wyników.
+
+\begin{table}[hbt]
 \centering
-\includegraphics[width=\linewidth]{Msd2.eps}
-\caption{Chocia¿ warunek wystarczaj¹cy nie zosta³ spe³niony, regulator 2. jest odpornie stabilny.}
-\label{Msd2}
-\end{figure}
-
+\begin{tabular}{ccc}
+                   & \( H_\infty \) & \( \mu_\Delta \) \\
+odporna stabilnoœæ & tylko niestrukturalna niepewnoœæ & tak \\
+odporne osi¹gi     & nie & tak
+\end{tabular}
+\caption{Podsumowanie narzêdzi matematycznych}
+\label{TabPodsumowanie}
+\end{table}

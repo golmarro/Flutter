@@ -1,10 +1,23 @@
 
 %% Model z parametryczna niepewnoscia z wykorzystaniem niepewnych atomow
-clear
 paramsUnc = WingUnc;
 wing = WingFlutter(paramsUnc);
 wing.U0 = paramsUnc.getU0_unc;
-sys = wing.getLinearModel;
+sys_uf = wing.getLinearModel;
+sys_uf_simple = simplify(sys_uf,'full');
+
+%% Analiza SSV dla pelnego modelu
+[Muf DeltaUf] = lftdata(sys_uf_simple);
+nuf = size(DeltaUf,1);
+w = logspace(1, 2, 100);
+
+Fin = [eye(nuf), 0.01*eye(nuf)];
+Fout = Fin';
+Muf2 = Fout*Muf(1:nuf,1:nuf)*Fin;
+sys_uf_fr = frd(Muf2, w);
+[bounds_uf2 mu_info] = mussv(sys_uf_fr,[-nuf 0; nuf 0]);
+
+
 
 %% Prostszy przypadek - tylko fuel level
 clear
@@ -12,10 +25,13 @@ paramsUnc = WingUnc;
 wing = WingFlutter(paramsUnc);
 %wing.U0 = paramsUnc.getU0_unc;
 sys = wing.getLinearModel;
+sys_simple = simplify(sys,'full');
 %%
 opt = robopt('Display','on');
 [stabmarg,destabu,report, info] = robuststab(sys, opt);
 
+% sys
+%-----
 % Niestety z poziomem paliwa jest problem, bo wiadomo ze ujemna wartosc nie
 % ma sensu, a tutaj wlasnie ujemna wartosc zostala wskazana jako
 % destabilizujaca
@@ -33,6 +49,21 @@ opt = robopt('Display','on');
 %     DestabilizingFrequency: 1.7483e-016
 % destabu1=
 %     FuelLevel: -0.5406
+
+% sys_simple
+%------------
+% Uncertain System is possibly NOT robustly stable to modeled uncertainty.                   
+%  -- It can tolerate up to 35% of the modeled uncertainty.                                  
+%  -- A destabilizing combination of 208% of the modeled uncertainty exists,                 
+%     causing an instability at 1.45e-007 rad/s.                                             
+%  -- Sensitivity with respect to uncertain element ...                                      
+%    'FuelLevel' is 34%.  Increasing 'FuelLevel' by 25% leads to a 9% decrease in the margin.
+%    'U0' is 96%.  Increasing 'U0' by 25% leads to a 24% decrease in the margin.             
+% 
+% destabu = 
+% 
+%     FuelLevel: -0.5406
+%            U0: 33.9497
 
 %% Prostszy przypadek - tylko U0 Real
 clear

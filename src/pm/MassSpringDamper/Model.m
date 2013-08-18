@@ -21,7 +21,8 @@ classdef Model < handle
         Wp          % Weighting function (performance)
         Wu          % Control signal weighting function
         Wunc  = []  % Multiplicative Uncertainty Weight
-        Khinf       % Result of HinfSynthesis
+        Khinf       % Result of HinfSynthesis, HinfSynthesisStab
+        Kmu         % Result of muSynthesis
         Clw         % Closed-loop system with weighting functions
         
         deltaNom = [0 0 0]   % Delta for nominal plant - if we want to use other than average
@@ -29,6 +30,8 @@ classdef Model < handle
     
     properties(Dependent)
         Gn          % Nominal plant
+        Gn_uss      % Uncertain plant (with uncertain atoms)
+        Gn_delta    % Uncertain plant with uncertain atoms extracted to delta matrix
         Gdelta      % Model in P-Delta configuration (created manually)
         Gdelta2     % Model in P-Delta configuration (using uncertain atoms)
         Ganal       % Model for performance analysis
@@ -37,7 +40,12 @@ classdef Model < handle
         Gsynth2     % created manually
         Gsynth3     % created using augw function
         GsynthStab  % added robust stability criteria
-        Cl          % Closed-loop system
+        Cl          % Closed-loop system with KHinf
+        Clmu        % Closed-loop system with Kmu
+        
+        m_unc       % uncertain atoms
+        k_unc
+        c_unc
     end
     
     methods
@@ -56,6 +64,64 @@ classdef Model < handle
             C = [0 1];
             D = 0;
             val = ss(A,B,C,D);
+        end
+        
+        function stac = getModelStack(this)
+            mod = Model;
+            delta = this.getDelta();
+            for i=1:size(delta,1)
+                mod.deltaNom = delta(i,:);
+                if ~exist('stac','var')
+                    stac = stack(1,mod.Gn);
+                else
+                    stac = stack(1,stac,mod.Gn);
+                end
+            end
+        end
+        
+        function m_unc = get.m_unc(this)
+            m_unc = ureal('m',this.m,'Percentage',this.pm*100);
+        end
+        
+        function c_unc = get.c_unc(this)
+            c_unc = ureal('c',this.c,'Percentage',this.pc*100);
+        end
+        
+        function k_unc = get.k_unc(this)
+            k_unc = ureal('k',this.k,'Percentage',this.pk*100);
+        end
+        
+        function val = get.Gn_uss(this)
+            m = this.m_unc;
+            c = this.c_unc;
+            k = this.k_unc;
+            
+            A = [-c/m -k/m; 1 0];
+            B = [1/m; 0];
+            C = [0 1];
+            D = 0;
+            val = ss(A,B,C,D);
+        end
+        
+        function val = get.Gn_delta(this)
+            m = ureal('dm',0,'Range',[-1 1]);
+            c = ureal('dc',0,'Range',[-1 1]);
+            k = ureal('dk',0,'Range',[-1 1]);
+            
+            Delta = diag([m c k]);
+            val = lft(Delta, this.Gdelta);
+        end
+        
+        function val = addComplexityToModel(this, p)
+            m = ureal('dm',0,'Range',[-1 1]);
+            c = ureal('dc',0,'Range',[-1 1]);
+            k = ureal('dk',0,'Range',[-1 1]);
+            mc = ucomplex('dmc',0,'Radius',p);
+            cc = ucomplex('dcc',0,'Radius',p);
+            kc = ucomplex('dkc',0,'Radius',p);
+            
+            Delta = diag([m+mc c+cc k+kc]);
+            val = lft(Delta, this.Gdelta);
         end
         
         function val = get.Gdelta(this)
@@ -107,8 +173,26 @@ classdef Model < handle
             sysic
         end
         
+        function G = getGsynth(this, Gnom, Wp, Wu)
+            if ~exist('Wp','var')
+                Wp = this.Wp;
+            end
+            if ~exist('Wu','var')
+                Wu = this.Wu;
+            end
+
+            systemnames = 'Gnom Wu Wp';
+            inputvar = '[dist; control]';
+            outputvar= '[Wp; Wu; Gnom + dist]';
+            input_to_Gnom = '[control]';
+            input_to_Wp = '[Gnom + dist]';
+            input_to_Wu = '[control]';
+            cleanupsysic = 'yes';
+            sysoutname = 'G';
+            sysic
+        end
+        
         function G = get.Gsynth2(this)
-            Gnom = this.Gn;
             Wp = this.Wp;
             Wu = this.Wu;
             Au = Wu.A;
@@ -136,7 +220,7 @@ classdef Model < handle
         function G = get.Gsynth3(this)
             G = augw(this.Gn, this.Wp, this.Wu);
         end
-             
+        
         function HinfSynthesis(this)
             [K,CL,GAM,INFO] = hinfsyn(this.Gsynth,1,1,'display','on');
             this.Khinf = K;
@@ -173,14 +257,32 @@ classdef Model < handle
             this.checkStability;
         end
         
-        function checkStability(this)
+        function [K, CL, bnd, dkinfo] = muSynthesis(this, P)
+            if nargin == 1
+                P = this.Gn_delta;
+            end
+            P = this.getGsynth(P);
+            opt = dkitopt('DisplayWhileAutoIter','on','NumberOfAutoIterations',10);
+            [K, CL, bnd, dkinfo] = dksyn(P, 1, 1, opt);
+            this.Kmu = K;
+            this.Clw = CL;
+            this.Clw.OutputName = {'Wp','Wu'};
+            this.Clw.InputName = 'u';
+            
+            this.checkStability(this.Kmu);
+        end
+        
+        function checkStability(this, K)
+            if ~exist('K','var')
+                K = this.Khinf;
+            end
             % Brute force
             % Check robust stability
             stable = 1;
             delta = this.getDelta();
             for i=1:size(delta,1)
                 Gpert = lft(diag(delta(i,:)),this.Gdelta);
-                cl = feedback(Gpert,this.Khinf,1);
+                cl = feedback(Gpert,K,1);
                 if sum(real(eig(cl))>0) > 0
                     fprintf('Unstable for: %f, %f, %f\n', delta(i,1), delta(i,2), delta(i,3));
                     stable = 0;
@@ -193,9 +295,77 @@ classdef Model < handle
             end
         end
         
+        function checkNominalPerformance(this, K, Gn, fig)
+            if ~exist('G','var')
+                Gn = this.Gn;
+            end
+            if ~exist('fig','var')
+                figure
+                
+                subplot(2,1,1);% hold on;
+                %title('Wp criteria');
+                bodemag(1/this.Wp, 'k');
+                
+                subplot(2,1,2);% hold on;
+                %title('Wu criteria');
+                bodemag(1/this.Wu, 'k');
+            end
+            
+            G = augw(Gn, 1, 1);
+            cl = lft(G,K);
+            
+            subplot(2,1,1)
+            bodemag(cl(1,1), 'b')
+            
+            subplot(2,1,2)
+            bodemag(cl(2,1), 'b')
+            
+        end
+        
+        function bounds = checkRobustPerformance(this, K)
+            w = logspace(-1,1,200);
+            
+            %G = this.getGsynth(this.Gn_uss,1,1);
+            G = this.getGsynth(this.Gn_uss);
+            [M Delta] = lftdata(G);
+            cl = lft(M, K);
+            fr = frd(cl, w);
+        
+            block = [-1 0; -1 0; -3 0; 1 2];
+            [bounds, muinfo] = mussv(fr, block);
+            %semilogx(bounds(1,1),'k-.',bounds(1,2),'r-.');
+            % Upper bound only:
+            if nargout == 0
+                semilogx(bounds(1,1),'k-.');
+            end
+        end
+        
+        function bounds = plotSsv(this, K)
+            w = logspace(-1,1,200);
+            if ~exist('K','var')
+                fprintf('Plotting ssv for open-loop model');
+                fr = frd(this.Gdelta(1:3,1:3), w);
+            else
+                cl = lft(this.Gdelta,K);
+                fr = frd(cl, w);
+            end
+            block = [-1 0; -1 0; -1 0];
+            [bounds, muinfo] = mussv(fr, block);
+            %semilogx(bounds(1,1),'k-.',bounds(1,2),'r-.');
+            % Upper bound only:
+            if nargout == 0
+                semilogx(bounds(1,1),'k-.');
+            end
+        end
+        
         function val = get.Cl(this)
             % assert(this.Khinf ~= [])
             val  = feedback(this.Gn, this.Khinf, 1);
+        end
+        
+        function val = get.Clmu(this)
+            % assert(this.Khinf ~= [])
+            val  = feedback(this.Gn, this.Kmu, 1);
         end
         
         function [Wu Guns] = unstructUncert(this, order, plot)

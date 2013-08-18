@@ -1,0 +1,9 @@
+lftdata
+	Decompose uncertain object into fixed normalized and fixed uncertain parts
+ltiarray2uss
+	Compute uncertain system bounding given LTI ss array
+hinfgs
+	Gain-scheduled H controller synthesis
+dmplot
+	Interpret disk gain and phase margins
+	Fajnie by³oby zainteresowaæ siê tym tematem i mo¿e fajny rysunek zarzuciæ
